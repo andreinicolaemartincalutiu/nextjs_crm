@@ -34,7 +34,7 @@ const TableHome = () => {
 				.then(response => response.json())
 				.then(data => {
 					setStatuses(data);
-					console.log(data);
+					// console.log(data);
 				})
 		} catch (error) {
 			// console.log(error);

@@ -4,7 +4,7 @@ import Image from "next/image";
 import * as crypto from "crypto";
 import InfoPopup from "@/components/common/InfoPopup";
 
-const SettingsContent = () => {
+const  SettingsContent = () => {
 	const [newPassword, setNewPassword] = useState<string>("");
 	const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
 	const email = sessionStorage.getItem("Email");
@@ -28,24 +28,24 @@ const SettingsContent = () => {
 	const handleSubmit = async () => {
 		if (newPassword !== confirmNewPassword) {
 			InfoPopup("Your passwords don’t match.");
-		} else {
-			try {
-				const EmployeeId = sessionStorage.getItem("EmployeeId");
-				await fetch(`/api/updatePassword/${EmployeeId}`, {
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						Password: crypto.createHash("sha512").update(newPassword, "utf8").digest("hex"),
-					}),
-				})
-			} catch (error) {
-				console.error(error);
-			}
-			setNewPassword("");
-			setConfirmNewPassword("");
+			return;
 		}
+		try {
+			const Email = sessionStorage.getItem("Email");
+			await fetch(`/api/updatePassword/${Email}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					Password: crypto.createHash("sha512").update(newPassword, "utf8").digest("hex"),
+				}),
+			})
+		} catch (error) {
+			console.error(error);
+		}
+		setNewPassword("");
+		setConfirmNewPassword("");
 	};
 
 	return (

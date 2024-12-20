@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 
-export async function PUT(req: Request, { params }: { params: { EmployeeId: string } }) {
-	const { EmployeeId } = params;
+export async function PUT(req: Request, { params }: { params: { Email: string } }) {
+	const { Email } = params;
 	const { Password } = await req.json();
 
-	if (typeof EmployeeId !== "string") {
+	if (typeof Email !== "string") {
 		return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
 	}
 
@@ -15,8 +15,8 @@ export async function PUT(req: Request, { params }: { params: { EmployeeId: stri
 
 	try {
 		const result: any = await pool.query(
-			"UPDATE Employee SET Password = ? WHERE EmployeeId = ?",
-			[Password, EmployeeId]
+			"UPDATE Employee SET Password = ? WHERE Email = ?",
+			[Password, Email]
 		);
 
 		if (result[0].length === 0) {

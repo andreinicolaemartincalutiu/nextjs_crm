@@ -15,7 +15,7 @@ const ServicesPage = () => {
 			<TableServices />
 			<FloatingButton />
 		</DefaultLayout>
-	)
-}
+	);
+};
 
 export default ServicesPage;

@@ -37,9 +37,9 @@ const HandleFileImport = (event: any, importType: string) => {
 				}
 			}
 
-			console.log(tsvLinesArray.length);
+			// console.log(tsvLinesArray.length);
 			if (tsvLinesArray.length !== 0) {
-				console.log(tsvLinesArray);
+				// console.log(tsvLinesArray);
 				GenerateTSV(tsvLinesArray);
 				InfoPopup("Some data failed to be imported");
 			} else {

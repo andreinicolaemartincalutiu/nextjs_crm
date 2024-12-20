@@ -42,7 +42,7 @@ class MailSender {
 				]
 			};
 
-			console.log("Sending email with attachment:", mailOptions);
+			// console.log("Sending email with attachment:", mailOptions);
 		} else {
 			mailOptions = {
 				from: "'CRM' <office@brandtransilvania.ro>",
@@ -51,7 +51,7 @@ class MailSender {
 				text: body,
 			};
 
-			console.log("Sending email without attachment:", mailOptions);
+			// console.log("Sending email without attachment:", mailOptions);
 		}
 
 		try {
