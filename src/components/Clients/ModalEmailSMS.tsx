@@ -81,9 +81,9 @@ const ModalEmailSMS = (props: any) => {
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,
 						lastName: clientsArrayForEmailsSMSs[i].LastName,
-						clientSMS: 0,
-						clientEmail: 1,
-						companyEmail: 0,
+						clientSMS: "0",
+						clientEmail: "1",
+						companyEmail: "0",
 					}),
 				});
 
@@ -136,9 +136,9 @@ const ModalEmailSMS = (props: any) => {
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,
 						lastName: clientsArrayForEmailsSMSs[i].LastName,
-						clientSMS: 1,
-						clientEmail: 0,
-						companyEmail: 0,
+						clientSMS: "1",
+						clientEmail: "0",
+						companyEmail: "0",
 					}),
 				});
 

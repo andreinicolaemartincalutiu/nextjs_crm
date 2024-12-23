@@ -78,9 +78,9 @@ const ModalEmail = (props: any) => {
 					body: JSON.stringify({
 						firstName: emailAddressesToSendEmailArray[i].FirstName,
 						lastName: emailAddressesToSendEmailArray[i].LastName,
-						clientSMS: 0,
-						clientEmail: 0,
-						companyEmail: 1,
+						clientSMS: "0",
+						clientEmail: "0",
+						companyEmail: "1",
 					}),
 				});
 				const data2 = await res2.json();

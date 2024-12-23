@@ -1,8 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Chart from "@/components/Charts/page";
-import TableHome from "@/components/Home/TableHome";
+import Charts from "@/components/Home/Charts";
 
 export const metadata: Metadata = {
 	title: "Home",
@@ -13,8 +12,8 @@ export const metadata: Metadata = {
 const ClientsPage = () => {
 	return (
 		<DefaultLayout>
-			<Chart />
-			<TableHome />
+			<Charts />
+			{/* <TableHome /> */}
 		</DefaultLayout>
 	);
 };

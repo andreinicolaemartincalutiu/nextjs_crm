@@ -23,7 +23,7 @@ export default function DefaultLayout({ children, }: { children: React.ReactNode
 
 					{/* <!-- ===== Main Content Start ===== --> */}
 					<main>
-						<div className="mx-auto max-w-screen-xl pt-8 pb-8">
+						<div className="mx-auto max-w-screen-xl ml-12 mt-8 mb-8">
 							{children}
 						</div>
 					</main>

@@ -21,18 +21,18 @@ export const addClient = async (
 	if (modalId) {
 		modalInput = document.getElementById(modalId) as HTMLInputElement;
 	}
-	if (firstName === "" || firstName === undefined ||
-		lastName === "" || lastName === undefined ||
-		CI === "" || CI === undefined ||
-		CNP === "" || CNP === undefined ||
-		companyId === "" || companyId === undefined ||
-		companyRole === "" || companyRole === undefined ||
-		address === "" || address === undefined ||
-		email === "" || email === undefined ||
-		phone === "" || phone === undefined ||
-		interests === "" || interests === undefined ||
-		birthDate === "" || birthDate === undefined ||
-		details === "" || details === undefined
+	if (firstName === "" || firstName === undefined || firstName === null ||
+		lastName === "" || lastName === undefined || lastName === null ||
+		CI === "" || CI === undefined || CI === null ||
+		CNP === "" || CNP === undefined || CNP === null ||
+		companyId === "" || companyId === undefined || companyId === null ||
+		companyRole === "" || companyRole === undefined || companyRole === null ||
+		address === "" || address === undefined || address === null ||
+		email === "" || email === undefined || email === null ||
+		phone === "" || phone === undefined || phone === null ||
+		interests === "" || interests === undefined || interests === null ||
+		birthDate === "" || birthDate === undefined || birthDate === null ||
+		details === "" || details === undefined || details === null
 	) {
 		if (modalInput?.checked) {
 			InfoPopup("Missing some required fields");
@@ -116,18 +116,18 @@ const ModalClients = (props: any) => {
 	};
 
 	const saveClientChanges = async () => {
-		if (firstName === "" || firstName === undefined ||
-			lastName === "" || lastName === undefined ||
-			CI === "" || CI === undefined ||
-			CNP === "" || CNP === undefined ||
-			companyId === "" || companyId === undefined ||
-			companyRole === "" || companyRole === undefined ||
-			address === "" || address === undefined ||
-			email === "" || email === undefined ||
-			phone === "" || phone === undefined ||
-			interests === "" || interests === undefined ||
-			birthDate === "" || birthDate === undefined ||
-			details === "" || details === undefined
+		if (firstName === "" || firstName === undefined || firstName === null ||
+			lastName === "" || lastName === undefined || lastName === null ||
+			CI === "" || CI === undefined || CI === null ||
+			CNP === "" || CNP === undefined || CNP === null ||
+			companyId === "" || companyId === undefined || companyId === null ||
+			companyRole === "" || companyRole === undefined || companyRole === null ||
+			address === "" || address === undefined || address === null ||
+			email === "" || email === undefined || email === null ||
+			phone === "" || phone === undefined || phone === null ||
+			interests === "" || interests === undefined || interests === null ||
+			birthDate === "" || birthDate === undefined || birthDate === null ||
+			details === "" || details === undefined || details === null
 		) {
 			InfoPopup("Missing some required fields");
 			return;
@@ -222,8 +222,8 @@ const ModalClients = (props: any) => {
 						<input placeholder="Details" value={details} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setDetails(e.target.value)} />
 						{props.secondButton === false ? (
 							<>
-								<input placeholder="Last email sent date" value={statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
-								<input placeholder="Last SMS sent date" value={statusSMS.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+								<input placeholder="Last email sent date" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+								<input placeholder="Last SMS sent date" value={statusSMS.toString()[0] === "," ? "-" : statusSMS.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 							</>
 						) : (
 							<></>

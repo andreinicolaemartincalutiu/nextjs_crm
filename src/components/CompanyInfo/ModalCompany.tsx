@@ -22,19 +22,19 @@ export const addCompany = async (
 	if (modalId) {
 		modalInput = document.getElementById(modalId) as HTMLInputElement;
 	}
-	if (companyName === "" || companyName === undefined ||
-		TVA === "" || TVA === undefined ||
-		shareholders === "" || shareholders === undefined ||
-		CIF === "" || CIF === undefined ||
-		COM === "" || COM === undefined ||
-		headquarter === "" || headquarter === undefined ||
-		subsidiary === "" || subsidiary === undefined ||
-		mainActivity === "" || mainActivity === undefined ||
-		secondaryActivity === "" || secondaryActivity === undefined ||
-		interests === "" || interests === undefined ||
-		email === "" || email === undefined ||
-		region === "" || region === undefined ||
-		employees === "" || employees === undefined
+	if (companyName === "" || companyName === undefined || companyName === null ||
+		TVA === "" || TVA === undefined || TVA === null ||
+		shareholders === "" || shareholders === undefined || shareholders === null ||
+		CIF === "" || CIF === undefined || CIF === null ||
+		COM === "" || COM === undefined || COM === null ||
+		headquarter === "" || headquarter === undefined || headquarter === null ||
+		subsidiary === "" || subsidiary === undefined || subsidiary === null ||
+		mainActivity === "" || mainActivity === undefined || mainActivity === null ||
+		secondaryActivity === "" || secondaryActivity === undefined || secondaryActivity === null ||
+		interests === "" || interests === undefined || interests === null ||
+		email === "" || email === undefined || email === null ||
+		region === "" || region === undefined || region === null ||
+		employees === "" || employees === undefined || employees === null
 	) {
 		if (modalInput?.checked) {
 			InfoPopup("Missing some required fields");
@@ -100,19 +100,19 @@ const ModalCompany = (props: any) => {
 	const statusEmail = useState(props.company?.StatusEmail);
 
 	const saveCompanyChanges = async () => {
-		if (companyName === "" || companyName === undefined ||
-			TVA === "" || TVA === undefined ||
-			shareholders === "" || shareholders === undefined ||
-			CIF === "" || CIF === undefined ||
-			COM === "" || COM === undefined ||
-			headquarter === "" || headquarter === undefined ||
-			subsidiary === "" || subsidiary === undefined ||
-			mainActivity === "" || mainActivity === undefined ||
-			secondaryActivity === "" || secondaryActivity === undefined ||
-			interests === "" || interests === undefined ||
-			email === "" || email === undefined ||
-			region === "" || region === undefined ||
-			employees === "" || employees === undefined
+		if (companyName === "" || companyName === undefined || companyName === null ||
+			TVA === "" || TVA === undefined || TVA === null ||
+			shareholders === "" || shareholders === undefined || shareholders === null ||
+			CIF === "" || CIF === undefined || CIF === null ||
+			COM === "" || COM === undefined || COM === null ||
+			headquarter === "" || headquarter === undefined || headquarter === null ||
+			subsidiary === "" || subsidiary === undefined || subsidiary === null ||
+			mainActivity === "" || mainActivity === undefined || mainActivity === null ||
+			secondaryActivity === "" || secondaryActivity === undefined || secondaryActivity === null ||
+			interests === "" || interests === undefined || interests === null ||
+			email === "" || email === undefined || email === null ||
+			region === "" || region === undefined || region === null ||
+			employees === "" || employees === undefined || employees === null
 		) {
 			InfoPopup("Missing some required fields");
 			return;
@@ -186,7 +186,7 @@ const ModalCompany = (props: any) => {
 						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setRegion(e.target.value)} />
 						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmployees(e.target.value)} />
 						{props.secondButton === false ? (
-							<input placeholder="Last email sent date" value={statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+							<input placeholder="Last email sent date" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						) : (
 							<></>
 						)}
