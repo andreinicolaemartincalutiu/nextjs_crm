@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { send2FAemail } from "../page";
 import generateRandomSixDigitNumber from "@/components/common/GenerateRandomSixDigitNumber";
 import InfoPopup from "@/components/common/InfoPopup";
 import { createHash } from "crypto";
+import send2FAemail from "@/components/common/Send2FAemail";
 
 const RresetPassword = () => {
 	const [email, setEmail] = useState<string>("");
