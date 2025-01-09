@@ -8,7 +8,7 @@ export default function DefaultLayout({ children, }: { children: React.ReactNode
 	return (
 		<>
 			{/* <!-- ===== Page Wrapper Start ===== --> */}
-			<div className="flex">
+			<div className="flex h-[100%]">
 				{/* <!-- ===== Sidebar Start ===== --> */}
 				<div className="w-[12%]">
 					<Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -16,14 +16,14 @@ export default function DefaultLayout({ children, }: { children: React.ReactNode
 				{/* <!-- ===== Sidebar End ===== --> */}
 
 				{/* <!-- ===== Content Area Start ===== --> */}
-				<div className="relative flex flex-1 flex-col w-[88%]">
+				<div className="relative flex flex-1 flex-col w-[88%] h-[100%]">
 					{/* <!-- ===== Header Start ===== --> */}
 					<Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 					{/* <!-- ===== Header End ===== --> */}
 
 					{/* <!-- ===== Main Content Start ===== --> */}
-					<main>
-						<div className="mx-auto max-w-screen-xl ml-12 mt-8 mb-8">
+					<main className="h-[100%]">
+						<div className="h-[100%] mx-auto max-w-screen-xl ml-12 mt-8 mb-8">
 							{children}
 						</div>
 					</main>

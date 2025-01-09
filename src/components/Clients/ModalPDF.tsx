@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
-import GeneratePDF from "@/components/Clients/GeneratePDF";
 import InfoPopup from "@/components/common/InfoPopup";
 
 type service = {
@@ -28,11 +27,11 @@ const ModalPDF = (props: any) => {
 		} catch (error) {
 			console.log(error);
 		}
-	};
+	}
 
 	useEffect(() => {
 		getServices();
-	}, []);
+	}, [])
 
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, service: string) => {
 
@@ -50,7 +49,6 @@ const ModalPDF = (props: any) => {
 			InfoPopup("Configure the PDF");
 			return;
 		}
-		GeneratePDF();
 		const modalInput = document.getElementById(props.modalId) as HTMLInputElement;
 		modalInput.checked = false;
 
@@ -59,28 +57,28 @@ const ModalPDF = (props: any) => {
 
 	return (
 		<>
-			<input type="checkbox" id={props.modalId} className="modal-toggle hidden" />
-			<div className="modal max-h-full w-[98.4%] flex justify-center items-center">
-				<div className="modal-box w-[100%] h-[100%] max-w-full overflow-hidden relative">
-					<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+			<input type="checkbox" id={props.modalId} className="hidden modal-toggle" />
+			<div id={props.modalId + "2"} className="flex justify-center items-center w-[98.4%] h-[100%] modal">
+				<div className="relative w-[70%] max-w-full h-[100%] overflow-hidden modal-box">
+					<label htmlFor={props.modalId} className="top-2 right-2 absolute btn btn-circle btn-ghost btn-sm">
 						X
 					</label>
-					<div className="h-full flex w-full">
+					<div className="flex w-full h-full">
 
-						<div className="h-full flex flex-col">
-							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+						<div className="flex flex-col h-full">
+							<h4 className="mb-6 font-semibold text-black text-xl dark:text-white">
 								Services
 							</h4>
 
 							<div className="flex-grow overflow-y-auto">
-								<div className="grid grid-cols-2 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-2">
+								<div className="grid grid-cols-2 sm:grid-cols-2 bg-gray-2 dark:bg-meta-4 rounded-sm">
 									<div className="p-2.5 xl:p-5">
-										<h5 className="text-sm font-medium uppercase xsm:text-base">
+										<h5 className="font-medium text-sm xsm:text-base uppercase">
 											Service Name
 										</h5>
 									</div>
-									<div className="p-2.5 text-center xl:p-5">
-										<h5 className="text-sm font-medium uppercase xsm:text-base">
+									<div className="p-2.5 xl:p-5 text-center">
+										<h5 className="font-medium text-sm xsm:text-base uppercase">
 											Price
 										</h5>
 									</div>
@@ -97,15 +95,15 @@ const ModalPDF = (props: any) => {
 														}`}
 												>
 													<div className="flex items-center gap-3 p-2.5 xl:p-5">
-														<p className="hidden text-black dark:text-white sm:block">
-															<input type="checkbox" className="checkbox checkbox-info mr-2"
+														<p className="sm:block hidden text-black dark:text-white">
+															<input type="checkbox" className="mr-2 checkbox checkbox-info"
 																onChange={(event) => handleCheckboxChange(event, service.Name)}
 															/>
 															{service.Name}
 														</p>
 													</div>
 
-													<div className="flex items-center justify-center p-2.5 xl:p-5">
+													<div className="flex justify-center items-center p-2.5 xl:p-5">
 														<p className="text-meta-3">{service.Price}</p>
 													</div>
 												</label>
@@ -121,14 +119,14 @@ const ModalPDF = (props: any) => {
 						<div className="divider divider-horizontal"></div>
 
 						<div>
-							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+							<h4 className="mb-6 font-semibold text-black text-xl dark:text-white">
 								Offer conditions
 							</h4>
 
-							<input type="number" placeholder="Discount percentage..." className="input input-bordered w-full max-w-xs"
+							<input type="number" placeholder="Discount percentage..." className="input-bordered w-full max-w-xs input"
 								onChange={e => setDiscountPercent(e.target.value)} />
 
-							<textarea className="textarea textarea-bordered h-[65%] w-full mt-5" placeholder="Offer description..."
+							<textarea className="mt-5 textarea-bordered w-full h-[65%] textarea" placeholder="Offer description..."
 								onChange={e => setOfferDescription(e.target.value)} />
 
 							<button

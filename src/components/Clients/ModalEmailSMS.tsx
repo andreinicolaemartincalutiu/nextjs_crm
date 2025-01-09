@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Loader from "@/components/common/Loader";
 import InfoPopup from "@/components/common/InfoPopup";
-import ModalPDF from "@/components/Clients/ModalPDF";
 import { AssistantsV1ServiceCreateFeedbackRequest } from "twilio/lib/rest/assistants/v1/assistant/feedback";
 
 type clientModal = {
@@ -16,9 +15,10 @@ const ModalEmailSMS = (props: any) => {
 	const [subject, setSubject] = useState<string>("Subject");
 	const [composedEmailSMS, setComposedEmailSMS] = useState<string>("EMAIL FOR TEST");
 	const [clientsArrayForEmailsSMSs, setClientsArrayForEmailsSMSs] = useState<clientModal[]>([]);
-	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
-	const [discountPercent, setDiscountPercent] = useState<string>("");
-	const [offerDescription, setOfferDescription] = useState<string>("");
+	const [offerServicesArray, setOfferServicesArray] = useState<string[]>(props.offerServicesArray);
+	const [discountPercent, setDiscountPercent] = useState<string>(props.discountPercent);
+	const [offerDescription, setOfferDescription] = useState<string>(props.offerDescription);
+	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, firstName: string, lastName: string, email: string, phoneNr: string) => {
 		let clientForEmailSMS = {
@@ -34,7 +34,7 @@ const ModalEmailSMS = (props: any) => {
 				prevArray.filter(client => client !== clientForEmailSMS)
 			);
 		}
-	}
+	};
 
 	const sendEmails = async () => {
 		if (setClientsArrayForEmailsSMSs.length === 0) {
@@ -98,7 +98,7 @@ const ModalEmailSMS = (props: any) => {
 			}
 		}
 		InfoPopup("Emails sent");
-	}
+	};
 
 	const sendSMSs = async () => {
 		if (clientsArrayForEmailsSMSs.length === 0) {
@@ -153,7 +153,7 @@ const ModalEmailSMS = (props: any) => {
 			}
 		}
 		InfoPopup("Finished to send SMS");
-	}
+	};
 
 	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
 		setOfferServicesArray(offerServicesArray);
@@ -161,36 +161,53 @@ const ModalEmailSMS = (props: any) => {
 		setOfferDescription(offerDescription);
 	};
 
+	const handleModalsTransition = () => {
+		const checkbox1 = document.getElementById("modalPDF");
+		checkbox1?.click();
+	}
+
+	const handleButtonClick = () => {
+		// console.log(2);
+		// if (modalRef.current) {
+		// 	console.log(3);
+		// 	const checkbox1 = document.getElementById(props.modalId + "2");
+		// 	console.log(checkbox1);
+		// 	if (checkbox1) {
+		// 		checkbox1.style.overscrollBehaviorY = "contain";
+		// 	}
+		// }
+	};
+
 	return (
 		<>
 			<input type="checkbox" id={props.modalId} className="modal-toggle" />
-			<div className="modal" role="dialog">
-				<div className="modal-box w-[70%] max-w-full">
+			<div id={props.modalId + "2"} ref={modalRef} className="h-[100%] modal" role="dialog">
+				<div className="w-[70%] max-w-full modal-box">
 					<div className="grid grid-cols-1">
-						<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
+						<label htmlFor={props.modalId} className="top-2 right-2 absolute btn btn-circle btn-ghost btn-sm">X</label>
 
-						<input placeholder="Type subject" value={subject} className="flex w-[98%] items-center p-2 text-black focus:outline-none focus:ring-0 focus:border-black" onChange={(e) => setSubject(e.target.value)} />
-						<textarea placeholder="Compose email or SMS" value={composedEmailSMS} className="flex h-29 items-center justify-center p-2 text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500" onChange={(e) => setComposedEmailSMS(e.target.value)} />
+						<input placeholder="Type subject" value={subject} className="flex items-center p-2 focus:border-black focus:ring-0 w-[98%] text-black focus:outline-none" onChange={(e) => setSubject(e.target.value)} />
+						<textarea placeholder="Compose email or SMS" value={composedEmailSMS} className="flex justify-center items-center border-gray-300 focus:border-gray-500 p-2 border focus:ring-0 h-29 text-black focus:outline-none" onChange={(e) => setComposedEmailSMS(e.target.value)} />
 
 						<div className="flex flex-col">
-							<div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-4">
+							<div className="grid grid-cols-3 sm:grid-cols-4 bg-gray-2 dark:bg-meta-4 rounded-sm">
 								<div className="p-2.5 xl:p-5">
-									<h5 className="text-sm font-medium uppercase xsm:text-base">
+									<h5 className="font-medium text-sm xsm:text-base uppercase">
 										First Name
 									</h5>
 								</div>
-								<div className="p-2.5 text-center xl:p-5">
-									<h5 className="text-sm font-medium uppercase xsm:text-base">
+								<div className="p-2.5 xl:p-5 text-center">
+									<h5 className="font-medium text-sm xsm:text-base uppercase">
 										Last Name
 									</h5>
 								</div>
-								<div className="p-2.5 text-center xl:p-5">
-									<h5 className="text-sm font-medium uppercase xsm:text-base">
+								<div className="p-2.5 xl:p-5 text-center">
+									<h5 className="font-medium text-sm xsm:text-base uppercase">
 										Email
 									</h5>
 								</div>
-								<div className="p-2.5 text-center xl:p-5">
-									<h5 className="text-sm font-medium uppercase xsm:text-base">
+								<div className="p-2.5 xl:p-5 text-center">
+									<h5 className="font-medium text-sm xsm:text-base uppercase">
 										Phone
 									</h5>
 								</div>
@@ -202,21 +219,21 @@ const ModalEmailSMS = (props: any) => {
 										<div key={key}>
 											<div className={`grid grid-cols-3 sm:grid-cols-4 ${key === props.filteredClients.length - 1 ? "" : "border-b border-stroke dark:border-strokedark"}`}>
 												<div className="flex items-center gap-3 p-2.5 xl:p-5">
-													<p className="hidden text-black dark:text-white sm:block">
+													<p className="sm:block hidden text-black dark:text-white">
 														<input type="checkbox" className="checkbox checkbox-info" onChange={(event) => handleCheckboxChange(event, client.FirstName, client.LastName, client.Email, client.Phone)} />
 													</p>
 													{client.FirstName}
 												</div>
 
-												<div className="flex items-center justify-center p-2.5 xl:p-5">
+												<div className="flex justify-center items-center p-2.5 xl:p-5">
 													<p className="text-black dark:text-white">{client.LastName}</p>
 												</div>
 
-												<div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+												<div className="sm:flex justify-center items-center hidden p-2.5 xl:p-5">
 													<p className="text-meta-5">{client.Email}</p>
 												</div>
 
-												<div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+												<div className="sm:flex justify-center items-center hidden p-2.5 xl:p-5">
 													<p className="text-meta-5">{client.Phone}</p>
 												</div>
 
@@ -230,10 +247,10 @@ const ModalEmailSMS = (props: any) => {
 						</div>
 					</div>
 
-					<div className="modal-action w-full">
+					<div className="w-full modal-action">
 						<label
 							className="btn"
-							htmlFor="modalPDF"
+							htmlFor={props.modalId2}
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 						>
 							<svg
@@ -252,7 +269,7 @@ const ModalEmailSMS = (props: any) => {
 								/>
 							</svg>
 						</label>
-						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
+
 						<button className="btn"
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 							onClick={sendEmails}

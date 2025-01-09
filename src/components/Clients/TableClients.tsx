@@ -8,6 +8,7 @@ import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmailSMS from "@/components/Clients/ModalEmailSMS";
 import "@/components/Clients/style.css";
+import ModalPDF from "./ModalPDF";
 
 type client = {
 	ClientId: string,
@@ -36,6 +37,10 @@ const TableClients = () => {
 	const [companiesArray, setCompaniesArray] = useState<{ CompanyId: string, CompanyName: string }[]>(JSON.parse(sessionStorage.getItem("companiesArray") || "[]"));
 	const modalCheckboxRef = useRef<HTMLInputElement>(null);
 
+	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
+	const [discountPercent, setDiscountPercent] = useState<string>("");
+	const [offerDescription, setOfferDescription] = useState<string>("");
+
 	const getClients = async () => {
 		try {
 			await fetch(`/api/readClient`, {
@@ -58,7 +63,7 @@ const TableClients = () => {
 	useEffect(() => {
 		setSearchTerm("");
 		getClients();
-	}, []);
+	}, [])
 
 
 	useEffect(() => {
@@ -80,7 +85,7 @@ const TableClients = () => {
 		);
 
 		setFilteredClients(filtered);
-	}, [searchTerm, clients]);
+	}, [searchTerm, clients])
 
 	const handleButtonClick = () => {
 		const fileInput = document.getElementById("clientsImport") as HTMLInputElement;
@@ -88,17 +93,23 @@ const TableClients = () => {
 			fileInput.value = "";
 			fileInput.click();
 		}
+	}
+
+	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
+		setOfferServicesArray(offerServicesArray);
+		setDiscountPercent(discountPercent);
+		setOfferDescription(offerDescription);
 	};
 
 	return (
-		<div className="rounded-sm border border-stroke bg-white pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-			<div className="flex w-full">
-				<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+		<div className="border-stroke dark:border-strokedark bg-white dark:bg-boxdark shadow-default sm:px-7.5 pt-6 pb-2.5 xl:pb-1 border rounded-sm h-[100%]">
+			<div className="flex w-full h-[100%]">
+				<h4 className="mb-6 font-semibold text-black text-xl dark:text-white">
 					Clients
 				</h4>
 
-				<div className="w-full flex flex-col items-end">
-					<h6>
+				<div className="flex flex-col items-end w-full h-[100%]">
+					<h6 className="h-[100%]">
 						<label htmlFor="modalEmailSMS" className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }}>
 							<svg
 								className="fill-current"
@@ -114,7 +125,11 @@ const TableClients = () => {
 								/>
 							</svg>
 						</label>
-						<ModalEmailSMS modalId="modalEmailSMS" filteredClients={filteredClients} />
+						<ModalEmailSMS modalId="modalEmailSMS" modalId2="modalPDF" filteredClients={filteredClients} offerServicesArray={offerServicesArray}
+							discountPercent={discountPercent} offerDescription={offerDescription} />
+						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
+
+
 						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
 							<>
 								<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick}>
@@ -151,29 +166,29 @@ const TableClients = () => {
 			</div>
 
 			<div className="flex flex-col">
-				<div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+				<div className="grid grid-cols-3 sm:grid-cols-5 bg-gray-2 dark:bg-meta-4 rounded-sm">
 					<div className="p-2.5 xl:p-5">
-						<h5 className="text-sm font-medium uppercase xsm:text-base">
+						<h5 className="font-medium text-sm xsm:text-base uppercase">
 							First Name
 						</h5>
 					</div>
-					<div className="p-2.5 text-center xl:p-5">
-						<h5 className="text-sm font-medium uppercase xsm:text-base">
+					<div className="p-2.5 xl:p-5 text-center">
+						<h5 className="font-medium text-sm xsm:text-base uppercase">
 							Last Name
 						</h5>
 					</div>
-					<div className="hidden p-2.5 text-center sm:block xl:p-5">
-						<h5 className="text-sm font-medium uppercase xsm:text-base whitespace-nowrap">
+					<div className="sm:block hidden p-2.5 xl:p-5 text-center">
+						<h5 className="font-medium text-sm xsm:text-base uppercase whitespace-nowrap">
 							Company
 						</h5>
 					</div>
-					<div className="hidden p-2.5 text-center sm:block xl:p-5">
-						<h5 className="text-sm font-medium uppercase xsm:text-base">
+					<div className="sm:block hidden p-2.5 xl:p-5 text-center">
+						<h5 className="font-medium text-sm xsm:text-base uppercase">
 							Role
 						</h5>
 					</div>
-					<div className="hidden p-2.5 text-center sm:block xl:p-5">
-						<h5 className="text-sm font-medium uppercase xsm:text-base">
+					<div className="sm:block hidden p-2.5 xl:p-5 text-center">
+						<h5 className="font-medium text-sm xsm:text-base uppercase">
 							Interests
 						</h5>
 					</div>
@@ -188,26 +203,26 @@ const TableClients = () => {
 									: "border-b border-stroke dark:border-strokedark"
 									}`}>
 									<div className="flex items-center gap-3 p-2.5 xl:p-5">
-										<p className="hidden text-black dark:text-white sm:block">
+										<p className="sm:block hidden text-black dark:text-white">
 											{client.FirstName}
 										</p>
 									</div>
 
-									<div className="flex items-center justify-center p-2.5 xl:p-5">
+									<div className="flex justify-center items-center p-2.5 xl:p-5">
 										<p className="text-black dark:text-white">{client.LastName}</p>
 									</div>
 
-									<div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+									<div className="sm:flex justify-center items-center hidden p-2.5 xl:p-5">
 										<p className="text-meta-5">
 											{companiesArray.find(comp => comp.CompanyId === client.CompanyId)?.CompanyName || "Unknown"}
 										</p>
 									</div>
 
-									<div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+									<div className="sm:flex justify-center items-center hidden p-2.5 xl:p-5">
 										<p className="text-meta-5">{client.CompanyRole}</p>
 									</div>
 
-									<div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+									<div className="sm:flex justify-center items-center hidden p-2.5 xl:p-5">
 										<p className="text-meta-5">{client.Interests}</p>
 									</div>
 								</label>
