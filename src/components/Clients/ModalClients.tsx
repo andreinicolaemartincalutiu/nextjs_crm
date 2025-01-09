@@ -196,14 +196,22 @@ const ModalClients = (props: any) => {
 			<input type="checkbox" ref={props.modalCheckboxRef} id={props.modalId} className="modal-toggle" />
 			<div className="modal" role="dialog">
 				<div className="modal-box w-[70%] max-w-3xl">
-					<div className="grid grid-cols-1 sm:grid-rows-10">
+					<div className="grid grid-cols-1 sm:grid-rows-30 w-[90%]">
 						<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
 
+						<p>First Name</p>
 						<input placeholder="First Name" value={firstName} className="flex items-center gap-3 p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setFirstName(e.target.value)} />
+
+						<p>Last Name</p>
 						<input placeholder="Last Name" value={lastName} className="flex items-center justify-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setLastName(e.target.value)} />
+
+						<p>CI</p>
 						<input placeholder="CI" value={CI} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCI(e.target.value)} />
+
+						<p>CNP</p>
 						<input placeholder="CNP" value={CNP} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCNP(e.target.value)} />
 
+						<p>Company</p>
 						<details className="dropdown hidden p-2.5 sm:flex xl:p-5 text-black" ref={detailsRef}>
 							<summary className="btn m-1">{companyIdLayout}</summary>
 							<ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
@@ -213,17 +221,35 @@ const ModalClients = (props: any) => {
 							</ul>
 						</details>
 
+						<p>Company role</p>
 						<input placeholder="Company role" value={companyRole} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCompanyRole(e.target.value)} />
+
+						<p>Address</p>
 						<input placeholder="Address" value={address} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setAddress(e.target.value)} />
+
+						<p>Email</p>
 						<input placeholder="Email" value={email} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmail(e.target.value)} />
+
+						<p>Phone</p>
 						<input placeholder="Phone" value={phone} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setPhone(e.target.value)} />
+
+						<p>Interests</p>
 						<input placeholder="Interests" value={interests} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setInterests(e.target.value)} />
+
+						<p>Birth date</p>
 						<input placeholder="Birth date" value={birthDate} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setBirthDate(e.target.value)} />
+
+						<p>Details</p>
 						<input placeholder="Details" value={details} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setDetails(e.target.value)} />
+
+
 						{props.secondButton === false ? (
 							<>
-								<input placeholder="Last email sent date" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
-								<input placeholder="Last SMS sent date" value={statusSMS.toString()[0] === "," ? "-" : statusSMS.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+								<p>Date last email sent</p>
+								<input placeholder="Date last email sent" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+
+								<p>Date last SMS sent</p>
+								<input placeholder="Date last SMS sent" value={statusSMS.toString()[0] === "," ? "-" : statusSMS.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 							</>
 						) : (
 							<></>
@@ -250,7 +276,7 @@ const ModalClients = (props: any) => {
 							disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
 					</div>
 				</div>
-			</div>
+			</div >
 		</>
 	);
 };

@@ -28,7 +28,7 @@ const TableHome = () => {
 
 	const getEmailSMSstatuses = async () => {
 		try {
-			await fetch(`/api/readSmsEmailStatuses`, {
+			await fetch(`/api/readStatus_emailSMS`, {
 				method: "GET",
 			})
 				.then(response => response.json())
@@ -44,7 +44,7 @@ const TableHome = () => {
 
 	const getAddedDeletedClientsCompaniesStats = async () => {
 		try {
-			await fetch(`/api/readAddedDeletedClientsCompaniesStats`, {
+			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
 				method: "GET",
 			})
 				.then(response => response.json())

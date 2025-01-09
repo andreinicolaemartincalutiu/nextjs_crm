@@ -70,7 +70,7 @@ const ModalEmail = (props: any) => {
 					throw new Error(`HTTP error! Status: ${response.status}`);
 				}
 
-				const res2 = await fetch("/api/insertUpdateSmsEmailStatuses", {
+				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -83,10 +83,10 @@ const ModalEmail = (props: any) => {
 						companyEmail: "1",
 					}),
 				});
-				const data2 = await res2.json();
-				if (!data2.success) {
+				// const data2 = await res2.json();
+				if (!res2.ok) {
 					InfoPopup(`Failed to add sent Email to ${emailAddressesToSendEmailArray[i].Email} in database`);
-					throw new Error(`HTTP error! Status: ${data2.error}`);
+					throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
 				console.error(error);
@@ -95,12 +95,6 @@ const ModalEmail = (props: any) => {
 		}
 		InfoPopup("Emails sent");
 	}
-
-	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
-		setOfferServicesArray(offerServicesArray);
-		setDiscountPercent(discountPercent);
-		setOfferDescription(offerDescription);
-	};
 
 	return (
 		<>
@@ -158,7 +152,7 @@ const ModalEmail = (props: any) => {
 					<div className="modal-action w-full">
 						<label
 							className="btn"
-							htmlFor="modalPDF"
+							htmlFor={props.modalId2}
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 						>
 							<svg
@@ -177,7 +171,6 @@ const ModalEmail = (props: any) => {
 								/>
 							</svg>
 						</label>
-						{/* <ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} /> */}
 						<button className="btn"
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 							onClick={sendEmails}

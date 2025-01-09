@@ -109,11 +109,14 @@ const ModalServices = (props: any) => {
 			<input type="checkbox" id={props.modalId} className="modal-toggle" />
 			<div className="modal" role="dialog">
 				<div className="modal-box w-[70%] max-w-3xl">
-					<div className="grid grid-cols-1 sm:grid-rows-3">
+					<div className="grid grid-cols-1 sm:grid-rows-8">
 						<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
-						<input placeholder="Name" value={name} className="flex items-center gap-3 p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setName(e.target.value)} />
-						<input placeholder="Description" value={description} className="flex items-center justify-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setDescription(e.target.value)} />
-						<input type="number" placeholder="Price" value={price} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setPrice(e.target.value)} />
+						<p>Service name</p>
+						<input placeholder="Name" value={name} className="flex items-center pl-2.5 pb-2.5 xl:pl-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setName(e.target.value)} />
+						<p>Description</p>
+						<input placeholder="Description" value={description} className="flex items-center justify-center pl-2.5 pb-2.5 xl:pl-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setDescription(e.target.value)} />
+						<p>Price</p>
+						<input type="number" placeholder="Price" value={price} className="flex items-center justify-center pl-2.5 pb-2.5 xl:pl-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setPrice(e.target.value)} />
 					</div>
 
 					<div className="modal-action">
@@ -127,7 +130,3 @@ const ModalServices = (props: any) => {
 };
 
 export default ModalServices;
-function GenerateTSVFile(data: (string | string[] | { name: string; age: number; city: string; })[]) {
-	throw new Error("Function not implemented.");
-}
-

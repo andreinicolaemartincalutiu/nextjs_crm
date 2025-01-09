@@ -170,23 +170,39 @@ const ModalCompany = (props: any) => {
 			<input type="checkbox" id={props.modalId} className="modal-toggle" />
 			<div className="modal" role="dialog">
 				<div className="modal-box w-[70%] max-w-3xl">
-					<div className="grid grid-cols-1 sm:grid-rows-10">
+					<div className="grid grid-cols-1 sm:grid-rows-30">
 						<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
-						<input placeholder="Company name" value={companyName} className="flex items-center gap-3 p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCompanyName(e.target.value)} />
+						<p>Company name</p>
+						<input placeholder="Company name" value={companyName} className="flex items-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCompanyName(e.target.value)} />
+						<p>TVA</p>
 						<input type="number" placeholder="TVA" value={TVA} className="flex items-center justify-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setTVA(e.target.value)} />
+						<p>Shareholders</p>
 						<input placeholder="Shareholders" value={shareholders} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setShareholders(e.target.value)} />
+						<p>CIF</p>
 						<input type="number" placeholder="CIF" value={CIF} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCIF(e.target.value)} />
+						<p>COM</p>
 						<input placeholder="COM" value={COM} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCOM(e.target.value)} />
+						<p>Headquarter</p>
 						<input placeholder="Headquarter" value={headquarter} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setHeadquarter(e.target.value)} />
+						<p>Subsidiary</p>
 						<input placeholder="Subsidiary" value={subsidiary} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setSubsidiary(e.target.value)} />
+						<p>Main activity</p>
 						<input placeholder="Main activity" value={mainActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setMainActivity(e.target.value)} />
+						<p>Second activity</p>
 						<input placeholder="Second activity" value={secondaryActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setSecondaryActivity(e.target.value)} />
+						<p>Interests</p>
 						<input placeholder="Interests" value={interests} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setInterests(e.target.value)} />
+						<p>Email</p>
 						<input placeholder="Email" value={email} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmail(e.target.value)} />
+						<p>Region</p>
 						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setRegion(e.target.value)} />
+						<p>Employees</p>
 						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmployees(e.target.value)} />
 						{props.secondButton === false ? (
-							<input placeholder="Last email sent date" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+							<>
+								<p>Date last email sent</p>
+								<input placeholder="Date last email sent" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+							</>
 						) : (
 							<></>
 						)}

@@ -1,20 +1,21 @@
 "use client";
-
 import { ApexOptions } from "apexcharts";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import InfoPopup from "@/components/common/InfoPopup";
+import Loader from "../common/Loader";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 	ssr: false,
 });
 
 const options: ApexOptions = {
-	colors: ["#3C50E0", "#80CAEE"],
+	colors: ["#3C50E0", "#80CAEE", "#8800CC"],
 	chart: {
 		fontFamily: "Satoshi, sans-serif",
 		type: "bar",
 		height: 335,
-		stacked: true,
+		stacked: false,
 		toolbar: {
 			show: false,
 		},
@@ -30,7 +31,7 @@ const options: ApexOptions = {
 				plotOptions: {
 					bar: {
 						borderRadius: 0,
-						columnWidth: "25%",
+						columnWidth: "35%",
 					},
 				},
 			},
@@ -40,7 +41,7 @@ const options: ApexOptions = {
 		bar: {
 			horizontal: false,
 			borderRadius: 0,
-			columnWidth: "25%",
+			columnWidth: "35%",
 			borderRadiusApplication: "end",
 			borderRadiusWhenStacked: "last",
 		},
@@ -50,8 +51,19 @@ const options: ApexOptions = {
 	},
 
 	xaxis: {
-		categories: ["M", "T", "W", "T", "F", "S", "S"],
+		categories: ["Client SMS", "Client Email", "Company Email"],
 	},
+
+	yaxis: {
+		forceNiceScale: true,  // Ensures nice rounding
+		decimalsInFloat: 0,    // Ensures no decimal places
+		labels: {
+			formatter: function (value) {
+				return Math.round(value).toString();  // Ensures only whole numbers
+			}
+		}
+	},
+
 	legend: {
 		position: "top",
 		horizontalAlign: "left",
@@ -75,21 +87,55 @@ interface ChartTwoState {
 	}[];
 }
 
+interface DailyTotals {
+	TotalClientSMS: any,
+	TotalClientEmail: any,
+	TotalCompanyEmail: any
+}
+
 const ChartTwo: React.FC = () => {
+	const [dailyTotals, setDailyTotals] = useState<DailyTotals>();
 	const series = [
 		{
 			name: "Client SMS",
-			data: [44, 55, 41, 67, 22, 43, 65],
+			data: [dailyTotals?.TotalClientSMS, 0, 0],
 		},
 		{
 			name: "Client Email",
-			data: [13, 23, 20, 8, 13, 27, 15],
+			data: [0, dailyTotals?.TotalClientEmail, 0],
 		},
 		{
 			name: "Company Email",
-			data: [13, 23, 20, 8, 13, 27, 15],
+			data: [0, 0, dailyTotals?.TotalCompanyEmail],
 		},
 	];
+
+	const getData = async () => {
+		try {
+			await fetch(`/api/readDailyTotals`, {
+				method: "GET",
+			}).then(response => {
+				if (!response.ok) {
+					InfoPopup("Failed to load clients");
+				}
+				return response.json()
+			})
+				.then(dailyTotals => {
+					console.log(dailyTotals);
+					console.log(dailyTotals[0]);
+					console.log(dailyTotals[0][0].TotalClientSMS);
+					console.log(dailyTotals[0][0].TotalCompanyEmail);
+					setDailyTotals(dailyTotals[0][0]);
+				})
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		console.log(dailyTotals?.TotalClientSMS);
+		getData();
+	}, []);
 
 	return (
 		<div className="h-full col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -107,13 +153,18 @@ const ChartTwo: React.FC = () => {
 
 			<div>
 				<div id="chartTwo" className="-mb-9 -ml-5">
-					<ReactApexChart
-						options={options}
-						series={series}
-						type="bar"
-						height={350}
-						width={"100%"}
-					/>
+
+					{dailyTotals?.TotalClientSMS === undefined ?
+						<Loader />
+						:
+						<ReactApexChart
+							options={options}
+							series={series}
+							type="bar"
+							height={350}
+							width={"100%"}
+						/>
+					}
 				</div>
 			</div>
 		</div>

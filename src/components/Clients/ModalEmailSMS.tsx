@@ -73,7 +73,7 @@ const ModalEmailSMS = (props: any) => {
 					throw new Error(`HTTP error! Status: ${response.status}`);
 				}
 
-				const res2 = await fetch("/api/insertUpdateSmsEmailStatuses", {
+				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -87,10 +87,11 @@ const ModalEmailSMS = (props: any) => {
 					}),
 				});
 
-				const data2 = await res2.json();
-				if (!data2.success) {
+				// const data2 = await res2.json();
+				console.log(res2.ok);
+				if (!res2.ok) {
 					InfoPopup(`Failed to add sent Email to ${clientsArrayForEmailsSMSs[i].Email} in database`);
-					throw new Error(`HTTP error! Status: ${data2.error}`);
+					throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
 				console.error(error);
@@ -128,7 +129,7 @@ const ModalEmailSMS = (props: any) => {
 					throw new Error(`HTTP error! Status: ${data.error}`);
 				}
 
-				const res2 = await fetch("/api/insertUpdateSmsEmailStatuses", {
+				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -153,29 +154,6 @@ const ModalEmailSMS = (props: any) => {
 			}
 		}
 		InfoPopup("Finished to send SMS");
-	};
-
-	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
-		setOfferServicesArray(offerServicesArray);
-		setDiscountPercent(discountPercent);
-		setOfferDescription(offerDescription);
-	};
-
-	const handleModalsTransition = () => {
-		const checkbox1 = document.getElementById("modalPDF");
-		checkbox1?.click();
-	}
-
-	const handleButtonClick = () => {
-		// console.log(2);
-		// if (modalRef.current) {
-		// 	console.log(3);
-		// 	const checkbox1 = document.getElementById(props.modalId + "2");
-		// 	console.log(checkbox1);
-		// 	if (checkbox1) {
-		// 		checkbox1.style.overscrollBehaviorY = "contain";
-		// 	}
-		// }
 	};
 
 	return (

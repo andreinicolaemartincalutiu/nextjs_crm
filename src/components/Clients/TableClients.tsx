@@ -7,8 +7,8 @@ import useStore from "@/components/common/StoreForSearch";
 import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmailSMS from "@/components/Clients/ModalEmailSMS";
+import ModalPDF from "@/components/common/ModalPDF";
 import "@/components/Clients/style.css";
-import ModalPDF from "./ModalPDF";
 
 type client = {
 	ClientId: string,
@@ -36,7 +36,6 @@ const TableClients = () => {
 	const setSearchTerm = useStore((state: any) => state.setSearchTerm);
 	const [companiesArray, setCompaniesArray] = useState<{ CompanyId: string, CompanyName: string }[]>(JSON.parse(sessionStorage.getItem("companiesArray") || "[]"));
 	const modalCheckboxRef = useRef<HTMLInputElement>(null);
-
 	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
 	const [discountPercent, setDiscountPercent] = useState<string>("");
 	const [offerDescription, setOfferDescription] = useState<string>("");
@@ -58,12 +57,12 @@ const TableClients = () => {
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 
 	useEffect(() => {
 		setSearchTerm("");
 		getClients();
-	}, [])
+	}, []);
 
 
 	useEffect(() => {
@@ -85,7 +84,7 @@ const TableClients = () => {
 		);
 
 		setFilteredClients(filtered);
-	}, [searchTerm, clients])
+	}, [searchTerm, clients]);
 
 	const handleButtonClick = () => {
 		const fileInput = document.getElementById("clientsImport") as HTMLInputElement;
@@ -93,7 +92,7 @@ const TableClients = () => {
 			fileInput.value = "";
 			fileInput.click();
 		}
-	}
+	};
 
 	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
 		setOfferServicesArray(offerServicesArray);

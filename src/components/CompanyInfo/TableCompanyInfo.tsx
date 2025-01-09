@@ -7,6 +7,7 @@ import useStore from "@/components/common/StoreForSearch";
 import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmail from "@/components/CompanyInfo/ModalEmail";
+import ModalPDF from "@/components/common/ModalPDF";
 
 type company = {
 	CompanyId: string,
@@ -32,6 +33,9 @@ const TableCompanyInfo = () => {
 	const [filteredCompany, setFilteredCompany] = useState<company[]>([]);
 	const searchTerm = useStore((state: any) => state.searchTerm);
 	const setSearchTerm = useStore((state: any) => state.setSearchTerm);
+	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
+	const [discountPercent, setDiscountPercent] = useState<string>("");
+	const [offerDescription, setOfferDescription] = useState<string>("");
 
 	const getCompanies = async () => {
 		try {
@@ -86,6 +90,12 @@ const TableCompanyInfo = () => {
 		}
 	};
 
+	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
+		setOfferServicesArray(offerServicesArray);
+		setDiscountPercent(discountPercent);
+		setOfferDescription(offerDescription);
+	};
+
 	return (
 		<div className="rounded-sm border border-stroke bg-white pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="flex w-full">
@@ -110,7 +120,9 @@ const TableCompanyInfo = () => {
 								/>
 							</svg>
 						</label>
-						<ModalEmail modalId="modalEmail" filteredCompanies={filteredCompany} />
+						<ModalEmail modalId="modalEmail" modalId2="modalPDF" filteredCompanies={filteredCompany} />
+						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
+
 
 						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
 							<>
