@@ -16,6 +16,7 @@ export const addCompany = async (
 	email: string | undefined,
 	region: string | undefined,
 	employees: string | undefined,
+	dataYear: string | undefined,
 	modalId?: string
 ) => {
 	let modalInput, addSuccessfuly = "0";
@@ -34,7 +35,8 @@ export const addCompany = async (
 		interests === "" || interests === undefined || interests === null ||
 		email === "" || email === undefined || email === null ||
 		region === "" || region === undefined || region === null ||
-		employees === "" || employees === undefined || employees === null
+		employees === "" || employees === undefined || employees === null ||
+		dataYear === "" || dataYear === undefined || dataYear === null
 	) {
 		if (modalInput?.checked) {
 			InfoPopup("Missing some required fields");
@@ -61,6 +63,7 @@ export const addCompany = async (
 				Email: email,
 				Region: region,
 				Employees: employees,
+				DataYear: dataYear,
 			}),
 		});
 		if (!response.ok) {
@@ -97,6 +100,7 @@ const ModalCompany = (props: any) => {
 	const [email, setEmail] = useState(props.company?.Email);
 	const [region, setRegion] = useState(props.company?.Region);
 	const [employees, setEmployees] = useState(props.company?.Employees);
+	const [dataYear] = useState(props.company?.DataYear);
 	const statusEmail = useState(props.company?.StatusEmail);
 
 	const saveCompanyChanges = async () => {
@@ -112,7 +116,7 @@ const ModalCompany = (props: any) => {
 			interests === "" || interests === undefined || interests === null ||
 			email === "" || email === undefined || email === null ||
 			region === "" || region === undefined || region === null ||
-			employees === "" || employees === undefined || employees === null
+			dataYear === "" || dataYear === undefined || dataYear === null
 		) {
 			InfoPopup("Missing some required fields");
 			return;
@@ -138,6 +142,7 @@ const ModalCompany = (props: any) => {
 					Email: email,
 					Region: region,
 					Employees: employees,
+					DataYear: dataYear,
 				}),
 			});
 
@@ -198,6 +203,9 @@ const ModalCompany = (props: any) => {
 						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setRegion(e.target.value)} />
 						<p>Employees</p>
 						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmployees(e.target.value)} />
+					
+						<p>Data from</p>
+						<input placeholder="DataYear" value={dataYear} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" />
 						{props.secondButton === false ? (
 							<>
 								<p>Date last email sent</p>
@@ -222,6 +230,7 @@ const ModalCompany = (props: any) => {
 							email,
 							region,
 							employees,
+							dataYear,
 							props.modalId
 						)}>Save</button>
 						<button className="btn btn-outline btn-error" onClick={deleteCompany} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
