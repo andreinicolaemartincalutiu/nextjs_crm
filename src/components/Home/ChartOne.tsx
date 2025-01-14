@@ -31,20 +31,10 @@ const ChartOne: React.FC = () => {
 				return response.json();
 			})
 				.then(data => {
-					console.log(data);
 					setStatsData(data);
 					setxAxisMetric(getNamesOfLast7Days(data[data.length - 1].Date));
 					setValuesClients(data.slice(-7).map((obj: any) => obj.clients));
 					setValuesCompanies(data.slice(-7).map((obj: any) => obj.companies));
-
-					// setxAxisMetric(getDatesOfLast30Days(data[data.length - 1].Date));
-					// setValuesClients(data.slice(-30).map((obj: any) => obj.clients));
-					// setValuesCompanies(data.slice(-30).map((obj: any) => obj.companies));
-
-
-					// setxAxisMetric(getNamesOfLast12Months(data[data.length - 1].Date));
-					// setValuesClients(getLastDatesOfMonths(data, "clients"));
-					// setValuesCompanies(getLastDatesOfMonths(data, "companies"));
 				})
 		} catch (error) {
 			console.log(error);
