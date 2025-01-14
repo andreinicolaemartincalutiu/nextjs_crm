@@ -3,7 +3,7 @@ import { ApexOptions } from "apexcharts";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import InfoPopup from "@/components/common/InfoPopup";
-import Loader from "../common/Loader";
+import Loader from "@/components/common/Loader";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 	ssr: false,
@@ -80,13 +80,6 @@ const options: ApexOptions = {
 	},
 };
 
-interface ChartTwoState {
-	series: {
-		name: string;
-		data: number[];
-	}[];
-}
-
 interface DailyTotals {
 	TotalClientSMS: any,
 	TotalClientEmail: any,
@@ -110,22 +103,18 @@ const ChartTwo: React.FC = () => {
 		},
 	];
 
-	const getData = async () => {
+	const getDailyTotals = async () => {
 		try {
 			await fetch(`/api/readDailyTotals`, {
 				method: "GET",
 			}).then(response => {
 				if (!response.ok) {
-					InfoPopup("Failed to load clients");
+					InfoPopup("Failed to load daily totals");
 				}
 				return response.json()
 			})
-				.then(dailyTotals => {
-					console.log(dailyTotals);
-					console.log(dailyTotals[0]);
-					console.log(dailyTotals[0][0].TotalClientSMS);
-					console.log(dailyTotals[0][0].TotalCompanyEmail);
-					setDailyTotals(dailyTotals[0][0]);
+				.then(data => {
+					setDailyTotals(data[0][0]);
 				})
 		} catch (error) {
 			console.log(error);
@@ -133,8 +122,7 @@ const ChartTwo: React.FC = () => {
 	};
 
 	useEffect(() => {
-		console.log(dailyTotals?.TotalClientSMS);
-		getData();
+		getDailyTotals();
 	}, []);
 
 	return (

@@ -83,7 +83,7 @@ const ModalEmail = (props: any) => {
 						companyEmail: "1",
 					}),
 				});
-				// const data2 = await res2.json();
+				
 				if (!res2.ok) {
 					InfoPopup(`Failed to add sent Email to ${emailAddressesToSendEmailArray[i].Email} in database`);
 					throw new Error(`HTTP error! Status: ${res2.status}`);
