@@ -30,7 +30,7 @@ const HandleFileImport = (event: any, importType: string) => {
 					addSuccessfuly = await addClient(firstName, lastName, CI, CNP, companyId, companyRole, address, email, phone, interests, birthDate, details);
 				} else if (importType === "co") {
 					const [companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees] = line.split("\t"); // Split each line by tabs
-					addSuccessfuly = await addCompany(companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees);
+					// addSuccessfuly = await addCompany(companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees);
 				}
 				if (addSuccessfuly === "0") {
 					tsvLinesArray.push(line);

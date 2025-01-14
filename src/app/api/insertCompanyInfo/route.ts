@@ -4,33 +4,46 @@ import pool from "@/lib/db";
 export async function POST(req: Request) {
 	try {
 		const body = await req.json();
-		const { CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, isActive } = body;
+		const { CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, IsActive } = body;
+
+		// Loss = Loss.toString();
+		// Profit = Profit.toString();
+		// Turnover = Turnover.toString();
+		// Capital = Capital.toString();
+		// Liabilities = Liabilities.toString();
+		// Liabilities = Liabilities.toString();
+		// Assets = Assets.toString();
+
+		// console.log(!CompanyName);
+		// console.log(!CIF);
+		// console.log(!TVA);
+		// console.log(!Shareholders);
+		// console.log(!Subsidiary);
+		// console.log(!SecondaryActivity);
+		// console.log(!Employees);
+		// console.log(!COM);
+		// console.log(!Headquarter);
+		// console.log(!MainActivity);
+		// console.log(!Interests);
+		// console.log(!Email);
+		// console.log(!Region);
+		// console.log(!DataYear);
+		// console.log(!Profit);
+		// console.log(!Loss);
+		// console.log(!Turnover);
+		// console.log(!Capital);
+		// console.log(!Liabilities);
+		// console.log(!Assets);
+		// console.log(!IsActive);
 
 
-		console.log(CompanyName);
-		console.log(CIF);
-		console.log(COM);
-		console.log(Headquarter);
-		console.log(MainActivity);
-		console.log(Interests);
-		console.log(Email);
-		console.log(Region);
-		console.log(DataYear);
-		console.log(Profit);
-		console.log(Loss);
-		console.log(Turnover);
-		console.log(Capital);
-		console.log(Liabilities);
-		console.log(Assets);
-		console.log(isActive);
-
-		if (!CompanyName || !TVA || !Shareholders || !CIF || !COM || !Headquarter || !Subsidiary || !MainActivity || !SecondaryActivity || !Interests || !Email || !Region || !Employees || !DataYear || !Profit || !Loss || !Turnover || !Capital || !Liabilities || !Assets || !isActive) {
+		if (!CompanyName || !TVA || !Shareholders || !CIF || !COM || !Headquarter || !Subsidiary || !MainActivity || !SecondaryActivity || !Interests || !Email || !Region || !Employees || !DataYear || !Profit || !Loss || !Turnover || !Capital || !Liabilities || !Assets || !IsActive) {
 			return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
 		}
 
 		const result: any = await pool.query(
-			"INSERT INTO CompanyInfo (CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			[CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, isActive]
+			"INSERT INTO CompanyInfo (CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			[CompanyName, TVA, Shareholders, CIF, COM, Headquarter, Subsidiary, MainActivity, SecondaryActivity, Interests, Email, Region, Employees, DataYear, Profit, Loss, Turnover, Capital, Liabilities, Assets, IsActive]
 		);
 
 		if (result[0].length === 0) {

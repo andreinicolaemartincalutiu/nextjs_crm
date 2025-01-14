@@ -26,7 +26,7 @@ export const addCompany = async (
 	isActive: string | undefined,
 	modalId?: string
 ) => {
-	console.log(isActive);
+	console.log(isActive)
 	let modalInput, addSuccessfuly = "0";
 	if (modalId) {
 		modalInput = document.getElementById(modalId) as HTMLInputElement;
@@ -85,6 +85,7 @@ export const addCompany = async (
 			}),
 		});
 		console.log(response);
+		console.log(!response.ok)
 		if (!response.ok) {
 			if (modalInput?.checked) {
 				InfoPopup("Changes not saved");
@@ -128,24 +129,33 @@ const ModalCompany = (props: any) => {
 	const [assets, setAssets] = useState(props.company?.Assets || "");
 	const [isActive, setIsActive] = useState(props.company?.IsActive || "");
 	const statusEmail = useState(props.company?.StatusEmail || "");
-	
+
 	const saveCompanyChanges = async () => {
-		console.log(companyName);
-		console.log(CIF);
-		console.log(COM);
-		console.log(headquarter);
-		console.log(mainActivity);
-		console.log(interests);
-		console.log(email);
-		console.log(region);
-		console.log(dataYear);
-		console.log(profit);
-		console.log(loss);
-		console.log(turnover);
-		console.log(capital);
-		console.log(liabilities);
-		console.log(assets);
-		console.log(isActive);
+		console.log(props.company)
+		// console.log(companyName);
+		// console.log(CIF);
+		// console.log(COM);
+		// console.log(headquarter);
+		// console.log(mainActivity);
+		// console.log(interests);
+		// console.log(email);
+		// console.log(region);
+		// console.log(dataYear);
+		// console.log(profit);
+		// // let newLoss = loss.toString();
+		// console.log(loss);
+		// console.log(turnover);
+		// console.log(capital);
+		// console.log(liabilities);
+		// console.log(assets);
+		// console.log(isActive);
+
+		
+		// profit = profit.toString();
+		// turnover = turnover.toString();
+		// capital = capital.toString();
+		// liabilities = liabilities.toString();
+		// assets = assets.toString();
 
 		if (companyName === "" || companyName === undefined || companyName === null ||
 			CIF === "" || CIF === undefined || CIF === null ||
@@ -157,7 +167,7 @@ const ModalCompany = (props: any) => {
 			region === "" || region === undefined || region === null ||
 			dataYear === "" || dataYear === undefined || dataYear === null ||
 			profit === "" || profit === undefined || profit === null ||
-			loss === "" || loss === undefined || loss === null ||
+			// loss === "" || loss === undefined || loss === null ||
 			turnover === "" || turnover === undefined || turnover === null ||
 			capital === "" || capital === undefined || capital === null ||
 			liabilities === "" || liabilities === undefined || liabilities === null ||
@@ -190,7 +200,7 @@ const ModalCompany = (props: any) => {
 					Employees: employees,
 					DataYear: dataYear,
 					Profit: profit,
-					Loss: loss,
+					Loss: loss.toString(),
 					Turnover: turnover,
 					Capital: capital,
 					Liabilities: liabilities,
@@ -232,80 +242,87 @@ const ModalCompany = (props: any) => {
 				console.log('Input is empty. Please provide a value.');
 				return;
 			}
-	
+
 			const response1 = await fetch(`https://lista-firme.info/api/v1/info?cui=${encodeURIComponent(CIF)}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			});
-	
+
 			if (!response1.ok) {
 				throw new Error(`Failed with status: ${response1.status}`);
 			}
-	
+
 			const data1 = await response1.json();
 			dataApi1 = data1;
 			console.log('API Response:', data1);
 
 			const currentYear = new Date().getFullYear() - 1;
 
-			const response2 = await fetch(`https://cors-anywhere.herokuapp.com/https://webservicesp.anaf.ro/bilant?an=${currentYear}&cui=${encodeURIComponent(CIF)}`, {
-				method: 'GET',
-				// mode: "cors",
+			const response2 = await fetch(`/api/readAnafInfo`, {
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'x-requested-with': 'XMLHttpRequest',
+					// 'x-requested-with': 'XMLHttpRequest',
 				},
+				body: JSON.stringify({
+					an: currentYear,
+					CIF: CIF,
+				}),
 			});
-	
+
 			if (!response2.ok) {
 				throw new Error(`Second API call failed with status: ${response2.status}`);
 			}
-	
+
 			const data2 = await response2.json();
 
 			if (data2.caen === 0) {
 				let currentYear = new Date().getFullYear() - 2;
-				const response2 = await fetch(`https://cors-anywhere.herokuapp.com/https://webservicesp.anaf.ro/bilant?an=${currentYear}&cui=${encodeURIComponent(CIF)}`, {
-						method: 'GET',
-						// mode: "cors",
-						headers: {
-							'Content-Type': 'application/json',
-							'x-requested-with': 'XMLHttpRequest',
-						},
-					});
-			
-					if (!response2.ok) {
-						throw new Error(`Second API call failed with status: ${response2.status}`);
-					}
-			
-					const data2 = await response2.json();
-					dataApi2 = data2;
-					console.log('Second API Response:', data2);
+				const response2 = await fetch(`/api/readAnafInfo`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						// 'x-requested-with': 'XMLHttpRequest',
+					},
+					body: JSON.stringify({
+						an: currentYear,
+						CIF: CIF,
+					}),
+				});
+		
+				if (!response2.ok) {
+					throw new Error(`Second API call failed with status: ${response2.status}`);
+				}
+
+				const data2 = await response2.json();
+				dataApi2 = data2;
+				console.log('Second API Response:', data2);
 			}
 
-			setCompanyName(dataApi1.name);
-			setCOM(dataApi1.reg_com);
-			setHeadquarter(dataApi1.info.address);
-			setRegion(dataApi1.address.county);
-			setIsActive(dataApi1.status[0].details.description === "func?iune" ? "activa" : "inactiva");
-			setDataYear(dataApi2.an);
-			setMainActivity(dataApi2.caen + " - " + dataApi2.den_caen);
-			setEmployees(dataApi2.i[0].val_indicator);
-			setProfit(dataApi2.i[2].val_indicator);
-			setLoss(dataApi2.i[1].val_indicator);
-			setTurnover(dataApi2.i[7].val_indicator);
-			setCapital(dataApi2.i[10].val_indicator);
-			setLiabilities(dataApi2.i[13].val_indicator);
-			setAssets(dataApi2.i[14].val_indicator + dataApi2.i[18].val_indicator + dataApi2.i[19].val_indicator);
-			
+			setCompanyName(dataApi1?.name);
+			setCOM(dataApi1?.reg_com);
+			setHeadquarter(dataApi1?.info.address);
+			setRegion(dataApi1?.address.county);
+			setIsActive(dataApi1?.status[0].details.description === "func?iune" ? "activa" : "inactiva");
+			setDataYear(dataApi2?.an);
+			setMainActivity(dataApi2?.caen + " - " + dataApi2?.den_caen);
+			setEmployees(dataApi2?.i[0].val_indicator.toString());
+			setProfit(dataApi2?.i[2].val_indicator.toString());
+			setLoss(dataApi2?.i[1].val_indicator.toString());
+			setTurnover(dataApi2?.i[7].val_indicator.toString());
+			setCapital(dataApi2?.i[10].val_indicator.toString());
+			setLiabilities(dataApi2?.i[13].val_indicator.toString());
+			setAssets((dataApi2?.i[14].val_indicator + dataApi2?.i[18].val_indicator + dataApi2?.i[19].val_indicator).toString());
+			// console.log(isActive);
+
 		} catch (error) {
 			console.error('Error calling API:', error);
 		}
 
 	};
-	
+
 	return (
 		<>
 			<input type="checkbox" id={props.modalId} className="modal-toggle" />
@@ -320,8 +337,7 @@ const ModalCompany = (props: any) => {
 						<p>Shareholders</p>
 						<input placeholder="Shareholders" value={shareholders} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setShareholders(e.target.value)} />
 						<p>CIF</p>
-						<input type="number" placeholder="CIF" value={CIF} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => 
-							setCIF(e.target.value)}/>
+						<input type="number" placeholder="CIF" value={CIF} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCIF(e.target.value)} />
 						<p>COM</p>
 						<input placeholder="COM" value={COM} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCOM(e.target.value)} />
 						<p>Headquarter</p>
@@ -332,31 +348,31 @@ const ModalCompany = (props: any) => {
 						<input placeholder="Main activity" value={mainActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setMainActivity(e.target.value)} />
 						<p>Second activity</p>
 						<input placeholder="Second activity" value={secondaryActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setSecondaryActivity(e.target.value)} />
-						<p>Interests <span style={{color: "red"}}>*</span></p>
+						<p>Interests <span style={{ color: "red" }}>*</span></p>
 						<input placeholder="Interests" value={interests} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setInterests(e.target.value)} />
-						<p>Email <span style={{color: "red"}}>*</span></p>
+						<p>Email <span style={{ color: "red" }}>*</span></p>
 						<input placeholder="Email" value={email} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmail(e.target.value)} />
 						<p>Region</p>
-						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setRegion(e.target.value)} disabled />
+						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Employees</p>
-						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmployees(e.target.value)} disabled />
+						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Profit</p>
-						<input placeholder="Profit" value={profit} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setProfit(e.target.value)} disabled />
+						<input placeholder="Profit" value={profit} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Loss</p>
-						<input placeholder="Loss" value={loss} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setLoss(e.target.value)} disabled />
+						<input placeholder="Loss" value={loss} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Turnover</p>
-						<input placeholder="Turnover" value={turnover} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setTurnover(e.target.value)} disabled />
+						<input placeholder="Turnover" value={turnover} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Capital</p>
-						<input placeholder="Capital" value={capital} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCapital(e.target.value)} disabled />
+						<input placeholder="Capital" value={capital} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Liabilities</p>
-						<input placeholder="Liabilities" value={liabilities} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setLiabilities(e.target.value)} disabled />
+						<input placeholder="Liabilities" value={liabilities} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>Assets</p>
-						<input placeholder="Assets" value={assets} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setAssets(e.target.value)} disabled />
+						<input placeholder="Assets" value={assets} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						<p>isActive</p>
-						<input placeholder="isActive" value={isActive} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setIsActive(e.target.value)} disabled />
+						<input placeholder="isActive" value={isActive} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 
 						<p>Data from</p>
-						<input placeholder="DataYear" value={dataYear} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setDataYear(e.target.value)} disabled />
+						<input placeholder="DataYear" value={dataYear} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 						{props.secondButton === false ? (
 							<>
 								<p>Date last email sent</p>
