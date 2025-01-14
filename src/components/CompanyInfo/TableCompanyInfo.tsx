@@ -9,7 +9,7 @@ import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmail from "@/components/CompanyInfo/ModalEmail";
 import ModalPDF from "@/components/common/ModalPDF";
 
-type company = {
+type company = {	
 	CompanyId: string,
 	CompanyName: string,
 	TVA: string,
@@ -25,6 +25,14 @@ type company = {
 	Region: string,
 	Employees: string,
 	StatusEmail: string,
+	DataYear: string,
+	Profit: string,
+	Loss: string,
+	Turnover: string,
+	Capital: string,
+	Liabilities: string,
+	Assets: string,
+	IsActive: string
 }
 
 const TableCompanyInfo = () => {
@@ -76,7 +84,15 @@ const TableCompanyInfo = () => {
 			company.Email?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
 			company.Region?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
 			company.Employees?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
-			company.StatusEmail?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "")
+			company.StatusEmail?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.DataYear?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Profit?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Loss?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Turnover?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Capital?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Liabilities?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.Assets?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
+			company.IsActive?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") 
 		);
 
 		setFilteredCompany(filtered);
