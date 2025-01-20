@@ -229,12 +229,12 @@ const TableClients = () => {
 										<p className="text-meta-5">{client.Interests}</p>
 									</div>
 								</label>
-								{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
+								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
 									<ModalClients modalCheckboxRef={modalCheckboxRef} modalId={`my_modal_${key}`}
 										client={client} secondButton={false} />
-								) : (
+								{/* ) : (
 									<></>
-								)}
+								)} */}
 							</div>
 						))}
 					</div>

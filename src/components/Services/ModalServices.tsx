@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import InfoPopup from "@/components/common/InfoPopup";
+import { createHash } from "crypto";
 
 export const addService = async (name: string | undefined, description: string | undefined, price: string | undefined, modalId?: string) => {
 	let modalInput, addSuccessfuly = "0";
@@ -40,6 +41,7 @@ export const addService = async (name: string | undefined, description: string |
 }
 
 const ModalServices = (props: any) => {
+	const userPermissions = sessionStorage.getItem("Level");
 	const [name, setName] = useState<string | undefined>(props?.name);
 	const [description, setDescription] = useState<string | undefined>(props?.description);
 	const [price, setPrice] = useState<string | undefined>(props?.price);
@@ -121,7 +123,9 @@ const ModalServices = (props: any) => {
 
 					<div className="modal-action">
 						<button className="btn btn-info text-white" onClick={props.secondButton === false ? saveServiceChanges : () => addService(name, description, price, props.modalId)}>Save</button>
-						<button className="btn btn-outline btn-error" onClick={deleteService} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ?
+							<button className="btn btn-outline btn-error" onClick={deleteService} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+							: <></>}
 					</div>
 				</div>
 			</div>

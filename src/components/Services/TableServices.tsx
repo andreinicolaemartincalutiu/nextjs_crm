@@ -144,11 +144,11 @@ const TableServices = () => {
 									</div>
 
 								</label>
-								{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
+								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
 									<ModalServices Id={service.Id} modalId={`my_modal_${key}`} name={service.Name} description={service.Description} price={service.Price} secondButton={false} />
-								) : (
+								{/* ) : (
 									<></>
-								)}
+								)} */}
 							</div>
 						))}
 					</div>

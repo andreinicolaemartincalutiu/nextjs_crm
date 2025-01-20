@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import InfoPopup from "@/components/common/InfoPopup";
 import LoadingPopup from "@/components/common/LoadingPopup";
+import { createHash } from "crypto";
 
 export const addCompany = async (
 	companyName: string | undefined,
@@ -118,6 +119,7 @@ export const addCompany = async (
 }
 
 const ModalCompany = (props: any) => {
+	const userPermissions = sessionStorage.getItem("Level");
 	const [companyName, setCompanyName] = useState(props.company?.CompanyName ?? "");
 	const [TVA, setTVA] = useState(props.company?.TVA ?? "");
 	const [shareholders, setShareholders] = useState(props.company?.Shareholders ?? "");
@@ -404,7 +406,9 @@ const ModalCompany = (props: any) => {
 							props.modalId,
 							anafApiCalledStatus
 						)}>Save</button>
-						<button className="btn btn-outline btn-error" onClick={deleteCompany} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ?
+							<button className="btn btn-outline btn-error" onClick={deleteCompany} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+							: <></>}
 					</div>
 				</div>
 			</div>

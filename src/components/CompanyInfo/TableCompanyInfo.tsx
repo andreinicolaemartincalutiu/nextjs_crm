@@ -229,11 +229,11 @@ const TableCompanyInfo = () => {
 										<p className="text-meta-5">{company.Interests}</p>
 									</div>
 								</label>
-								{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
-									<ModalCompany modalId={`my_modal_${key}`} company={company} secondButton={false} />
-								) : (
+								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
+								<ModalCompany modalId={`my_modal_${key}`} company={company} secondButton={false} />
+								{/* ) : (
 									<></>
-								)}
+								)} */}
 							</div>
 						))}
 					</div>

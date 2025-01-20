@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import InfoPopup from "@/components/common/InfoPopup";
+import { createHash } from "crypto";
 
 export const addClient = async (
 	firstName: string | undefined,
@@ -81,6 +82,7 @@ export const addClient = async (
 };
 
 const ModalClients = (props: any) => {
+	const userPermissions = sessionStorage.getItem("Level");
 	const [firstName, setFirstName] = useState<string | undefined>(props.client?.FirstName);
 	const [lastName, setLastName] = useState<string | undefined>(props.client?.LastName);
 	const [CI, setCI] = useState<string | undefined>(props.client?.CI);
@@ -279,9 +281,11 @@ const ModalClients = (props: any) => {
 							details,
 							props.modalId
 						)}>Save</button>
-						<button className="btn btn-outline btn-error"
-							onClick={deleteClient}
-							disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ?
+							<button className="btn btn-outline btn-error"
+								onClick={deleteClient}
+								disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+							: <></>}
 					</div>
 				</div>
 			</div >
