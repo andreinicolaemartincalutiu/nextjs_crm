@@ -6,6 +6,7 @@ import generateRandomSixDigitNumber from "@/components/common/GenerateRandomSixD
 import InfoPopup from "@/components/common/InfoPopup";
 import { createHash } from "crypto";
 import send2FAemail from "@/components/common/Send2FAemail";
+import LoadingPopup from "@/components/common/LoadingPopup";
 
 const RresetPassword = () => {
 	const [email, setEmail] = useState<string>("");
@@ -26,6 +27,7 @@ const RresetPassword = () => {
 			return;
 		}
 		let userExist = true;
+		LoadingPopup(true);
 		try {
 			await fetch(`/api/userExists`, {
 				method: "PUT",
@@ -37,13 +39,15 @@ const RresetPassword = () => {
 				}),
 			}).then(response => response.json())
 				.then(async data => {
+					LoadingPopup(false);
 					if (data.message === "User not found") {
 						InfoPopup("User not found");
 						userExist = false;
 					}
 				});
 		} catch (error) {
-			console.error(error);
+			LoadingPopup(false);
+			InfoPopup("Connection with server failed");
 			userExist = false;
 		}
 		if (!userExist) {
@@ -68,6 +72,7 @@ const RresetPassword = () => {
 			InfoPopup("Passwords do not match");
 			return;
 		}
+		LoadingPopup(true);
 		try {
 			await fetch(`/api/updatePassword/${email}`, {
 				method: "PUT",
@@ -79,6 +84,7 @@ const RresetPassword = () => {
 				}),
 			}).then(response => response.json())
 				.then(async data => {
+					LoadingPopup(false);
 					if (data.message === "Password updated successfully") {
 						InfoPopup("Password successfully resetted");
 						window.location.href = "/";
@@ -87,7 +93,8 @@ const RresetPassword = () => {
 					}
 				});
 		} catch (error) {
-			console.error(error);
+			LoadingPopup(false);
+			InfoPopup("Connection with server failed");
 		}
 	}
 

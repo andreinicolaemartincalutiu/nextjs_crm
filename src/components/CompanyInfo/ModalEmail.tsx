@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Loader from "@/components/common/Loader";
 import InfoPopup from "@/components/common/InfoPopup";
-// import ModalPDF from "@/components/CompanyInfo/ModalPDF";
 import { AssistantsV1ServiceCreateFeedbackRequest } from "twilio/lib/rest/assistants/v1/assistant/feedback";
 
 type companyModal = {
@@ -15,9 +14,6 @@ const ModalEmail = (props: any) => {
 	const [subject, setSubject] = useState<string>("Subject");
 	const [composedEmailSMS, setComposedEmailSMS] = useState<string>("EMAIL FOR TEST");
 	const [emailAddressesToSendEmailArray, setEmailAddressesToSendEmailArray] = useState<companyModal[]>([]);
-	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
-	const [discountPercent, setDiscountPercent] = useState<string>("");
-	const [offerDescription, setOfferDescription] = useState<string>("");
 
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, companyName: string, email: string) => {
 		let companyForEmail = {
@@ -59,9 +55,9 @@ const ModalEmail = (props: any) => {
 						{
 							Subject: subject,
 							EmailText: composedEmailSMS,
-							OfferServiceArray: offerServicesArray,
-							DiscountPercent: discountPercent,
-							OfferDescription: offerDescription
+							OfferServiceArray: props.offerServicesArray,
+							DiscountPercent: props.discountPercent,
+							OfferDescription: props.offerDescription
 						}
 					),
 				});
@@ -83,7 +79,7 @@ const ModalEmail = (props: any) => {
 						companyEmail: "1",
 					}),
 				});
-				
+
 				if (!res2.ok) {
 					InfoPopup(`Failed to add sent Email to ${emailAddressesToSendEmailArray[i].Email} in database`);
 					throw new Error(`HTTP error! Status: ${res2.status}`);

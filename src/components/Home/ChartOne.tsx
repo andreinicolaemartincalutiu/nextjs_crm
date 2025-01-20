@@ -24,12 +24,7 @@ const ChartOne: React.FC = () => {
 		try {
 			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
 				method: "GET",
-			}).then(response => {
-				if (!response.ok) {
-					InfoPopup("Failed to load totals");
-				}
-				return response.json();
-			})
+			}).then(response => response.json())
 				.then(data => {
 					setStatsData(data);
 					setxAxisMetric(getNamesOfLast7Days(data[data.length - 1].Date));
@@ -37,7 +32,7 @@ const ChartOne: React.FC = () => {
 					setValuesCompanies(data.slice(-7).map((obj: any) => obj.companies));
 				})
 		} catch (error) {
-			console.log(error);
+			InfoPopup("Database connection error");
 		}
 	};
 
@@ -107,11 +102,8 @@ const ChartOne: React.FC = () => {
 		return result;
 	};
 
-	const getAttributesOfLastNObjects = (attribute: number, noOfObjects: number) => {
-		if (attribute === 1) {
-			return statsData.slice(-noOfObjects - 1).map(obj => obj.clients);
-		}
-		return statsData.slice(-noOfObjects - 1).map(obj => obj.companies);
+	const getAttributesOfLastNObjects = (attribute: keyof Stat, noOfObjects: number) => {
+		return statsData.slice(-noOfObjects - 1).map(obj => obj[attribute]);
 	};
 
 	const getLastDatesOfMonths = (data: any, key: string) => {
@@ -300,8 +292,8 @@ const ChartOne: React.FC = () => {
 						<button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
 							onClick={() => {
 								setxAxisMetric(getNamesOfLast7Days(statsData[statsData.length - 1].Date));
-								setValuesClients(getAttributesOfLastNObjects(1, -7));
-								setValuesCompanies(getAttributesOfLastNObjects(2, -7));
+								setValuesClients(getAttributesOfLastNObjects("clients", 6));
+								setValuesCompanies(getAttributesOfLastNObjects("companies", 6));
 							}}
 						>
 							Week
@@ -309,8 +301,8 @@ const ChartOne: React.FC = () => {
 						<button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
 							onClick={() => {
 								setxAxisMetric(getDatesOfLast30Days(statsData[statsData.length - 1].Date));
-								setValuesClients(getAttributesOfLastNObjects(1, daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
-								setValuesCompanies(getAttributesOfLastNObjects(2, daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
+								setValuesClients(getAttributesOfLastNObjects("clients", daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
+								setValuesCompanies(getAttributesOfLastNObjects("companies", daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
 							}}
 						>
 							Month

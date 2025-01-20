@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const Settings = () => {
     return (
         <DefaultLayout>
-            <SettingsContent></SettingsContent>
+            <SettingsContent />
         </DefaultLayout>
     );
 };

@@ -9,7 +9,7 @@ import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmail from "@/components/CompanyInfo/ModalEmail";
 import ModalPDF from "@/components/common/ModalPDF";
 
-type company = {	
+type company = {
 	CompanyId: string,
 	CompanyName: string,
 	TVA: string,
@@ -92,7 +92,7 @@ const TableCompanyInfo = () => {
 			company.Capital?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
 			company.Liabilities?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
 			company.Assets?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") ||
-			company.IsActive?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "") 
+			company.IsActive?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase() ?? "")
 		);
 
 		setFilteredCompany(filtered);
@@ -136,7 +136,8 @@ const TableCompanyInfo = () => {
 								/>
 							</svg>
 						</label>
-						<ModalEmail modalId="modalEmail" modalId2="modalPDF" filteredCompanies={filteredCompany} />
+						<ModalEmail modalId="modalEmail" modalId2="modalPDF" filteredCompanies={filteredCompany} offerServicesArray={offerServicesArray}
+							discountPercent={discountPercent} offerDescription={offerDescription} />
 						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
 
 

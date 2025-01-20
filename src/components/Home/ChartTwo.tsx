@@ -107,17 +107,12 @@ const ChartTwo: React.FC = () => {
 		try {
 			await fetch(`/api/readDailyTotals`, {
 				method: "GET",
-			}).then(response => {
-				if (!response.ok) {
-					InfoPopup("Failed to load daily totals");
-				}
-				return response.json()
-			})
+			}).then(response => response.json())
 				.then(data => {
 					setDailyTotals(data[0][0]);
 				})
 		} catch (error) {
-			console.log(error);
+			InfoPopup("Database connection error");
 		}
 	};
 

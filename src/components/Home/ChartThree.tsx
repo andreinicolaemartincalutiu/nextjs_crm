@@ -11,7 +11,7 @@ const options: ApexOptions = {
 		type: "donut",
 	},
 	colors: ["#3C50E0", "#6577F3", "#8FD0EF", "#0FADCF"],
-	labels: ["Clients SMS", "Clients Emails", "Companies Emails", "Total"],
+	labels: ["Clients SMS", "Companies Emails", "Clients Emails", "Total"],
 	legend: {
 		show: false,
 		position: "bottom",
@@ -58,9 +58,9 @@ interface Totals {
 
 const ChartThree: React.FC = () => {
 	const [totals, setTotals] = useState<Totals[]>([]);
-	const [clientsSMS, setClientsSMS] = useState<string | undefined>(undefined);
-	const [clientsEmail, setClientsEmail] = useState<string | undefined>(undefined);
-	const [companiesEmail, setCompaniesEmail] = useState<string | undefined>(undefined);
+	const [clientsSMS, setClientsSMS] = useState<string>("0");
+	const [clientsEmail, setClientsEmail] = useState<string>("0");
+	const [companiesEmail, setCompaniesEmail] = useState<string>("0");
 	const [total, setTotal] = useState<any>(355);
 	const [series, setSeries] = useState([65, 34, 12, 56]);
 
@@ -68,28 +68,23 @@ const ChartThree: React.FC = () => {
 		try {
 			await fetch(`/api/readMultipleTotals`, {
 				method: "GET",
-			}).then(response => {
-				if (!response.ok) {
-					InfoPopup("Failed to load totals");
-				}
-				return response.json();
-			})
+			}).then(response => response.json())
 				.then(data => {
-					setClientsSMS((Number(data[0][0].ClientSMS) * 100 / total).toString() + "%");
-					setClientsEmail((Number(data[0][0].ClientEmail) * 100 / total).toString() + "%");
-					setCompaniesEmail((Number(data[0][0].CompanyEmail) * 100 / total).toString() + "%");
+					setClientsSMS(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.ClientSMS) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
+					setClientsEmail(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.ClientEmail) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
+					setCompaniesEmail(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.CompanyEmail) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
 					setTotal(data[0][0].Total);
 					setTotals(data[0]);
-					setSeries([Number(data[0][0].ClientSMS), Number(data[0][0].ClientEmail), Number(data[0][0].CompanyEmail), Number(data[0][0].Total)]);
+					setSeries([Number(data[0][0].ClientSMS), Number(data[0][0].CompanyEmail), Number(data[0][0].ClientEmail), Number(data[0][0].Total)]);
 				})
 		} catch (error) {
-			console.log(error);
+			InfoPopup("Database connection error");
 		}
 	};
 
 	const calculatePercentage = (index: number) => {
 		let total = Number(totals[index].Total);
-		setSeries([Number(totals[index].ClientSMS), Number(totals[index].ClientEmail), Number(totals[index].CompanyEmail), Number(totals[index].Total)])
+		setSeries([Number(totals[index].ClientSMS), Number(totals[index].CompanyEmail), Number(totals[index].ClientEmail), Number(totals[index].Total)])
 		setTotal(total);
 		setClientsSMS((Math.round((Number(totals[index]?.ClientSMS || 0) * 100) / (total || 1))).toString() + "%");
 		setClientsEmail((Math.round((Number(totals[index]?.ClientEmail || 0) * 100) / (total || 1))).toString() + "%");

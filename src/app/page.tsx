@@ -7,6 +7,7 @@ import InfoPopup from "@/components/common/InfoPopup";
 import Link from "next/link";
 import generateRandomSixDigitNumber from "@/components/common/GenerateRandomSixDigitNumber";
 import send2FAemail from "@/components/common/Send2FAemail";
+import LoadingPopup from "@/components/common/LoadingPopup";
 
 const SignIn: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
@@ -22,12 +23,12 @@ const SignIn: React.FC = () => {
 		}
 	};
 
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			login();
-		}
-	};
+	// const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+	// 	if (event.key === "Enter") {
+	// 		event.preventDefault();
+	// 		login();
+	// 	}
+	// };
 
 	const login = async () => {
 		if (email === "" || password === "") {
@@ -35,6 +36,7 @@ const SignIn: React.FC = () => {
 			return;
 		}
 		const sessionID = getSessionID();
+		LoadingPopup(true);
 		try {
 			await fetch(`/api/login`, {
 				method: "PUT",
@@ -48,6 +50,7 @@ const SignIn: React.FC = () => {
 				}),
 			}).then(response => response.json())
 				.then(async data => {
+					LoadingPopup(false);
 					if (data.message === "User not found") {
 						InfoPopup("Invalid user or password");
 					} else {
@@ -60,7 +63,8 @@ const SignIn: React.FC = () => {
 					}
 				});
 		} catch (error) {
-			console.error(error);
+			LoadingPopup(false);
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -86,9 +90,9 @@ const SignIn: React.FC = () => {
 						companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
 					});
 					sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
-				}).catch(error => console.log(error))
+				}).catch(error => InfoPopup("Connection with server failed"))
 		} catch (error) {
-			console.error(error);
+			InfoPopup("Connection with server failed");
 		}
 	};
 

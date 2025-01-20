@@ -6,6 +6,8 @@ export async function POST(req: Request) {
 		const body = await req.json();
 		const { firstName, lastName, clientSMS, clientEmail, companyEmail } = body;
 
+		console.log(clientEmail);
+
 		if (!firstName || !lastName || !clientSMS || !clientEmail || !companyEmail) {
 			return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
 		}
@@ -19,7 +21,6 @@ export async function POST(req: Request) {
 
 		return NextResponse.json({ message: "Service inserted successfully" }, { status: 200 });
 	} catch (error) {
-		console.error(error);
 		return NextResponse.json({ message: "Error inserting service info" }, { status: 500 });
 	}
 }

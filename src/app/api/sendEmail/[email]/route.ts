@@ -17,7 +17,9 @@ export async function PUT(request: Request, { params }: { params: { email: strin
 
 		let pdf;
 		if (OfferServiceArray !== undefined) {
-			pdf = GeneratePDF();
+			if (OfferServiceArray.length !== 0) {
+				pdf = GeneratePDF();
+			}
 		}
 
 		const emailTask = new SendEmailTask(

@@ -40,9 +40,9 @@ export const addService = async (name: string | undefined, description: string |
 }
 
 const ModalServices = (props: any) => {
-	const [name, setName] = useState<string | undefined>(props.name);
-	const [description, setDescription] = useState<string | undefined>(props.description);
-	const [price, setPrice] = useState<string | undefined>(props.price);
+	const [name, setName] = useState<string | undefined>(props?.name);
+	const [description, setDescription] = useState<string | undefined>(props?.description);
+	const [price, setPrice] = useState<string | undefined>(props?.price);
 
 	const saveServiceChanges = async () => {
 		if (name === "" || description === "" || price === "") {

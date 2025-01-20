@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import * as crypto from "crypto";
 import InfoPopup from "@/components/common/InfoPopup";
+import LoadingPopup from "@/components/common/LoadingPopup";
 
-const  SettingsContent = () => {
+const SettingsContent = () => {
 	const [newPassword, setNewPassword] = useState<string>("");
 	const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
 	const email = sessionStorage.getItem("Email");
@@ -30,6 +30,7 @@ const  SettingsContent = () => {
 			InfoPopup("Your passwords don’t match.");
 			return;
 		}
+		LoadingPopup(true);
 		try {
 			const Email = sessionStorage.getItem("Email");
 			await fetch(`/api/updatePassword/${Email}`, {
@@ -40,9 +41,14 @@ const  SettingsContent = () => {
 				body: JSON.stringify({
 					Password: crypto.createHash("sha512").update(newPassword, "utf8").digest("hex"),
 				}),
-			})
+			}).then(response => response.json())
+				.then(async data => {
+					LoadingPopup(false);
+					InfoPopup(data.message);
+				})
 		} catch (error) {
-			console.error(error);
+			LoadingPopup(false);
+			InfoPopup("Error updating password");
 		}
 		setNewPassword("");
 		setConfirmNewPassword("");

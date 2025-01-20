@@ -104,7 +104,15 @@ const ModalClients = (props: any) => {
 	);
 
 	const detailsRef = useRef<HTMLDetailsElement>(null);
-	const [companyIdLayout, setCompanyIdLayout] = useState<string>("Company ID");
+
+	const getCompanyName = (companyId: any) => {
+		const company = companiesArray.find(c => c.CompanyId === companyId);
+		return company ? company.CompanyName : "";
+	};
+
+	const [companyIdLayout, setCompanyIdLayout] = useState<string>(
+		companyId !== undefined ? getCompanyName(companyId) : "Company Name"
+	);
 
 	const handleItemClick = (companyId: any, companyName: string) => {
 		setCompanyId(companyId);

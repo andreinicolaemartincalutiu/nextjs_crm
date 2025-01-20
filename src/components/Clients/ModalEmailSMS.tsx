@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import Loader from "@/components/common/Loader";
 import InfoPopup from "@/components/common/InfoPopup";
 import { AssistantsV1ServiceCreateFeedbackRequest } from "twilio/lib/rest/assistants/v1/assistant/feedback";
+import LoadingPopup from "@/components/common/LoadingPopup";
 
 type clientModal = {
 	FirstName: string,
@@ -15,9 +16,6 @@ const ModalEmailSMS = (props: any) => {
 	const [subject, setSubject] = useState<string>("Subject");
 	const [composedEmailSMS, setComposedEmailSMS] = useState<string>("EMAIL FOR TEST");
 	const [clientsArrayForEmailsSMSs, setClientsArrayForEmailsSMSs] = useState<clientModal[]>([]);
-	const [offerServicesArray, setOfferServicesArray] = useState<string[]>(props.offerServicesArray);
-	const [discountPercent, setDiscountPercent] = useState<string>(props.discountPercent);
-	const [offerDescription, setOfferDescription] = useState<string>(props.offerDescription);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, firstName: string, lastName: string, email: string, phoneNr: string) => {
@@ -49,7 +47,9 @@ const ModalEmailSMS = (props: any) => {
 			InfoPopup("Compose email");
 			return;
 		}
-		for (let i = 0; i < setClientsArrayForEmailsSMSs.length; ++i) {
+
+		LoadingPopup(true);
+		for (let i = 0; i < clientsArrayForEmailsSMSs.length; ++i) {
 
 			try {
 				const response = await fetch(`/api/sendEmail/${clientsArrayForEmailsSMSs[i].Email}`, {
@@ -61,9 +61,9 @@ const ModalEmailSMS = (props: any) => {
 						{
 							Subject: subject,
 							EmailText: composedEmailSMS,
-							OfferServiceArray: offerServicesArray,
-							DiscountPercent: discountPercent,
-							OfferDescription: offerDescription
+							OfferServiceArray: props.offerServicesArray,
+							DiscountPercent: props.discountPercent,
+							OfferDescription: props.offerDescription
 						}
 					),
 				});
@@ -87,17 +87,15 @@ const ModalEmailSMS = (props: any) => {
 					}),
 				});
 
-				// const data2 = await res2.json();
-				console.log(res2.ok);
 				if (!res2.ok) {
 					InfoPopup(`Failed to add sent Email to ${clientsArrayForEmailsSMSs[i].Email} in database`);
 					throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
-				console.error(error);
 				InfoPopup(`Failed to send email to ${clientsArrayForEmailsSMSs[i].Email}`);
 			}
 		}
+		LoadingPopup(false);
 		InfoPopup("Emails sent");
 	};
 

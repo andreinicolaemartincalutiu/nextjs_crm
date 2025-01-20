@@ -25,7 +25,6 @@ export async function PUT(req: Request, { params }: { params: { Email: string } 
 
 		return NextResponse.json({ message: "Password updated successfully" }, { status: 200 });
 	} catch (error) {
-		console.error("Error updating password:", error);
 		return NextResponse.json({ message: "Error updating password" }, { status: 500 });
 	}
 }

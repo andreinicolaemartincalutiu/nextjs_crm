@@ -1,19 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { serialize } from "cookie";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
 	const response = NextResponse.json({ message: "Logout successful" });
 
 	// Set the cookie to invalidate
-	response.headers.set(
-		"Set-Cookie",
-		serialize("enkot", "", {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			maxAge: -1, // Invalidate the cookie
-			path: "/",
-		})
-	);
+	try {
+		response.headers.set(
+			"Set-Cookie",
+			serialize("enkot", "", {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production",
+				maxAge: -1, // Invalidate the cookie
+				path: "/",
+			})
+		);
+	} catch {
+		return NextResponse.json({ message: "Failed to logout user" }, { status: 500 });
+	}
 
 	return response;
 }

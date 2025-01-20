@@ -21,7 +21,8 @@ const HandleFileImport = (event: any, importType: string) => {
 			// Iterate through lines
 			for (let index = 0; index < lines.length; index++) {
 				const line = lines[index];
-				let addSuccessfuly: any;
+				let addSuccessfuly: any = "0";
+
 				if (importType === "se") {
 					const [name, description, price] = line.split("\t"); // Split each line by tabs
 					addSuccessfuly = await addService(name, description, price);
@@ -29,17 +30,15 @@ const HandleFileImport = (event: any, importType: string) => {
 					const [firstName, lastName, CI, CNP, companyId, companyRole, address, email, phone, interests, birthDate, details] = line.split("\t"); // Split each line by tabs
 					addSuccessfuly = await addClient(firstName, lastName, CI, CNP, companyId, companyRole, address, email, phone, interests, birthDate, details);
 				} else if (importType === "co") {
-					const [companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees] = line.split("\t"); // Split each line by tabs
-					// addSuccessfuly = await addCompany(companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees);
+					const [companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees, dataYear, profit, loss, turnover, capital, liabilities, assets, isActive] = line.split("\t"); // Split each line by tabs
+					addSuccessfuly = await addCompany(companyName, TVA, shareholders, CIF, COM, headquarter, subsidiary, mainActivity, secondaryActivity, interests, email, region, employees, dataYear, profit, loss, turnover, capital, liabilities, assets, isActive);
 				}
 				if (addSuccessfuly === "0") {
 					tsvLinesArray.push(line);
 				}
 			}
 
-			// console.log(tsvLinesArray.length);
 			if (tsvLinesArray.length !== 0) {
-				// console.log(tsvLinesArray);
 				GenerateTSV(tsvLinesArray);
 				InfoPopup("Some data failed to be imported");
 			} else {
