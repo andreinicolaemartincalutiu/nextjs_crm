@@ -25,7 +25,7 @@ export async function PUT(req: Request, { params }: { params: { Id: string } }) 
 
 		return NextResponse.json({ message: "Service updated successfully" }, { status: 200 });
 	} catch (error) {
-		console.error("Error updating service:", error);
+		console.log("Error updating service:", error);
 		return NextResponse.json({ message: "Error updating service" }, { status: 500 });
 	}
 }

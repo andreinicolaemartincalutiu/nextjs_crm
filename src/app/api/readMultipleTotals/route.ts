@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return new Response(JSON.stringify({ message: "Error fetching users" }), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

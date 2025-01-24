@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Loader from "@/components/common/Loader";
 import InfoPopup from "@/components/common/InfoPopup";
 import { AssistantsV1ServiceCreateFeedbackRequest } from "twilio/lib/rest/assistants/v1/assistant/feedback";
+import LoadingPopup from "@/components/common/LoadingPopup";
 
 type companyModal = {
 	FirstName: string,
@@ -43,13 +44,14 @@ const ModalEmail = (props: any) => {
 			InfoPopup("Compose email");
 			return;
 		}
+		LoadingPopup(true);
 		for (let i = 0; i < emailAddressesToSendEmailArray.length; ++i) {
-
 			try {
 				const response = await fetch(`/api/sendEmail/${emailAddressesToSendEmailArray[i].Email}`, {
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify(
 						{
@@ -70,6 +72,7 @@ const ModalEmail = (props: any) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: emailAddressesToSendEmailArray[i].FirstName,
@@ -85,10 +88,11 @@ const ModalEmail = (props: any) => {
 					throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
-				console.error(error);
+				console.log(error);
 				InfoPopup(`Failed to send email to ${emailAddressesToSendEmailArray[i].Email}`);
 			}
 		}
+		LoadingPopup(false);
 		InfoPopup("Emails sent");
 	}
 

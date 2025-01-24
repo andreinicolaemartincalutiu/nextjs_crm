@@ -50,12 +50,12 @@ const ModalEmailSMS = (props: any) => {
 
 		LoadingPopup(true);
 		for (let i = 0; i < clientsArrayForEmailsSMSs.length; ++i) {
-
 			try {
 				const response = await fetch(`/api/sendEmail/${clientsArrayForEmailsSMSs[i].Email}`, {
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify(
 						{
@@ -77,6 +77,7 @@ const ModalEmailSMS = (props: any) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,
@@ -114,6 +115,7 @@ const ModalEmailSMS = (props: any) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						to: clientsArrayForEmailsSMSs[i].Phone,
@@ -131,6 +133,7 @@ const ModalEmailSMS = (props: any) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,

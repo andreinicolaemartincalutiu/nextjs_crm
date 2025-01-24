@@ -45,6 +45,7 @@ export const addClient = async (
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				FirstName: firstName,
@@ -76,7 +77,7 @@ export const addClient = async (
 			window.location.reload();
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 	return addSuccessfuly;
 };
@@ -147,6 +148,7 @@ const ModalClients = (props: any) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					FirstName: firstName,
@@ -169,7 +171,7 @@ const ModalClients = (props: any) => {
 				throw new Error(`Error: ${error.message}`);
 			}
 		} catch (error) {
-			console.error(error);
+			console.log(error);
 		}
 		window.location.reload();
 	};
@@ -180,6 +182,7 @@ const ModalClients = (props: any) => {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				}
 			});
 
@@ -190,7 +193,7 @@ const ModalClients = (props: any) => {
 			props.deleteClient(props.ClientId);
 			closeModal;
 		} catch (error) {
-			console.error(error);
+			console.log(error);
 		}
 		window.location.reload();
 	};

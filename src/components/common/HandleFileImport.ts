@@ -48,7 +48,7 @@ const HandleFileImport = (event: any, importType: string) => {
 
 		// Handle errors
 		reader.onerror = (e) => {
-			console.error("Failed to read file:", e);
+			console.log("Failed to read file:", e);
 			InfoPopup("Failed to read imported file");
 		};
 

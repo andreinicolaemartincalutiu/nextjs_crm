@@ -13,6 +13,7 @@ export const addService = async (name: string | undefined, description: string |
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				Name: name,
@@ -35,7 +36,7 @@ export const addService = async (name: string | undefined, description: string |
 			window.location.reload();
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 	return addSuccessfuly;
 }
@@ -58,6 +59,7 @@ const ModalServices = (props: any) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Name: name,
@@ -76,8 +78,8 @@ const ModalServices = (props: any) => {
 				InfoPopup("Changes saved");
 			}
 		} catch (error) {
-			InfoPopup("Something went wrong. Try again");
-			console.error(error);
+			InfoPopup("Connection error. Try again");
+			console.log(error);
 		}
 	}
 
@@ -88,6 +90,7 @@ const ModalServices = (props: any) => {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				}
 			});
 
@@ -101,8 +104,8 @@ const ModalServices = (props: any) => {
 				InfoPopup("Changes saved");
 			}
 		} catch (error) {
-			InfoPopup("Something went wrong. Try again");
-			console.error(error);
+			InfoPopup("Connection error. Try again");
+			console.log(error);
 		}
 	}
 

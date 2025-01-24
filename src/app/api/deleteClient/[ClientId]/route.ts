@@ -17,7 +17,7 @@ export async function DELETE(request: Request, { params }: { params: { ClientId:
 
 		return NextResponse.json({ message: "Client deleted successfully" }, { status: 200 });
 	} catch (error) {
-		console.error("Error deleting client:", error);
+		console.log("Error deleting client:", error);
 		return NextResponse.json({ message: "Error deleting client" }, { status: 500 });
 	}
 }

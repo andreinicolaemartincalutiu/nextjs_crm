@@ -25,6 +25,9 @@ const TableServices = () => {
 		try {
 			await fetch("api/readService", {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			})
 				.then(response => {
 					if (!response.ok) {

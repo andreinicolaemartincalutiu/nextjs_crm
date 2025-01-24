@@ -7,7 +7,7 @@ export async function GET() {
 		const [rows] = await pool.query("SELECT * FROM Service");
 		return NextResponse.json(rows, { status: 200 });
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return NextResponse.json({ message: "Error fetching services" }, { status: 500 });
 	}
 }

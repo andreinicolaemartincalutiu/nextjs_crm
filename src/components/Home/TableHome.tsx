@@ -30,6 +30,9 @@ const TableHome = () => {
 		try {
 			await fetch(`/api/readStatus_emailSMS`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			})
 				.then(response => response.json())
 				.then(data => {
@@ -46,6 +49,9 @@ const TableHome = () => {
 		try {
 			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			})
 				.then(response => response.json())
 				.then(data => {

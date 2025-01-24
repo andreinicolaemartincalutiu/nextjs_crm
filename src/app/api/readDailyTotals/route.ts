@@ -1,22 +1,27 @@
-import pool from "@/lib/db";
+import db from "@/lib/db";
+import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+interface QueryResult {
+	TotalClientSMS: number;
+	TotalClientEmail: number;
+	TotalCompanyEmail: number;
+}
+
+export async function GET() {
 	try {
-		const [rows] = await pool.query("CALL get_daily_totals()");
+		const [rows] = await db.query("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
 
-		// if (rows[0].length === 0) {
-		// 	return Response.json({ message: "Failed to insert new service" }, { status: 500 });
-		// }
+		console.log(rows)
 
-		return new Response(JSON.stringify(rows), {
-			status: 200,
-			headers: { "Content-Type": "application/json" },
-		});
-	} catch (error) {
-		console.error(error);
-		return new Response(JSON.stringify({ message: "Error fetching data" }), {
-			status: 500,
-			headers: { "Content-Type": "application/json" },
-		});
+		const result: QueryResult[] = rows as QueryResult[];
+
+		const response = NextResponse.json(result, { status: 200 });
+		response.headers.set("Cache-Control", "no-store");
+		return response;
+	} catch (error: unknown) {
+		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+		const errorResponse = NextResponse.json({ error: errorMessage }, { status: 500 });
+		errorResponse.headers.set("Cache-Control", "no-store");
+		return errorResponse;
 	}
 };

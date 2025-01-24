@@ -11,6 +11,7 @@ export async function POST(request: Request) {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-store"
 			},
 		});
 		console.log(1);

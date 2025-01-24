@@ -58,7 +58,7 @@ class MailSender {
 			await this.transporter.sendMail(mailOptions);
 			console.log("Email sent successfully");
 		} catch (error) {
-			console.error("Error sending email:", error);
+			console.log("Error sending email:", error);
 			throw error;
 		}
 	}

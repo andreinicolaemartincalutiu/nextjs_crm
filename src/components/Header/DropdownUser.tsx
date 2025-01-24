@@ -14,6 +14,7 @@ const DropdownUser = () => {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 			}).then(response => response.json())
 				.then(data => {

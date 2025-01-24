@@ -33,6 +33,7 @@ const RresetPassword = () => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Email: email,
@@ -78,6 +79,7 @@ const RresetPassword = () => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Password: createHash("sha512").update(newPassword, "utf8").digest("hex"),

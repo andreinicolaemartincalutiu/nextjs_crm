@@ -71,6 +71,7 @@ export const addCompany = async (
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				CompanyName: companyName,
@@ -113,7 +114,7 @@ export const addCompany = async (
 			window.location.reload();
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 	return addSuccessfuly;
 }
@@ -176,6 +177,7 @@ const ModalCompany = (props: any) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					CompanyName: companyName,
@@ -207,7 +209,7 @@ const ModalCompany = (props: any) => {
 				throw new Error(`Error: ${error.message}`);
 			}
 		} catch (error) {
-			console.error(error);
+			console.log(error);
 		}
 		window.location.reload();
 	};
@@ -218,10 +220,11 @@ const ModalCompany = (props: any) => {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				}
 			});
 		} catch (error) {
-			console.error(error);
+			console.log(error);
 		}
 		window.location.reload();
 	};
@@ -241,6 +244,7 @@ const ModalCompany = (props: any) => {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 			});
 
@@ -262,6 +266,7 @@ const ModalCompany = (props: any) => {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					an: currentYear,
@@ -281,6 +286,7 @@ const ModalCompany = (props: any) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						an: currentYear,

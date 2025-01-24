@@ -34,7 +34,7 @@ export async function PUT(request: Request, { params }: { params: { email: strin
 
 		return NextResponse.json({ message: "Client updated successfully" }, { status: 200 });
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return NextResponse.json({ message: "Error updating client" }, { status: 500 });
 	}
 }

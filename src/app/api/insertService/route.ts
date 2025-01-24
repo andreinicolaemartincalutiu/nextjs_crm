@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
 		return NextResponse.json({ message: "Service inserted successfully" }, { status: 200 });
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return NextResponse.json({ message: "Error inserting service info" }, { status: 500 });
 	}
 }

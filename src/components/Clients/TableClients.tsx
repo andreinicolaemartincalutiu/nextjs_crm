@@ -44,6 +44,9 @@ const TableClients = () => {
 		try {
 			await fetch(`/api/readClient`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			}).then(response => {
 				if (!response.ok) {
 					InfoPopup("Failed to load clients");

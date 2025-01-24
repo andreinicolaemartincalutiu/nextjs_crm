@@ -42,6 +42,7 @@ const SignIn: React.FC = () => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Email: email,
@@ -84,6 +85,10 @@ const SignIn: React.FC = () => {
 		try {
 			await fetch(`/api/readCompanyInfo`, {
 				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					"Cache-Control": "no-store"
+				},
 			}).then(response => response.json())
 				.then((data: any) => {
 					data.forEach((element: any) => {

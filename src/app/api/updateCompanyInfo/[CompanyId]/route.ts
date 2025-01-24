@@ -25,7 +25,7 @@ export async function PUT(req: Request, { params }: { params: { CompanyId: strin
 
 		return NextResponse.json({ message: "Company info updated successfully" }, { status: 200 });
 	} catch (error) {
-		console.error("Error updating company info:", error);
+		console.log("Error updating company info:", error);
 		return NextResponse.json({ message: "Error updating company info" }, { status: 500 });
 	}
 }

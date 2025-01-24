@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
 		return NextResponse.json({ success: true, messageSid: messageResponse.sid }, { status: 200 });
 	} catch (error: any) {
-		console.error("Error sending SMS:", error);
+		console.log("Error sending SMS:", error);
 		return NextResponse.json({ success: false, error: error.message }, { status: 500 });
 	}
 }

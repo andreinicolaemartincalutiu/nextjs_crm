@@ -46,9 +46,13 @@ const TableCompanyInfo = () => {
 	const [offerDescription, setOfferDescription] = useState<string>("");
 
 	const getCompanies = async () => {
+		let companiesArray: { CompanyId: String, CompanyName: String }[] = [];
 		try {
 			await fetch(`/api/readCompanyInfo`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			})
 				.then(response => {
 					if (!response.ok) {
@@ -58,9 +62,13 @@ const TableCompanyInfo = () => {
 				})
 				.then(data => {
 					setCompanies(data);
+					data.forEach((element: any) => {
+						companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
+					});
+					sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
 				})
 		} catch (error) {
-			console.log(error);
+			InfoPopup("Connection error");
 		}
 	};
 

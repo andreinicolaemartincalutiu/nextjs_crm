@@ -19,6 +19,9 @@ const ModalPDF = (props: any) => {
 		try {
 			await fetch("api/readService", {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			})
 				.then(response => response.json())
 				.then(data => {

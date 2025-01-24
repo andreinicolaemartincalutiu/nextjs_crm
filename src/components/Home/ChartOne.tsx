@@ -24,12 +24,15 @@ const ChartOne: React.FC = () => {
 		try {
 			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			}).then(response => response.json())
 				.then(data => {
 					setStatsData(data);
-					setxAxisMetric(getNamesOfLast7Days(data[data.length - 1].Date));
-					setValuesClients(data.slice(-7).map((obj: any) => obj.clients));
-					setValuesCompanies(data.slice(-7).map((obj: any) => obj.companies));
+					setxAxisMetric(getNamesOfLast7Days(data[0].Date));
+					setValuesClients(data.slice(0, 7).map((obj: any) => obj.clients).reverse());
+					setValuesCompanies(data.slice(0, 7).map((obj: any) => obj.companies).reverse());
 				})
 		} catch (error) {
 			InfoPopup("Database connection error");
@@ -81,7 +84,6 @@ const ChartOne: React.FC = () => {
 
 			datesArray.push(`${day}.${month}`);
 		}
-
 		return datesArray;
 	};
 
@@ -103,52 +105,54 @@ const ChartOne: React.FC = () => {
 	};
 
 	const getAttributesOfLastNObjects = (attribute: keyof Stat, noOfObjects: number) => {
-		return statsData.slice(-noOfObjects - 1).map(obj => obj[attribute]);
+		return statsData.slice(0, noOfObjects).map(obj => obj[attribute]).reverse();
 	};
 
-	const getLastDatesOfMonths = (data: any, key: string) => {
-		const lastDatesMap = new Map();
+	const getLastDatasOfMonths = (key: keyof Stat) => {
+		const lastDatesMap: Stat[] = [];
 
-		data.forEach((entry: any) => {
-			const date = new Date(entry.Date);
+		let leng = statsData.length;
+		let count = 0;
+		for (let i = 0; i < leng && count < 12; ++i) {
+			const date = new Date(statsData[i].Date.split('T')[0]);
+
 			const year = date.getFullYear();
 			const month = date.getMonth();
 
 			// Get the next month's first day and subtract one day to get the last day of the current month
 			const lastDayOfMonth = new Date(year, month + 1, 0);
-			const lastDateString = lastDayOfMonth.toISOString().split('T')[0];
+			const yyyy = lastDayOfMonth.getFullYear();
+			const mm = String(lastDayOfMonth.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+			const dd = String(lastDayOfMonth.getDate()).padStart(2, '0');
 
-			// Store only the last date of the month
-			if (!lastDatesMap.has(lastDateString) || date > new Date(lastDatesMap.get(lastDateString).Date)) {
-				lastDatesMap.set(lastDateString, entry);
+			const lastDateString = `${yyyy}-${mm}-${dd}`;
+
+			if (statsData[i].Date.includes(lastDateString)) {
+				++count;
+				lastDatesMap.push(statsData[i]);
 			}
-		});
-
-		let resultArray = Array.from(lastDatesMap.values()).sort((a: any, b: any) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-
-		// Fill missing months with default values
-		let currentDate = new Date(resultArray[0]?.Date || new Date());
-		let filledResults = [];
-		for (let i = 0; i < 12; i++) {
-			let year = currentDate.getFullYear();
-			let month = currentDate.getMonth() + 1;
-			let lastDay = new Date(year, month, 0).toISOString().split('T')[0];
-			let existingEntry = resultArray.find(entry => entry.Date.startsWith(lastDay));
-
-			if (existingEntry) {
-				filledResults.push(existingEntry);
-			} else {
-				filledResults.push({ Date: lastDay, clients: 0, companies: 0 });
-			}
-
-			currentDate.setMonth(currentDate.getMonth() + 1);
 		}
 
-		let separatedResults: any = [];
+		// Fill missing months with default values
+		const date = new Date(lastDatesMap[0].Date);
+		for (let i = lastDatesMap.length; i < 12; i++) {
 
-		for (let i = filledResults.length - 1; i >= 0; --i) {
+			const currentMonth = new Date(date);
+			currentMonth.setMonth(date.getMonth() - i);
+
+			// Set the date to the last day of the current month
+			currentMonth.setMonth(currentMonth.getMonth() + 1); // Move to the next month
+			currentMonth.setDate(0); // Set to the last day of the previous month (which is the current month)
+
+			// Add the formatted end of the month date to the array
+			lastDatesMap.push({ Date: currentMonth.toISOString().split('T')[0], clients: "0", companies: "0" });
+		}
+
+		let separatedResults = [];
+
+		for (let i = lastDatesMap.length - 1; i >= 0; --i) {
 			separatedResults.push(
-				filledResults[i][key]
+				lastDatesMap[i][key]
 			);
 		}
 
@@ -291,27 +295,27 @@ const ChartOne: React.FC = () => {
 					<div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
 						<button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
 							onClick={() => {
-								setxAxisMetric(getNamesOfLast7Days(statsData[statsData.length - 1].Date));
-								setValuesClients(getAttributesOfLastNObjects("clients", 6));
-								setValuesCompanies(getAttributesOfLastNObjects("companies", 6));
+								setxAxisMetric(getNamesOfLast7Days(statsData[0].Date));
+								setValuesClients(getAttributesOfLastNObjects("clients", 7));
+								setValuesCompanies(getAttributesOfLastNObjects("companies", 7));
 							}}
 						>
 							Week
 						</button>
 						<button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
 							onClick={() => {
-								setxAxisMetric(getDatesOfLast30Days(statsData[statsData.length - 1].Date));
-								setValuesClients(getAttributesOfLastNObjects("clients", daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
-								setValuesCompanies(getAttributesOfLastNObjects("companies", daysUntilOneMonthBefore(statsData[statsData.length - 1].Date)));
+								setxAxisMetric(getDatesOfLast30Days(statsData[0].Date.split('T')[0]));
+								setValuesClients(getAttributesOfLastNObjects("clients", daysUntilOneMonthBefore(statsData[0].Date.split('T')[0]) + 1));
+								setValuesCompanies(getAttributesOfLastNObjects("companies", daysUntilOneMonthBefore(statsData[0].Date.split('T')[0]) + 1));
 							}}
 						>
 							Month
 						</button>
 						<button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
 							onClick={() => {
-								setxAxisMetric(getNamesOfLast12Months(statsData[statsData.length - 1].Date));
-								setValuesClients(getLastDatesOfMonths(statsData, "clients"));
-								setValuesCompanies(getLastDatesOfMonths(statsData, "companies"));
+								setxAxisMetric(getNamesOfLast12Months(statsData[0].Date));
+								setValuesClients(getLastDatasOfMonths("clients"));
+								setValuesCompanies(getLastDatasOfMonths("companies"));
 							}}
 						>
 							Year

@@ -17,7 +17,7 @@ export async function DELETE(request: Request, { params }: { params: { CompanyId
 
 		return NextResponse.json({ message: "CompanyInfo deleted successfully" }, { status: 200 });
 	} catch (error) {
-		console.error("Error deleting CompanyInfo:", error);
+		console.log("Error deleting CompanyInfo:", error);
 		return NextResponse.json({ message: "Error deleting CompanyInfo" }, { status: 500 });
 	}
 }

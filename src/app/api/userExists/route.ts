@@ -30,7 +30,7 @@ export async function PUT(request: Request) {
 
 		return response;
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return new Response(JSON.stringify({ message: "Error fetching users" }), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

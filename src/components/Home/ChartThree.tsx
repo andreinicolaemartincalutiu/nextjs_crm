@@ -68,6 +68,9 @@ const ChartThree: React.FC = () => {
 		try {
 			await fetch(`/api/readMultipleTotals`, {
 				method: "GET",
+				headers: {
+					"Cache-Control": "no-store"
+				}
 			}).then(response => response.json())
 				.then(data => {
 					setClientsSMS(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.ClientSMS) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
