@@ -53,6 +53,7 @@ const ModalEmailSMS = (props: any) => {
 			try {
 				const response = await fetch(`/api/sendEmail/${clientsArrayForEmailsSMSs[i].Email}`, {
 					method: "PUT",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"
@@ -75,6 +76,7 @@ const ModalEmailSMS = (props: any) => {
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"
@@ -113,6 +115,7 @@ const ModalEmailSMS = (props: any) => {
 			try {
 				const res = await fetch("/api/sendSMS", {
 					method: "POST",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"
@@ -131,6 +134,7 @@ const ModalEmailSMS = (props: any) => {
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"

@@ -40,6 +40,7 @@ const SignIn: React.FC = () => {
 		try {
 			await fetch(`/api/login`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -85,6 +86,7 @@ const SignIn: React.FC = () => {
 		try {
 			await fetch(`/api/readCompanyInfo`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -365,7 +367,7 @@ const SignIn: React.FC = () => {
 									{/* </Link> */}
 								</button>
 
-								<Link href="/resetPassword">Reset password</Link>
+								<Link href="/resetPassword" prefetch={false}>Reset password</Link>
 
 								{isVisibleInputEmailCode &&
 									<div className="mb-4 mt-8">

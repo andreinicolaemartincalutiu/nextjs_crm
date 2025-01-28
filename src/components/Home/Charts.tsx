@@ -1,8 +1,14 @@
 "use client";
-import ChartOne from "@/components/Home/ChartOne";
-import ChartTwo from "@/components/Home/ChartTwo";
 import dynamic from "next/dynamic";
 import React from "react";
+
+const ChartOne = dynamic(() => import("@/components/Home/ChartOne"), {
+	ssr: false,
+});
+
+const ChartTwo = dynamic(() => import("@/components/Home/ChartTwo"), {
+	ssr: false,
+});
 
 const ChartThree = dynamic(() => import("@/components/Home/ChartThree"), {
 	ssr: false,

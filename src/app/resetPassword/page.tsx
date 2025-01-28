@@ -31,6 +31,7 @@ const RresetPassword = () => {
 		try {
 			await fetch(`/api/userExists`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -77,6 +78,7 @@ const RresetPassword = () => {
 		try {
 			await fetch(`/api/updatePassword/${email}`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"

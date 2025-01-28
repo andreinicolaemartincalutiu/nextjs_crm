@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	description: "",
 };
 
-const ServicesPage = () => {
+const Services = () => {
 	return (
 		<DefaultLayout>
 			<TableServices />
@@ -18,4 +18,4 @@ const ServicesPage = () => {
 	);
 };
 
-export default ServicesPage;
+export default Services;

@@ -23,11 +23,14 @@ const TableServices = () => {
 
 	const getServices = async () => {
 		try {
-			await fetch("api/readService", {
+			const timestamp = new Date().toISOString();
+			await fetch(`api/readService/${timestamp}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
+					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
-				}
+				},
 			})
 				.then(response => {
 					if (!response.ok) {
@@ -46,7 +49,7 @@ const TableServices = () => {
 	useEffect(() => {
 		setSearchTerm("");
 		getServices();
-	}, []);
+	}, [setSearchTerm]);
 
 	useEffect(() => {
 		const filtered = services.filter((service) =>
@@ -148,7 +151,7 @@ const TableServices = () => {
 
 								</label>
 								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
-									<ModalServices Id={service.Id} modalId={`my_modal_${key}`} name={service.Name} description={service.Description} price={service.Price} secondButton={false} />
+								<ModalServices Id={service.Id} modalId={`my_modal_${key}`} name={service.Name} description={service.Description} price={service.Price} secondButton={false} />
 								{/* ) : (
 									<></>
 								)} */}

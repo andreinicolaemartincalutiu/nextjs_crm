@@ -42,8 +42,10 @@ const TableClients = () => {
 
 	const getClients = async () => {
 		try {
-			await fetch(`/api/readClient`, {
+			const timestamp = new Date().toISOString();
+			await fetch(`/api/readClient/${timestamp}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
 					"Cache-Control": "no-store"
 				}
@@ -65,7 +67,7 @@ const TableClients = () => {
 	useEffect(() => {
 		setSearchTerm("");
 		getClients();
-	}, []);
+	}, [setSearchTerm]);
 
 
 	useEffect(() => {
@@ -98,9 +100,9 @@ const TableClients = () => {
 	};
 
 	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
-		console.log(offerServicesArray)
-		console.log(discountPercent)
-		console.log(offerDescription)
+		// console.log(offerServicesArray)
+		// console.log(discountPercent)
+		// console.log(offerDescription)
 
 		setOfferServicesArray(offerServicesArray);
 		setDiscountPercent(discountPercent);
@@ -233,8 +235,8 @@ const TableClients = () => {
 									</div>
 								</label>
 								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
-									<ModalClients modalCheckboxRef={modalCheckboxRef} modalId={`my_modal_${key}`}
-										client={client} secondButton={false} />
+								<ModalClients modalCheckboxRef={modalCheckboxRef} modalId={`my_modal_${key}`}
+									client={client} secondButton={false} />
 								{/* ) : (
 									<></>
 								)} */}

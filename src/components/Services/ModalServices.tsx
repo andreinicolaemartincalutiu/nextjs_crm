@@ -11,6 +11,7 @@ export const addService = async (name: string | undefined, description: string |
 	try {
 		const response = await fetch(`/api/insertService`, {
 			method: "POST",
+			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store"
@@ -57,6 +58,7 @@ const ModalServices = (props: any) => {
 		try {
 			const response = await fetch(`/api/updateService/${Id}`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -88,6 +90,7 @@ const ModalServices = (props: any) => {
 		try {
 			const response = await fetch(`/api/deleteService/${props.Id}`, {
 				method: "DELETE",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"

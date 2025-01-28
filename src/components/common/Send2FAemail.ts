@@ -7,6 +7,7 @@ const send2FAemail = async (email: string, securityCodeGenerated: string) => {
 	try {
 		const response = await fetch(`/api/sendEmail/${email}`, {
 			method: "PUT",
+			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store"

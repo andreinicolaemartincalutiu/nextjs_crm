@@ -159,6 +159,7 @@ const FormLayout = () => {
 
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="text-sm text-primary hover:underline"
                                     >
                                         Forget password?

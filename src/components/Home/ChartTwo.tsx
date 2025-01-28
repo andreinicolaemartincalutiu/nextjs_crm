@@ -1,6 +1,6 @@
 "use client";
 import { ApexOptions } from "apexcharts";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import InfoPopup from "@/components/common/InfoPopup";
 import Loader from "@/components/common/Loader";
@@ -87,42 +87,46 @@ interface DailyTotals {
 }
 
 const ChartTwo: React.FC = () => {
-	const [dailyTotals, setDailyTotals] = useState<DailyTotals>();
-	const series = [
-		{
-			name: "Client SMS",
-			data: [dailyTotals?.TotalClientSMS, 0, 0],
-		},
-		{
-			name: "Client Email",
-			data: [0, dailyTotals?.TotalClientEmail, 0],
-		},
-		{
-			name: "Company Email",
-			data: [0, 0, dailyTotals?.TotalCompanyEmail],
-		},
-	];
-
-	const getDailyTotals = async () => {
-		try {
-			await fetch(`/api/readDailyTotals`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
-				},
-			}).then(response => response.json())
-				.then(data => {
-					console.log(data);
-					console.log(data[0]);
-					setDailyTotals(data[0]);
-				})
-		} catch (error) {
-			InfoPopup("Database connection error");
-		}
-	};
+	let [dailyTotals, setDailyTotals] = useState<DailyTotals>();
+	const series = useMemo(() => [
+		{ name: "Client SMS", data: [dailyTotals?.TotalClientSMS || 0, 0, 0] },
+		{ name: "Client Email", data: [0, dailyTotals?.TotalClientEmail || 0, 0] },
+		{ name: "Company Email", data: [0, 0, dailyTotals?.TotalCompanyEmail || 0] },
+	], [dailyTotals]);
 
 	useEffect(() => {
+		const getDailyTotals = async () => {
+			try {
+				// await fetch(`/api/readDailyTotals`, {
+				// 	next: { revalidate: 1 },
+				// 	method: "GET",
+				// 	cache: "no-store",
+				// 	headers: {
+				// 		"Content-Type": "application/json",
+				// 		"Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+				// 	},
+				// }).then(response => response.json())
+				// 	.then(data => {
+				// 		console.log(data)
+				// 		console.log("yoy")
+				// 		console.log(data[0])
+				// 		setDailyTotals(data[0]);
+				// 	})
+				const timestamp = new Date().toISOString();
+				const res = await fetch(`/api/readDailyTotals/${timestamp}`, {
+					method: "GET",
+					cache: "no-store",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
+				const data = await res.json();
+				setDailyTotals(data[0]);
+			} catch (error) {
+				InfoPopup("Database connection error");
+			}
+		};
+
 		getDailyTotals();
 	}, []);
 

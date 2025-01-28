@@ -49,6 +49,7 @@ const ModalEmail = (props: any) => {
 			try {
 				const response = await fetch(`/api/sendEmail/${emailAddressesToSendEmailArray[i].Email}`, {
 					method: "PUT",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"
@@ -70,6 +71,7 @@ const ModalEmail = (props: any) => {
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"

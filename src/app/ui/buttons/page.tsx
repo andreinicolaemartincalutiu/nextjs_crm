@@ -26,6 +26,7 @@ const Buttons = () => {
                     <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-20">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -33,6 +34,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -40,6 +42,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -47,6 +50,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md border border-primary px-10 py-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -56,6 +60,7 @@ const Buttons = () => {
                     <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-20">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -63,6 +68,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -70,6 +76,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -77,6 +84,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md border border-meta-3 px-10 py-4 text-center font-medium text-meta-3 hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -86,6 +94,7 @@ const Buttons = () => {
                     <div className="flex flex-wrap gap-5 xl:gap-20">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -93,6 +102,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -100,6 +110,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-full bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -107,6 +118,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center rounded-md border border-black px-10 py-4 text-center font-medium text-black hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Button
@@ -127,6 +139,7 @@ const Buttons = () => {
                     <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -153,6 +166,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -179,6 +193,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -205,6 +220,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 border border-primary px-10 py-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -233,6 +249,7 @@ const Buttons = () => {
                     <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -263,6 +280,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -293,6 +311,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -323,6 +342,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-md border border-primary px-10 py-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -355,6 +375,7 @@ const Buttons = () => {
                     <div className="flex flex-wrap gap-5 xl:gap-7.5">
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -384,6 +405,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -413,6 +435,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-full bg-black px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>
@@ -442,6 +465,7 @@ const Buttons = () => {
 
                         <Link
                             href="#"
+							prefetch={false}
                             className="inline-flex items-center justify-center gap-2.5 rounded-full border border-primary px-10 py-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             <span>

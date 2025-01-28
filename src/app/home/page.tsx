@@ -9,13 +9,12 @@ export const metadata: Metadata = {
 		"This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const ClientsPage = () => {
+const Home = () => {
 	return (
 		<DefaultLayout>
 			<Charts />
-			{/* <TableHome /> */}
 		</DefaultLayout>
 	);
 };
 
-export default ClientsPage;
+export default Home;

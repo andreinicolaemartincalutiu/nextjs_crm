@@ -18,6 +18,7 @@ const DropdownMessage = () => {
                     }}
                     className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
                     href="#"
+					prefetch={false}
                 >
                     <span
                         className={`absolute -right-0.5 -top-0.5 z-1 h-2 w-2 rounded-full bg-meta-1 ${notifying === false ? "hidden" : "inline"
@@ -67,6 +68,7 @@ const DropdownMessage = () => {
                                 <Link
                                     className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="/messages"
+									prefetch={false}
                                 >
                                     <div className="h-12.5 w-12.5 rounded-full">
                                         <Image
@@ -94,6 +96,7 @@ const DropdownMessage = () => {
                                 <Link
                                     className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="/messages"
+									prefetch={false}
                                 >
                                     <div className="h-12.5 w-12.5 rounded-full">
                                         <Image
@@ -121,6 +124,7 @@ const DropdownMessage = () => {
                                 <Link
                                     className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="/messages"
+									prefetch={false}
                                 >
                                     <div className="h-12.5 w-12.5 rounded-full">
                                         <Image
@@ -148,6 +152,7 @@ const DropdownMessage = () => {
                                 <Link
                                     className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="/messages"
+									prefetch={false}
                                 >
                                     <div className="h-12.5 w-12.5 rounded-full">
                                         <Image
@@ -175,6 +180,7 @@ const DropdownMessage = () => {
                                 <Link
                                     className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="/messages"
+									prefetch={false}
                                 >
                                     <div className="h-12.5 w-12.5 rounded-full">
                                         <Image

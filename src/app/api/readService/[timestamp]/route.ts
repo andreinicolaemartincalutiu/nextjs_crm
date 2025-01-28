@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import pool from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: Request, { params }: { params: { timestamp: string } }) {
+	const timestamp = new Date(params.timestamp);
+	if (isNaN(timestamp.getTime())) {
+		return new NextResponse("Invalid timestamp", { status: 400 });
+	}
+
 	try {
 		const [rows] = await pool.query("SELECT * FROM Service");
 		return NextResponse.json(rows, { status: 200 });

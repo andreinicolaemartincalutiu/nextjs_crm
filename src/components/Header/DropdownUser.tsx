@@ -12,6 +12,7 @@ const DropdownUser = () => {
 		try {
 			await fetch(`/api/logout`, {
 				method: "POST",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -34,6 +35,7 @@ const DropdownUser = () => {
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				className="flex items-center gap-4"
 				href="#"
+				prefetch={false}
 			>
 				<span className="hidden text-right lg:block">
 					<span className="block text-sm font-medium text-black dark:text-white">
@@ -81,6 +83,7 @@ const DropdownUser = () => {
 						{/* <li>
                             <Link
                                 href="/profile"
+								prefetch={false}
                                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                             >
                                 <svg
@@ -106,6 +109,7 @@ const DropdownUser = () => {
                         <li>
                             <Link
                                 href="#"
+								prefetch={false}
                                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                             >
                                 <svg
@@ -127,6 +131,7 @@ const DropdownUser = () => {
 						<li>
 							<Link
 								href="/settings"
+								prefetch={false}
 								className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
 							>
 								<svg

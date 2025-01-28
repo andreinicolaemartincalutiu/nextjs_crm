@@ -69,6 +69,7 @@ export const addCompany = async (
 	try {
 		const response = await fetch(`/api/insertCompanyInfo`, {
 			method: "POST",
+			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store"
@@ -175,6 +176,7 @@ const ModalCompany = (props: any) => {
 		try {
 			const response = await fetch(`/api/updateCompanyInfo/${props.company?.CompanyId}`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -218,6 +220,7 @@ const ModalCompany = (props: any) => {
 		try {
 			await fetch(`/api/deleteCompanyInfo/${props.company?.CompanyId}`, {
 				method: "DELETE",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -242,6 +245,7 @@ const ModalCompany = (props: any) => {
 		try {
 			const response1 = await fetch(`https://lista-firme.info/api/v1/info?cui=${encodeURIComponent(CIF)}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -262,8 +266,10 @@ const ModalCompany = (props: any) => {
 
 			const currentYear = new Date().getFullYear() - 1;
 
-			const response2 = await fetch(`/api/readAnafInfo`, {
+			const timestamp = new Date().toISOString();
+			const response2 = await fetch(`/api/readAnafInfo/${timestamp}`, {
 				method: "POST",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -282,8 +288,10 @@ const ModalCompany = (props: any) => {
 
 			if (data2.caen === 0) {
 				let currentYear = new Date().getFullYear() - 2;
-				const response2 = await fetch(`/api/readAnafInfo`, {
+				const timestamp = new Date().toISOString();
+				const response2 = await fetch(`/api/readAnafInfo/${timestamp}`, {
 					method: "POST",
+					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
 						"Cache-Control": "no-store"

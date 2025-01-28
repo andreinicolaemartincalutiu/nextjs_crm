@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
-	const { an, CIF } = await request.json();
+export async function POST(req: Request, { params }: { params: { timestamp: string } }) {
+	const timestamp = new Date(params.timestamp);
+	if (isNaN(timestamp.getTime())) {
+		return new NextResponse("Invalid timestamp", { status: 400 });
+	}
+
+	const { an, CIF } = await req.json();
 
 	if (!an || !CIF) {
 		return NextResponse.json({ message: "Missing required fields" }, { status: 400 });

@@ -48,8 +48,10 @@ const TableCompanyInfo = () => {
 	const getCompanies = async () => {
 		let companiesArray: { CompanyId: String, CompanyName: String }[] = [];
 		try {
-			await fetch(`/api/readCompanyInfo`, {
+			const timestamp = new Date().toISOString();
+			await fetch(`/api/readCompanyInfo/${timestamp}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
 					"Cache-Control": "no-store"
 				}
@@ -75,7 +77,7 @@ const TableCompanyInfo = () => {
 	useEffect(() => {
 		setSearchTerm("");
 		getCompanies();
-	}, []);
+	}, [setSearchTerm]);
 
 	useEffect(() => {
 		const filtered = companies.filter((company) =>

@@ -15,6 +15,7 @@ const DropdownNotification = () => {
                         setDropdownOpen(!dropdownOpen);
                     }}
                     href="#"
+					prefetch={false}
                     className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
                 >
                     <span
@@ -54,6 +55,7 @@ const DropdownNotification = () => {
                                 <Link
                                     className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="#"
+									prefetch={false}
                                 >
                                     <p className="text-sm">
                                         <span className="text-black dark:text-white">
@@ -70,6 +72,7 @@ const DropdownNotification = () => {
                                 <Link
                                     className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="#"
+									prefetch={false}
                                 >
                                     <p className="text-sm">
                                         <span className="text-black dark:text-white">
@@ -85,6 +88,7 @@ const DropdownNotification = () => {
                                 <Link
                                     className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="#"
+									prefetch={false}
                                 >
                                     <p className="text-sm">
                                         <span className="text-black dark:text-white">
@@ -101,6 +105,7 @@ const DropdownNotification = () => {
                                 <Link
                                     className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                                     href="#"
+									prefetch={false}
                                 >
                                     <p className="text-sm">
                                         <span className="text-black dark:text-white">

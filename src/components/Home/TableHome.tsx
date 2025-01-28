@@ -28,11 +28,14 @@ const TableHome = () => {
 
 	const getEmailSMSstatuses = async () => {
 		try {
-			await fetch(`/api/readStatus_emailSMS`, {
+			const timestamp = new Date().toISOString();
+			await fetch(`/api/readStatus_emailSMS/${timestamp}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
+					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
-				}
+				},
 			})
 				.then(response => response.json())
 				.then(data => {
@@ -47,11 +50,14 @@ const TableHome = () => {
 
 	const getAddedDeletedClientsCompaniesStats = async () => {
 		try {
-			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
+			const timestamp = new Date().toISOString();
+			await fetch(`/api/readStats_addedDeletedClientsCompanies/${timestamp}`, {
 				method: "GET",
+				cache: "no-store",
 				headers: {
+					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
-				}
+				},
 			})
 				.then(response => response.json())
 				.then(data => {
@@ -69,7 +75,7 @@ const TableHome = () => {
 		getEmailSMSstatuses();
 		getAddedDeletedClientsCompaniesStats();
 		// console.log(stats);
-	}, []);
+	}, [setSearchTerm]);
 
 	useEffect(() => {
 		const filtered = statuses.filter((status) =>

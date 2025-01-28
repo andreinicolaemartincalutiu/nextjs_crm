@@ -20,25 +20,6 @@ const ChartOne: React.FC = () => {
 	const [valuesClients, setValuesClients] = useState<any>([]);
 	const [valuesCompanies, setValuesCompanies] = useState<any>([]);
 
-	const getStats = async () => {
-		try {
-			await fetch(`/api/readStats_addedDeletedClientsCompanies`, {
-				method: "GET",
-				headers: {
-					"Cache-Control": "no-store"
-				}
-			}).then(response => response.json())
-				.then(data => {
-					setStatsData(data);
-					setxAxisMetric(getNamesOfLast7Days(data[0].Date));
-					setValuesClients(data.slice(0, 7).map((obj: any) => obj.clients).reverse());
-					setValuesCompanies(data.slice(0, 7).map((obj: any) => obj.companies).reverse());
-				})
-		} catch (error) {
-			InfoPopup("Database connection error");
-		}
-	};
-
 	const getNamesOfLast7Days = (dateStr: string): string[] => {
 		const date = new Date(dateStr);
 		const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -160,6 +141,26 @@ const ChartOne: React.FC = () => {
 	};
 
 	useEffect(() => {
+		const getStats = async () => {
+			try {
+				const timestamp = new Date().toISOString();
+				await fetch(`/api/readStats_addedDeletedClientsCompanies/${timestamp}`, {
+					method: "GET",
+					cache: "no-store",
+					headers: {
+						"Cache-Control": "no-store"
+					}
+				}).then(response => response.json())
+					.then(data => {
+						setStatsData(data);
+						setxAxisMetric(getNamesOfLast7Days(data[0].Date));
+						setValuesClients(data.slice(0, 7).map((obj: any) => obj.clients).reverse());
+						setValuesCompanies(data.slice(0, 7).map((obj: any) => obj.companies).reverse());
+					})
+			} catch (error) {
+				InfoPopup("Database connection error");
+			}
+		};
 		getStats();
 	}, []);
 

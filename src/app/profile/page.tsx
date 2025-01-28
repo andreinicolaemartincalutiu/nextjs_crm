@@ -160,6 +160,7 @@ const Profile = () => {
                                 <div className="flex items-center justify-center gap-3.5">
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="hover:text-primary"
                                         aria-label="social-icon"
                                     >
@@ -186,6 +187,7 @@ const Profile = () => {
                                     </Link>
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="hover:text-primary"
                                         aria-label="social-icon"
                                     >
@@ -217,6 +219,7 @@ const Profile = () => {
                                     </Link>
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="hover:text-primary"
                                         aria-label="social-icon"
                                     >
@@ -248,6 +251,7 @@ const Profile = () => {
                                     </Link>
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="hover:text-primary"
                                         aria-label="social-icon"
                                     >
@@ -274,6 +278,7 @@ const Profile = () => {
                                     </Link>
                                     <Link
                                         href="#"
+										prefetch={false}
                                         className="hover:text-primary"
                                         aria-label="social-icon"
                                     >

@@ -35,6 +35,7 @@ const SettingsContent = () => {
 			const Email = sessionStorage.getItem("Email");
 			await fetch(`/api/updatePassword/${Email}`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"

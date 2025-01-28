@@ -43,6 +43,7 @@ export const addClient = async (
 	try {
 		const response = await fetch(`/api/insertClient`, {
 			method: "POST",
+			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store"
@@ -146,6 +147,7 @@ const ModalClients = (props: any) => {
 		try {
 			const response = await fetch(`/api/updateClients/${props.client?.ClientId}`, {
 				method: "PUT",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					"Cache-Control": "no-store"
@@ -180,9 +182,10 @@ const ModalClients = (props: any) => {
 		try {
 			const response = await fetch(`/api/deleteClient/${props.client?.ClientId}`, {
 				method: "DELETE",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
+					// "Cache-Control": "no-store"
 				}
 			});
 
@@ -190,7 +193,7 @@ const ModalClients = (props: any) => {
 				const error = await response.json();
 				throw new Error(`Error: ${error.message}`);
 			}
-			props.deleteClient(props.ClientId);
+			// props.deleteClient(props.ClientId);
 			closeModal;
 		} catch (error) {
 			console.log(error);
