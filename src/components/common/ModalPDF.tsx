@@ -17,11 +17,12 @@ const ModalPDF = (props: any) => {
 
 	const getServices = async () => {
 		try {
-			await fetch("api/readService", {
+			const timestamp = new Date().toISOString();
+			await fetch(`api/readService/${timestamp}`, {
 				method: "GET",
 				cache: "no-store",
 				headers: {
-					"Cache-Control": "no-store"
+					"Content-Type": "application/json",
 				}
 			})
 				.then(response => response.json())

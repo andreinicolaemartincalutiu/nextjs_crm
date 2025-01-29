@@ -10,7 +10,6 @@ const send2FAemail = async (email: string, securityCodeGenerated: string) => {
 			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
-				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				Subject: "Security code",

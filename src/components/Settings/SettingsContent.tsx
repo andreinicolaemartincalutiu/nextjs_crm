@@ -38,7 +38,6 @@ const SettingsContent = () => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Password: crypto.createHash("sha512").update(newPassword, "utf8").digest("hex"),

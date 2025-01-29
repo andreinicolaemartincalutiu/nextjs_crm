@@ -40,10 +40,9 @@ const SignIn: React.FC = () => {
 		try {
 			await fetch(`/api/login`, {
 				method: "PUT",
-				cache: "no-store",
+				// cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Email: email,
@@ -66,7 +65,7 @@ const SignIn: React.FC = () => {
 				});
 		} catch (error) {
 			LoadingPopup(false);
-			InfoPopup("Connection with server failed");
+			InfoPopup("Connection with server failed1");
 		}
 	};
 
@@ -84,12 +83,12 @@ const SignIn: React.FC = () => {
 	const readCompanyInfo = async () => {
 		let companiesArray: { CompanyId: String, CompanyName: String }[] = [];
 		try {
-			await fetch(`/api/readCompanyInfo`, {
+			const timestamp = new Date().toISOString();
+			await fetch(`/api/readCompanyInfo/${timestamp}`, {
 				method: "GET",
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 			}).then(response => response.json())
 				.then((data: any) => {
@@ -97,9 +96,9 @@ const SignIn: React.FC = () => {
 						companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
 					});
 					sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
-				}).catch(error => InfoPopup("Connection with server failed"))
+				})
 		} catch (error) {
-			InfoPopup("Connection with server failed");
+			InfoPopup("Connection with server failed2");
 		}
 	};
 

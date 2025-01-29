@@ -34,7 +34,6 @@ const TableHome = () => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 			})
 				.then(response => response.json())
@@ -56,7 +55,6 @@ const TableHome = () => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 			})
 				.then(response => response.json())

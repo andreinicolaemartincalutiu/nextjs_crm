@@ -17,8 +17,6 @@ export async function GET(req: Request, { params }: { params: { timestamp: strin
 	try {
 		const [rows] = await db.query("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
 
-		console.log(rows)
-
 		const result: QueryResult[] = rows as QueryResult[];
 
 		const response = NextResponse.json(result, {

@@ -72,7 +72,6 @@ const ChartThree: React.FC = () => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 			}).then(response => response.json())
 				.then(data => {

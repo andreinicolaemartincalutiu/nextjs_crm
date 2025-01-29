@@ -56,7 +56,6 @@ const ModalEmailSMS = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify(
 						{
@@ -70,8 +69,9 @@ const ModalEmailSMS = (props: any) => {
 				});
 
 				if (!response.ok) {
+					LoadingPopup(false);
 					InfoPopup(`Failed to send email to ${clientsArrayForEmailsSMSs[i].Email}`);
-					throw new Error(`HTTP error! Status: ${response.status}`);
+					// throw new Error(`HTTP error! Status: ${response.status}`);
 				}
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
@@ -79,7 +79,6 @@ const ModalEmailSMS = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,
@@ -91,10 +90,12 @@ const ModalEmailSMS = (props: any) => {
 				});
 
 				if (!res2.ok) {
+					LoadingPopup(false);
 					InfoPopup(`Failed to add sent Email to ${clientsArrayForEmailsSMSs[i].Email} in database`);
-					throw new Error(`HTTP error! Status: ${res2.status}`);
+					// throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
+				LoadingPopup(false);
 				InfoPopup(`Failed to send email to ${clientsArrayForEmailsSMSs[i].Email}`);
 			}
 		}
@@ -111,6 +112,7 @@ const ModalEmailSMS = (props: any) => {
 			InfoPopup("Compose SMS");
 			return;
 		}
+		LoadingPopup(true);
 		for (let i = 0; i < clientsArrayForEmailsSMSs.length; ++i) {
 			try {
 				const res = await fetch("/api/sendSMS", {
@@ -118,7 +120,6 @@ const ModalEmailSMS = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						to: clientsArrayForEmailsSMSs[i].Phone,
@@ -127,17 +128,21 @@ const ModalEmailSMS = (props: any) => {
 				});
 
 				const data = await res.json();
+				console.log(data)
+				console.log(!data.success)
 				if (!data.success) {
+					console.log(1)
+					LoadingPopup(false);
 					InfoPopup(`Failed to send SMS to ${clientsArrayForEmailsSMSs[i].Phone}`);
-					throw new Error(`HTTP error! Status: ${data.error}`);
+					// throw new Error(`HTTP error! Status: ${data.error}`);
 				}
+				console.log(2)
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: clientsArrayForEmailsSMSs[i].FirstName,
@@ -150,15 +155,18 @@ const ModalEmailSMS = (props: any) => {
 
 				const data2 = await res2.json();
 				if (!data2.success) {
+					LoadingPopup(false);
 					InfoPopup(`Failed to add sent SMS to ${clientsArrayForEmailsSMSs[i].Phone} in database`);
-					throw new Error(`HTTP error! Status: ${data.error}`);
+					// throw new Error(`HTTP error! Status: ${data.error}`);
 				}
 			} catch (error) {
-				console.log(`Error: ${error}`);
+				LoadingPopup(false);
+				// console.log(`Error: ${error}`);
 				InfoPopup(`Failed to send SMS to ${clientsArrayForEmailsSMSs[i].Phone}`);
 			}
 		}
-		InfoPopup("Finished to send SMS");
+		LoadingPopup(false);
+		// InfoPopup("Finished to send SMS");
 	};
 
 	return (

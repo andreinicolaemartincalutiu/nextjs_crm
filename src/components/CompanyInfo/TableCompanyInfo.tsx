@@ -53,7 +53,7 @@ const TableCompanyInfo = () => {
 				method: "GET",
 				cache: "no-store",
 				headers: {
-					"Cache-Control": "no-store"
+					"Content-Type": "application/json",
 				}
 			})
 				.then(response => {

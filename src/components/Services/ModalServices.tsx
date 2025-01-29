@@ -14,7 +14,6 @@ export const addService = async (name: string | undefined, description: string |
 			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
-				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				Name: name,
@@ -61,7 +60,6 @@ const ModalServices = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					Name: name,
@@ -93,7 +91,6 @@ const ModalServices = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				}
 			});
 

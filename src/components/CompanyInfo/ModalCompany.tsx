@@ -72,7 +72,6 @@ export const addCompany = async (
 			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
-				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				CompanyName: companyName,
@@ -179,7 +178,6 @@ const ModalCompany = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					CompanyName: companyName,
@@ -223,7 +221,6 @@ const ModalCompany = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				}
 			});
 		} catch (error) {
@@ -248,7 +245,6 @@ const ModalCompany = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 			});
 
@@ -272,7 +268,6 @@ const ModalCompany = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					an: currentYear,
@@ -294,7 +289,6 @@ const ModalCompany = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						an: currentYear,

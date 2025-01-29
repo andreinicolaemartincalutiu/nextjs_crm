@@ -103,7 +103,6 @@ const ChartTwo: React.FC = () => {
 				// 	cache: "no-store",
 				// 	headers: {
 				// 		"Content-Type": "application/json",
-				// 		"Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
 				// 	},
 				// }).then(response => response.json())
 				// 	.then(data => {
@@ -112,6 +111,7 @@ const ChartTwo: React.FC = () => {
 				// 		console.log(data[0])
 				// 		setDailyTotals(data[0]);
 				// 	})
+
 				const timestamp = new Date().toISOString();
 				const res = await fetch(`/api/readDailyTotals/${timestamp}`, {
 					method: "GET",

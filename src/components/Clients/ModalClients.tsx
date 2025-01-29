@@ -46,7 +46,6 @@ export const addClient = async (
 			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
-				"Cache-Control": "no-store"
 			},
 			body: JSON.stringify({
 				FirstName: firstName,
@@ -150,7 +149,6 @@ const ModalClients = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "no-store"
 				},
 				body: JSON.stringify({
 					FirstName: firstName,
@@ -185,7 +183,6 @@ const ModalClients = (props: any) => {
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
-					// "Cache-Control": "no-store"
 				}
 			});
 

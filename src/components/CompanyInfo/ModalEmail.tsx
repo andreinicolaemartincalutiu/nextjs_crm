@@ -52,7 +52,6 @@ const ModalEmail = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify(
 						{
@@ -74,7 +73,6 @@ const ModalEmail = (props: any) => {
 					cache: "no-store",
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "no-store"
 					},
 					body: JSON.stringify({
 						firstName: emailAddressesToSendEmailArray[i].FirstName,
