@@ -7,7 +7,7 @@ import FloatingButton from "@/components/Clients/FLoatingButton";
 export const metadata: Metadata = {
 	title: "Clients",
 	description:
-		"This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+		"This is Next.js Tables page for CRM - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 const Clients = () => {

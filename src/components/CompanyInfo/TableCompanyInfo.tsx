@@ -131,7 +131,7 @@ const TableCompanyInfo = () => {
 
 				<div className="w-full flex flex-col items-end">
 					<h6>
-						<label htmlFor="modalEmail" className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }}>
+						<label htmlFor="modalEmail" className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} title="Email">
 							<svg
 								className="fill-current"
 								width="22"
@@ -153,7 +153,7 @@ const TableCompanyInfo = () => {
 
 						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
 							<>
-								<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick}>
+								<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick} title="Import data">
 									<svg
 										className="fill-current"
 										width="22"

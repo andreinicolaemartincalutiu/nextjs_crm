@@ -6,7 +6,7 @@ import Charts from "@/components/Home/Charts";
 export const metadata: Metadata = {
 	title: "Home",
 	description:
-		"This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+		"This is Next.js Tables page for CRM - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 const Home = () => {

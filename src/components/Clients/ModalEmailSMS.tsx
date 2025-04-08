@@ -243,6 +243,7 @@ const ModalEmailSMS = (props: any) => {
 							className="btn"
 							htmlFor={props.modalId2}
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
+							title="Attach PDF for email"
 						>
 							<svg
 								className="fill-current"
@@ -264,6 +265,7 @@ const ModalEmailSMS = (props: any) => {
 						<button className="btn"
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 							onClick={sendEmails}
+							title="Send email"
 						>
 							<svg
 								className="fill-current"
@@ -282,6 +284,7 @@ const ModalEmailSMS = (props: any) => {
 						<button className="btn"
 							style={{ color: "white", backgroundColor: "#007bff", padding: "10px 20px", margin: "0.5rem" }}
 							onClick={sendSMSs}
+							title="Send SMS"
 						>
 							<svg
 								className="fill-current"

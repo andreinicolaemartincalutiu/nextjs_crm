@@ -76,7 +76,7 @@ const TableServices = () => {
 				</h4>
 				{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
 					<div className="w-full flex flex-col items-end">
-						<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick}>
+						<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick} title="Import data">
 							<svg
 								className="fill-current"
 								width="22"

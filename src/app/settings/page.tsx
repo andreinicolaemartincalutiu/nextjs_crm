@@ -4,7 +4,7 @@ import SettingsContent from "@/components/Settings/SettingsContent";
 
 export const metadata: Metadata = {
 	title: "Settings",
-	description: "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+	description: "This is Next.js Settings page for CRM - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 const Settings = () => {

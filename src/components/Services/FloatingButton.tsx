@@ -10,7 +10,7 @@ const FloatingButton = () => {
 		<>
 			{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
 			<>
-				<label htmlFor="modalServiceFloatingButton" className="floating-button">
+				<label htmlFor="modalServiceFloatingButton" className="floating-button" title="Add new item">
 					+
 				</label>
 				<ModalServices modalId="modalServiceFloatingButton" Name={""} Description={""} Price={""} secondButton={true} />

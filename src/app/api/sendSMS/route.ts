@@ -8,9 +8,6 @@ const twilioClient = twilio(accountSid, twilAuthToken);
 export async function POST(req: Request) {
 	const { to, message } = await req.json();
 
-	console.log(to)
-	console.log(message)
-
 	const url = 'https://d7-verify.p.rapidapi.com/verify/v1/otp/send-otp';
 	const options = {
 		method: 'POST',

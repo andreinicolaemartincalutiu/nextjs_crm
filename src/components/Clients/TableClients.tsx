@@ -118,7 +118,7 @@ const TableClients = () => {
 
 				<div className="flex flex-col items-end w-full h-[100%]">
 					<h6 className="h-[100%]">
-						<label htmlFor="modalEmailSMS" className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }}>
+						<label htmlFor="modalEmailSMS" className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} title="Email / SMS">
 							<svg
 								className="fill-current"
 								width="22"
@@ -140,7 +140,7 @@ const TableClients = () => {
 
 						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? (
 							<>
-								<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick}>
+								<button className="btn" style={{ color: "white", backgroundColor: "#007bff", margin: "3px" }} onClick={handleButtonClick} title="Import data">
 									<svg
 										className="fill-current"
 										width="22"

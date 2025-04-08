@@ -19,8 +19,6 @@ export async function PUT(req: Request, { params }: { params: { ClientId: string
 			[FirstName, LastName, CI, CNP, CompanyId, CompanyRole, Address, Email, Phone, Interests, BirthDate, Details, ClientId]
 		);
 
-		console.log(result)
-
 		if (result[0].length === 0) {
 			return NextResponse.json({ message: "Client not found" }, { status: 404 });
 		}

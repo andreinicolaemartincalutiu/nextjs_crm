@@ -110,14 +110,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 			>
 				{/* <!-- SIDEBAR HEADER --> */}
 				<div className="flex items-center justify-between gap-2 px-3 py-5.5 lg:py-6.5">
-					<div>
+					<div style={{ display: "flex", alignItems: "center", gap: "20px", marginTop: "35px" }}>
 						<Image
-							width={170}
-							height={32}
-							src={"/images/logo/logo.svg"}
+							width={50}
+							height={50}
+							src={"/images/favicon.ico"}
+							// src={"/images/logo/logo.svg"}
 							alt="Logo"
 							priority
 						/>
+						<h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white" }}>CRM</h2>
 					</div>
 
 					<button
