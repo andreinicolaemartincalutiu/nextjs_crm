@@ -1,17 +1,28 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtVerify } from "jose";
 
-// Define protected routes
 const protectedRoutes = ['/home', '/clients', '/company_info', '/services', '/settings'];
+const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-export function middleware(request: NextRequest) {
-	const token = request.cookies.get('enkot'); // Replace with your cookie name
+async function isValidToken(token: string): Promise<boolean> {
+	try {
+		const { payload } = await jwtVerify(token, secret);
+		return true;
+	} catch (err) {
+		console.warn("Invalid token:", err);
+		return false;
+	}
+}
 
-	// Check if the route is protected
-	if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-		if (!token) {
-			// Redirect to login if no valid token is found
-			const loginUrl = new URL('/', request.url);
+export async function middleware(request: NextRequest) {
+	const { pathname } = request.nextUrl;
+
+	if (protectedRoutes.some(route => pathname.startsWith(route))) {
+		const token = request.cookies.get("auth-token")?.value;
+
+		if (!token || !(await isValidToken(token))) {
+			const loginUrl = new URL("/", request.url);
 			return NextResponse.redirect(loginUrl);
 		}
 	}

@@ -8,7 +8,7 @@ export async function POST() {
 	try {
 		response.headers.set(
 			"Set-Cookie",
-			serialize("enkot", "", {
+			serialize("auth-token", "", {
 				httpOnly: true,
 				secure: process.env.NODE_ENV === "production",
 				maxAge: -1, // Invalidate the cookie
@@ -16,12 +16,12 @@ export async function POST() {
 			})
 		);
 	} catch {
-		return NextResponse.json({ message: "Failed to logout user" }, { status: 500 });
+		return NextResponse.json({ message: "Failed to logout user", status: 500 });
 	}
 
 	return response;
 }
 
 export function OPTIONS() {
-	return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
+	return NextResponse.json({ message: "Method not allowed", status: 405 });
 }

@@ -13,7 +13,7 @@ const SignIn: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [isVisibleInputEmailCode, setIsVisibleInputEmailCode] = useState<boolean>(false);
-	const [securityCodeGenerated, setSecurityCodeGenerated] = useState<string>(generateRandomSixDigitNumber().toString());
+	const [securityCodeGenerated] = useState<string>(generateRandomSixDigitNumber().toString());
 	const [securityCodeFromInput, setSecurityCodeFromInput] = useState<string>("");
 
 	const send2FAemailHandle = async () => {
@@ -35,11 +35,10 @@ const SignIn: React.FC = () => {
 			InfoPopup("Type email and password.")
 			return;
 		}
-		const sessionID = getSessionID();
 		LoadingPopup(true);
 		try {
 			await fetch(`/api/login`, {
-				method: "PUT",
+				method: "POST",
 				// cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
@@ -47,37 +46,25 @@ const SignIn: React.FC = () => {
 				body: JSON.stringify({
 					Email: email,
 					Password: createHash("sha512").update(password, "utf8").digest("hex"),
-					SessionID: sessionID,
 				}),
-			}).then(response => response.json())
-				.then(async data => {
-					LoadingPopup(false);
-					if (data.message === "User not found") {
-						InfoPopup("Invalid user or password");
-					} else {
-						sessionStorage.setItem("EmployeeId", data[0][0].EmployeeId);
-						sessionStorage.setItem("Name", data[0][0].Name);
-						sessionStorage.setItem("Level", createHash("sha512").update(data[0][0].Level, "utf8").digest("hex"));
-						sessionStorage.setItem("Level2", data[0][0].Level);
-						sessionStorage.setItem("Email", data[0][0].Email);
-						send2FAemailHandle();
-					}
-				});
+			}).then(async response => {
+				const data = await response.json();
+				LoadingPopup(false);
+				if (response.status !== 200) {
+					InfoPopup(data.message);
+				} else {
+					sessionStorage.setItem("EmployeeId", data[0].EmployeeId);
+					sessionStorage.setItem("Name", data[0].Name);
+					sessionStorage.setItem("Level", createHash("sha512").update(data[0].Level, "utf8").digest("hex"));
+					sessionStorage.setItem("Level2", data[0].Level);
+					sessionStorage.setItem("Email", data[0].Email);
+					send2FAemailHandle();
+				}
+			});
 		} catch (error) {
 			LoadingPopup(false);
 			InfoPopup("Connection with server failed1");
 		}
-	};
-
-	const getSessionID = () => {
-		const cookies = document.cookie.split(";");
-		for (const cookie of cookies) {
-			const [name, value] = cookie.trim().split("=");
-			if (name === "sessionId") {
-				return createHash("sha512").update(value, "utf8").digest("hex");
-			}
-		}
-		return createHash("sha512").update("akrapovic", "utf8").digest("hex");
 	};
 
 	const readCompanyInfo = async () => {

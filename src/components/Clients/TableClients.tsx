@@ -100,9 +100,6 @@ const TableClients = () => {
 	};
 
 	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
-		// console.log(offerServicesArray)
-		// console.log(discountPercent)
-		// console.log(offerDescription)
 
 		setOfferServicesArray(offerServicesArray);
 		setDiscountPercent(discountPercent);

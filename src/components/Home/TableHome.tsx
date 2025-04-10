@@ -72,7 +72,6 @@ const TableHome = () => {
 		setSearchTerm("");
 		getEmailSMSstatuses();
 		getAddedDeletedClientsCompaniesStats();
-		// console.log(stats);
 	}, [setSearchTerm]);
 
 	useEffect(() => {

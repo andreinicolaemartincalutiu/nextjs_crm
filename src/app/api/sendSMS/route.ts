@@ -34,12 +34,8 @@ export async function POST(req: Request) {
 
 		const response = await fetch(url, options);
 		const result = await response.text();
-		return NextResponse.json({ success: true, messageSid: result }, { status: 200 });
-
-
-		// return NextResponse.json({ success: true, messageSid: messageResponse.sid }, { status: 200 });
+		return NextResponse.json({ success: true, messageSid: result, status: 200 });
 	} catch (error: any) {
-		console.log("Error sending SMS:", error);
-		return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+		return NextResponse.json({ success: false, error: error.message, status: 500 });
 	}
 }

@@ -128,15 +128,11 @@ const ModalEmailSMS = (props: any) => {
 				});
 
 				const data = await res.json();
-				console.log(data)
-				console.log(!data.success)
 				if (!data.success) {
-					console.log(1)
 					LoadingPopup(false);
 					InfoPopup(`Failed to send SMS to ${clientsArrayForEmailsSMSs[i].Phone}`);
 					// throw new Error(`HTTP error! Status: ${data.error}`);
 				}
-				console.log(2)
 
 				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
 					method: "POST",
@@ -161,7 +157,6 @@ const ModalEmailSMS = (props: any) => {
 				}
 			} catch (error) {
 				LoadingPopup(false);
-				// console.log(`Error: ${error}`);
 				InfoPopup(`Failed to send SMS to ${clientsArrayForEmailsSMSs[i].Phone}`);
 			}
 		}

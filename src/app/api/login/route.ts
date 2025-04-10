@@ -1,50 +1,45 @@
 import pool from "@/lib/db";
+import { NextResponse } from "next/server";
 import { serialize } from "cookie";
+import { SignJWT } from "jose";
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
 	try {
-		const { Email, Password, SessionID } = await request.json();
+		const { Email, Password } = await request.json();
 
 		if (!Email || !Password) {
-			return new Response(JSON.stringify({ message: "Missing required fields" }), {
-				status: 400,
-				headers: { "Content-Type": "application/json" },
-			});
+			return NextResponse.json({ message: "Missing required fields", status: 400 });
 		}
 
-		const result: any = await pool.query(
+		const [result]: any = await pool.execute(
 			"SELECT * FROM Employee WHERE Email = ? AND Password = ?",
 			[Email, Password]
 		);
 
-		if (result[0].length === 0) {
-			return new Response(JSON.stringify({ message: "User not found" }), {
-				status: 404,
-				headers: { "Content-Type": "application/json" },
-			});
+		const user = (result as any[])[0];
+
+		if (!user) {
+			return NextResponse.json({ message: "User not found", status: 404 });
 		}
 
-		const response = new Response(JSON.stringify(result), {
-			status: 200,
-			headers: { "Content-Type": "application/json" },
-		});
+		const token = new TextEncoder().encode(process.env.JWT_SECRET);
+		const jwt = await new SignJWT({ email: user.Email })
+			.setProtectedHeader({ alg: "HS256" })
+			.setExpirationTime("1h")
+			.sign(token);
 
-		const token = SessionID;
-
-		const cookie = serialize("enkot", token, {
+		const cookie = serialize("auth-token", jwt, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			maxAge: 60 * 60, // 1 hour
 			path: "/",
+			sameSite: "lax",
 		});
-		response.headers.append("Set-Cookie", cookie);
-
+		const response = NextResponse.json(result, { status: 200 });
+		response.headers.set("Set-Cookie", cookie);
 		return response;
+
 	} catch (error) {
-		console.log(error);
-		return new Response(JSON.stringify({ message: "Error fetching users" }), {
-			status: 500,
-			headers: { "Content-Type": "application/json" },
-		});
+		return NextResponse.json({ message: "Connection failed", status: 500 });
 	}
 };

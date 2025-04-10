@@ -11,11 +11,11 @@ export async function GET(req: Request, { params }: { params: { timestamp: strin
 
 	const timestamp = new Date(params.timestamp);
 	if (isNaN(timestamp.getTime())) {
-		return new NextResponse("Invalid timestamp", { status: 400 });
+		return NextResponse.json({ message: "Invalid timestamp", status: 400 });
 	}
 
 	try {
-		const [rows] = await db.query("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
+		const [rows] = await db.execute("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
 
 		const result: QueryResult[] = rows as QueryResult[];
 
@@ -33,7 +33,8 @@ export async function GET(req: Request, { params }: { params: { timestamp: strin
 		return response;
 	} catch (error: unknown) {
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-		const errorResponse = NextResponse.json({ error: errorMessage }, {
+		const errorResponse = NextResponse.json({ 
+			error: errorMessage,
 			status: 500,
 			headers: {
 				"Cache-Control": "no-store, max-age=0, no-cache, must-revalidate, proxy-revalidate",

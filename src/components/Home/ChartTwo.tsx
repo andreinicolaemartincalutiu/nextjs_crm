@@ -106,9 +106,6 @@ const ChartTwo: React.FC = () => {
 				// 	},
 				// }).then(response => response.json())
 				// 	.then(data => {
-				// 		console.log(data)
-				// 		console.log("yoy")
-				// 		console.log(data[0])
 				// 		setDailyTotals(data[0]);
 				// 	})
 

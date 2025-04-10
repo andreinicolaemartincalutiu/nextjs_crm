@@ -88,7 +88,6 @@ const ModalEmail = (props: any) => {
 					throw new Error(`HTTP error! Status: ${res2.status}`);
 				}
 			} catch (error) {
-				console.log(error);
 				InfoPopup(`Failed to send email to ${emailAddressesToSendEmailArray[i].Email}`);
 			}
 		}

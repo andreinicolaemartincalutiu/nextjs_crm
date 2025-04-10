@@ -6,18 +6,17 @@ export async function DELETE(request: Request, { params }: { params: { CompanyId
 		const { CompanyId } = params;
 
 		if (!CompanyId) {
-			return NextResponse.json({ message: "CompanyInfo ID is required" }, { status: 400 });
+			return NextResponse.json({ message: "CompanyInfo ID is required", status: 400 });
 		}
 
-		const result: any = await pool.query("DELETE FROM CompanyInfo WHERE CompanyId = ?", [CompanyId]);
+		const result: any = await pool.execute("DELETE FROM CompanyInfo WHERE CompanyId = ?", [CompanyId]);
 
 		if (result[0].length === 0) {
-			return NextResponse.json({ message: "CompanyInfo not found" }, { status: 404 });
+			return NextResponse.json({ message: "CompanyInfo not found", status: 404 });
 		}
 
-		return NextResponse.json({ message: "CompanyInfo deleted successfully" }, { status: 200 });
+		return NextResponse.json({ message: "CompanyInfo deleted successfully", status: 200 });
 	} catch (error) {
-		console.log("Error deleting CompanyInfo:", error);
-		return NextResponse.json({ message: "Error deleting CompanyInfo" }, { status: 500 });
+		return NextResponse.json({ message: "Error deleting CompanyInfo", status: 500 });
 	}
 }

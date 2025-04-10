@@ -41,8 +41,6 @@ class MailSender {
 					}
 				]
 			};
-
-			// console.log("Sending email with attachment:", mailOptions);
 		} else {
 			mailOptions = {
 				from: "'CRM' <office@brandtransilvania.ro>",
@@ -50,15 +48,11 @@ class MailSender {
 				subject: subject,
 				text: body,
 			};
-
-			// console.log("Sending email without attachment:", mailOptions);
 		}
 
 		try {
 			await this.transporter.sendMail(mailOptions);
-			console.log("Email sent successfully");
 		} catch (error) {
-			console.log("Error sending email:", error);
 			throw error;
 		}
 	}

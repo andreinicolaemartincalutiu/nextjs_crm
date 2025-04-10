@@ -29,7 +29,6 @@ export const addCompany = async (
 	modalId?: string,
 	anafApiCalledStatus?: boolean
 ) => {
-	console.log(isActive)
 	let modalInput, addSuccessfuly = "0";
 	if (modalId) {
 		modalInput = document.getElementById(modalId) as HTMLInputElement;
@@ -97,8 +96,6 @@ export const addCompany = async (
 				IsActive: isActive,
 			}),
 		});
-		console.log(response);
-		console.log(!response.ok)
 		if (!response.ok) {
 			if (modalInput?.checked) {
 				InfoPopup("Changes not saved");
@@ -302,7 +299,6 @@ const ModalCompany = (props: any) => {
 
 				const data2 = await response2.json();
 				dataApi2 = data2;
-				// console.log("Second API Response:", data2);
 			}
 			LoadingPopup(false);
 

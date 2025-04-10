@@ -1,6 +1,5 @@
 function GenerateTSV(items: any[]): void {
 	// Convert array items to a TSV-compatible format
-	console.log(items);
 	const tsvContent = items
 		.map(item => {
 			// Convert objects to tab-separated values

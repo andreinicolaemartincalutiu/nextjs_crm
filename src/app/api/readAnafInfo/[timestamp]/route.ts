@@ -3,13 +3,13 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request, { params }: { params: { timestamp: string } }) {
 	const timestamp = new Date(params.timestamp);
 	if (isNaN(timestamp.getTime())) {
-		return new NextResponse("Invalid timestamp", { status: 400 });
+		return NextResponse.json({ message: "Invalid timestamp", status: 400 });
 	}
 
 	const { an, CIF } = await req.json();
 
 	if (!an || !CIF) {
-		return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+		return NextResponse.json({ message: "Missing required fields", status: 400 });
 	}
 	try {
 		const response = await fetch(`https://webservicesp.anaf.ro/bilant?an=${an}&cui=${encodeURIComponent(CIF)}`, {
@@ -19,12 +19,10 @@ export async function POST(req: Request, { params }: { params: { timestamp: stri
 				"Cache-Control": "no-store"
 			},
 		});
-		console.log(1);
 		const data = await response.json();
-		console.log(2);
 		return NextResponse.json(data, { status: 200 });
 
 	} catch (error: any) {
-		return NextResponse.json({ message: "Error fetching Anaf data" }, { status: 500 });
+		return NextResponse.json({ message: "Error fetching Anaf data", status: 500 });
 	}
 };

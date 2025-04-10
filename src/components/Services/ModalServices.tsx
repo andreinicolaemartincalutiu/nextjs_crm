@@ -79,7 +79,6 @@ const ModalServices = (props: any) => {
 			}
 		} catch (error) {
 			InfoPopup("Connection error. Try again");
-			console.log(error);
 		}
 	}
 
