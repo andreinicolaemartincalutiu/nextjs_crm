@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import twilio from "twilio";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID as string;
 const twilAuthToken = process.env.TWILIO_AUTH_TOKEN as string;
 const twilioClient = twilio(accountSid, twilAuthToken);
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
 	const { to, message } = await req.json();
 
 	const url = 'https://d7-verify.p.rapidapi.com/verify/v1/otp/send-otp';
@@ -32,10 +32,10 @@ export async function POST(req: Request) {
 		// 	from: process.env.TWILIO_PHONE_NUMBER, // From a valid Twilio number
 		// });
 
-		const response = await fetch(url, options);
-		const result = await response.text();
-		return NextResponse.json({ success: true, messageSid: result, status: 200 });
+		const resp = await fetch(url, options);
+		const response = await resp.text();
+		return NextResponse.json({ message: "Success", status: 200 }, { status: 200 });
 	} catch (error: any) {
-		return NextResponse.json({ success: false, error: error.message, status: 500 });
+		return NextResponse.json({ message: "Fail", status: 500 }, { status: 500 });
 	}
 }

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import InfoPopup from "@/components/common/InfoPopup";
 import LoadingPopup from "@/components/common/LoadingPopup";
 import { createHash } from "crypto";
+import { Company, getEmptyCompany } from "@/types/Company";
 
 export const addCompany = async (
 	companyName: string | undefined,
@@ -30,40 +31,106 @@ export const addCompany = async (
 	anafApiCalledStatus?: boolean
 ) => {
 	let modalInput, addSuccessfuly = "0";
-	if (modalId) {
+	if (modalId) { // add data manualy
 		modalInput = document.getElementById(modalId) as HTMLInputElement;
+		if (!TVA || !shareholders || !CIF || !subsidiary || !mainActivity || !email) {
+			if (modalInput?.checked) {
+				InfoPopup("Missing some required fields");
+			}
+			return addSuccessfuly;
+		}
 		if (anafApiCalledStatus === false) {
 			InfoPopup("Load Data first");
 			return;
 		}
-	}
-
-	if (companyName === "" || companyName === undefined || companyName === null ||
-		TVA === "" || TVA === undefined || TVA === null ||
-		shareholders === "" || shareholders === undefined || shareholders === null ||
-		CIF === "" || CIF === undefined || CIF === null ||
-		COM === "" || COM === undefined || COM === null ||
-		headquarter === "" || headquarter === undefined || headquarter === null ||
-		subsidiary === "" || subsidiary === undefined || subsidiary === null ||
-		mainActivity === "" || mainActivity === undefined || mainActivity === null ||
-		secondaryActivity === "" || secondaryActivity === undefined || secondaryActivity === null ||
-		interests === "" || interests === undefined || interests === null ||
-		email === "" || email === undefined || email === null ||
-		region === "" || region === undefined || region === null ||
-		employees === "" || employees === undefined || employees === null ||
-		dataYear === "" || dataYear === undefined || dataYear === null ||
-		profit === "" || profit === undefined || profit === null ||
-		loss === "" || loss === undefined || loss === null ||
-		turnover === "" || turnover === undefined || turnover === null ||
-		capital === "" || capital === undefined || capital === null ||
-		liabilities === "" || liabilities === undefined || liabilities === null ||
-		assets === "" || assets === undefined || assets === null ||
-		isActive === "" || isActive === undefined || isActive === null
-	) {
-		if (modalInput?.checked) {
-			InfoPopup("Missing some required fields");
+		if (companyName === "") {
+			companyName = "-";
 		}
-		return addSuccessfuly;
+		if (TVA === "") {
+			TVA = "-"
+		}
+		if (shareholders === "") {
+			shareholders = "-"
+		}
+		if (CIF === "") {
+			CIF = "-"
+		}
+		if (COM === "") {
+			COM = "-";
+		}
+		if (headquarter === "") {
+			headquarter = "-";
+		}
+		if (subsidiary === "") {
+			subsidiary = "-";
+		}
+		if (mainActivity === "") {
+			mainActivity = "-";
+		}
+		if (secondaryActivity === "") {
+			secondaryActivity = "-";
+		}
+		if (interests === "") {
+			interests = "-";
+		}
+		if (email === "") {
+			email = "-";
+		}
+		if (region === "") {
+			region = "-";
+		}
+		if (employees === "") {
+			employees = "-";
+		}
+		if (dataYear === "") {
+			dataYear = "-";
+		}
+		if (profit === "") {
+			profit = "-";
+		}
+		if (loss === "") {
+			loss = "-";
+		}
+		if (turnover === "") {
+			turnover = "-";
+		}
+		if (capital === "") {
+			capital = "-";
+		}
+		if (liabilities === "") {
+			liabilities = "-";
+		}
+		if (assets === "") {
+			assets = "-";
+		}
+		if (isActive === "") {
+			assets = "-";
+		}
+	} else { // add data with import tsv
+		if (companyName === "" || companyName === undefined || companyName === null ||
+			TVA === "" || TVA === undefined || TVA === null ||
+			shareholders === "" || shareholders === undefined || shareholders === null ||
+			CIF === "" || CIF === undefined || CIF === null ||
+			COM === "" || COM === undefined || COM === null ||
+			headquarter === "" || headquarter === undefined || headquarter === null ||
+			subsidiary === "" || subsidiary === undefined || subsidiary === null ||
+			mainActivity === "" || mainActivity === undefined || mainActivity === null ||
+			secondaryActivity === "" || secondaryActivity === undefined || secondaryActivity === null ||
+			interests === "" || interests === undefined || interests === null ||
+			email === "" || email === undefined || email === null ||
+			region === "" || region === undefined || region === null ||
+			employees === "" || employees === undefined || employees === null ||
+			dataYear === "" || dataYear === undefined || dataYear === null ||
+			profit === "" || profit === undefined || profit === null ||
+			loss === "" || loss === undefined || loss === null ||
+			turnover === "" || turnover === undefined || turnover === null ||
+			capital === "" || capital === undefined || capital === null ||
+			liabilities === "" || liabilities === undefined || liabilities === null ||
+			assets === "" || assets === undefined || assets === null ||
+			isActive === "" || isActive === undefined || isActive === null
+		) {
+			return addSuccessfuly;
+		}
 	}
 	try {
 		const response = await fetch(`/api/insertCompanyInfo`, {
@@ -114,130 +181,170 @@ export const addCompany = async (
 		console.log(error);
 	}
 	return addSuccessfuly;
-}
+};
 
 const ModalCompany = (props: any) => {
 	const userPermissions = sessionStorage.getItem("Level");
-	const [companyName, setCompanyName] = useState(props.company?.CompanyName ?? "");
-	const [TVA, setTVA] = useState(props.company?.TVA ?? "");
-	const [shareholders, setShareholders] = useState(props.company?.Shareholders ?? "");
-	const [CIF, setCIF] = useState(props.company?.CIF ?? "");
-	const [COM, setCOM] = useState(props.company?.COM ?? "");
-	const [headquarter, setHeadquarter] = useState(props.company?.Headquarter ?? "");
-	const [subsidiary, setSubsidiary] = useState(props.company?.Subsidiary ?? "");
-	const [mainActivity, setMainActivity] = useState(props.company?.MainActivity ?? "");
-	const [secondaryActivity, setSecondaryActivity] = useState(props.company?.SecondaryActivity ?? "");
-	const [interests, setInterests] = useState(props.company?.Interests ?? "");
-	const [email, setEmail] = useState(props.company?.Email ?? "");
-	const [region, setRegion] = useState(props.company?.Region ?? "");
-	const [employees, setEmployees] = useState(props.company?.Employees ?? "");
-	const statusEmail = useState(props.company?.StatusEmail ?? "");
-	const [dataYear, setDataYear] = useState(props.company?.DataYear ?? "");
-	const [profit, setProfit] = useState(props.company?.Profit ?? "");
-	const [loss, setLoss] = useState(props.company?.Loss ?? "");
-	const [turnover, setTurnover] = useState(props.company?.Turnover ?? "");
-	const [capital, setCapital] = useState(props.company?.Capital ?? "");
-	const [liabilities, setLiabilities] = useState(props.company?.Liabilities ?? "");
-	const [assets, setAssets] = useState(props.company?.Assets ?? "");
-	const [isActive, setIsActive] = useState(props.company?.IsActive ?? "");
+	const [company, setCompany] = useState<Company>(props?.company ?? getEmptyCompany());
 	const [anafApiCalledStatus, setAnafApiCalledStatus] = useState<boolean>(false);
 
-	const saveCompanyChanges = async () => {
-		if (companyName === "" || companyName === undefined || companyName === null ||
-			TVA === "" || TVA === undefined || TVA === null ||
-			shareholders === "" || shareholders === undefined || shareholders === null ||
-			CIF === "" || CIF === undefined || CIF === null ||
-			COM === "" || COM === undefined || COM === null ||
-			headquarter === "" || headquarter === undefined || headquarter === null ||
-			subsidiary === "" || subsidiary === undefined || subsidiary === null ||
-			mainActivity === "" || mainActivity === undefined || mainActivity === null ||
-			secondaryActivity === "" || secondaryActivity === undefined || secondaryActivity === null ||
-			interests === "" || interests === undefined || interests === null ||
-			email === "" || email === undefined || email === null ||
-			region === "" || region === undefined || region === null ||
-			employees === "" || employees === undefined || employees === null ||
-			dataYear === "" || dataYear === undefined || dataYear === null ||
-			profit === "" || profit === undefined || profit === null ||
-			loss === "" || loss === undefined || loss === null ||
-			turnover === "" || turnover === undefined || turnover === null ||
-			capital === "" || capital === undefined || capital === null ||
-			liabilities === "" || liabilities === undefined || liabilities === null ||
-			assets === "" || assets === undefined || assets === null ||
-			isActive === "" || isActive === undefined || isActive === null
-		) {
+	const updateCompany = async () => {
+		if (!company.TVA || !company.Shareholders || !company.CIF || !company.Subsidiary || !company.MainActivity || !company.Email) {
 			InfoPopup("Missing some required fields");
 			return;
 		}
-
+		if (company.CompanyName === "") {
+			company.CompanyName = "-";
+		}
+		if (company.TVA === "") {
+			company.TVA = "-";
+		}
+		if (company.Shareholders === "") {
+			company.Shareholders = "-";
+		}
+		if (company.CIF === "") {
+			company.CIF = "-";
+		}
+		if (company.COM === "") {
+			company.COM = "-";
+		}
+		if (company.Headquarter === "") {
+			company.Headquarter = "-";
+		}
+		if (company.Subsidiary === "") {
+			company.Subsidiary = "-";
+		}
+		if (company.MainActivity === "") {
+			company.MainActivity = "-";
+		}
+		if (company.SecondaryActivity === "") {
+			company.SecondaryActivity = "-";
+		}
+		if (company.Interests === "") {
+			company.Interests = "-";
+		}
+		if (company.Email === "") {
+			company.Email = "-";
+		}
+		if (company.Region === "") {
+			company.Region = "-";
+		}
+		if (company.Employees === "") {
+			company.Employees = "-";
+		}
+		if (company.DataYear === "") {
+			company.DataYear = "-";
+		}
+		if (company.Profit === "") {
+			company.Profit = "-";
+		}
+		if (company.Loss === "") {
+			company.Loss = "-";
+		}
+		if (company.Turnover === "") {
+			company.Turnover = "-";
+		}
+		if (company.Capital === "") {
+			company.Capital = "-";
+		}
+		if (company.Liabilities === "") {
+			company.Liabilities = "-";
+		}
+		if (company.Assets === "") {
+			company.Assets = "-";
+		}
+		if (company.IsActive === "") {
+			company.IsActive = "-";
+		}
+		const modalInput = document.getElementById(props?.modalId) as HTMLInputElement;
+		LoadingPopup(true);
 		try {
-			const response = await fetch(`/api/updateCompanyInfo/${props.company?.CompanyId}`, {
+			const response = await fetch(`/api/updateCompanyInfo/${company?.CompanyId}`, {
 				method: "PUT",
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					CompanyName: companyName,
-					TVA: TVA.toString(),
-					Shareholders: shareholders,
-					CIF: CIF.toString(),
-					COM: COM,
-					Headquarter: headquarter,
-					Subsidiary: subsidiary,
-					MainActivity: mainActivity,
-					SecondaryActivity: secondaryActivity,
-					Interests: interests,
-					Email: email,
-					Region: region,
-					Employees: employees,
-					DataYear: dataYear,
-					Profit: profit,
-					Loss: loss.toString(),
-					Turnover: turnover,
-					Capital: capital,
-					Liabilities: liabilities,
-					Assets: assets,
-					IsActive: isActive,
+					CompanyName: company?.CompanyName,
+					TVA: company?.TVA,
+					Shareholders: company?.Shareholders,
+					CIF: company?.CIF,
+					COM: company?.COM,
+					Headquarter: company?.Headquarter,
+					Subsidiary: company?.Subsidiary,
+					MainActivity: company?.MainActivity,
+					SecondaryActivity: company?.SecondaryActivity,
+					Interests: company?.Interests,
+					Email: company?.Email,
+					Region: company?.Region,
+					Employees: company?.Employees,
+					DataYear: company?.DataYear,
+					Profit: company?.Profit,
+					Loss: company?.Loss,
+					Turnover: company?.Turnover,
+					Capital: company?.Capital,
+					Liabilities: company?.Liabilities,
+					Assets: company?.Assets,
+					IsActive: company?.IsActive,
 				}),
 			});
 
 			if (!response.ok) {
 				const error = await response.json();
 				throw new Error(`Error: ${error.message}`);
+			} else {
+				modalInput.checked = false;
+				props?.onUpdateCompany(company);
+				LoadingPopup(false);
+				InfoPopup("Changes saved");
 			}
 		} catch (error) {
-			console.log(error);
+			LoadingPopup(false);
+			InfoPopup("Connection error. Try again");
 		}
-		window.location.reload();
 	};
 
 	const deleteCompany = async () => {
+		const modalInput = document.getElementById(props?.modalId) as HTMLInputElement;
+		LoadingPopup(true);
 		try {
-			await fetch(`/api/deleteCompanyInfo/${props.company?.CompanyId}`, {
+			const response = await fetch(`/api/deleteCompanyInfo/${company?.CompanyId}`, {
 				method: "DELETE",
 				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 				}
 			});
+			if (!response.ok) {
+				const error = await response.json();
+				throw new Error(`Error: ${error.message}`);
+			} else {
+				modalInput.checked = false;
+				props?.onDeleteCompany(company?.CompanyId);
+				LoadingPopup(false);
+				InfoPopup("Changes saved");
+			}
 		} catch (error) {
-			console.log(error);
+			console.log(error)
+			LoadingPopup(false);
+			InfoPopup("Connection error. Try again");
 		}
-		window.location.reload();
 	};
 
 	const loadApiData = async () => {
 		let dataApi1;
 		let dataApi2;
 
-		if (CIF === "") {
+		if (company?.CIF === "") {
 			InfoPopup("CUI missing");
 			return;
 		}
 
 		LoadingPopup(true);
+		setAnafApiCalledStatus(true);
 		try {
-			const response1 = await fetch(`https://lista-firme.info/api/v1/info?cui=${encodeURIComponent(CIF)}`, {
+			const response1 = await fetch(`https://lista-firme.info/api/v1/info?cui=${encodeURIComponent(company?.CIF)}`, {
 				method: "GET",
 				cache: "no-store",
 				headers: {
@@ -268,7 +375,7 @@ const ModalCompany = (props: any) => {
 				},
 				body: JSON.stringify({
 					an: currentYear,
-					CIF: CIF,
+					CIF: company?.CIF,
 				}),
 			});
 
@@ -289,7 +396,7 @@ const ModalCompany = (props: any) => {
 					},
 					body: JSON.stringify({
 						an: currentYear,
-						CIF: CIF,
+						CIF: company?.CIF,
 					}),
 				});
 
@@ -301,24 +408,22 @@ const ModalCompany = (props: any) => {
 				dataApi2 = data2;
 			}
 			LoadingPopup(false);
-
-			setCompanyName(dataApi1?.name);
-			setCOM(dataApi1?.reg_com);
-			setHeadquarter(dataApi1?.info.address);
-			setRegion(dataApi1?.address.county);
-			setIsActive(dataApi1?.status[0].details.description === "func?iune" ? "activa" : "inactiva");
-			setDataYear(dataApi2?.an);
-			setMainActivity(dataApi2?.caen + " - " + dataApi2?.den_caen);
-			setEmployees(dataApi2?.i[0].val_indicator.toString());
-			setProfit(dataApi2?.i[2].val_indicator.toString());
-			setLoss(dataApi2?.i[1].val_indicator.toString());
-			setTurnover(dataApi2?.i[7].val_indicator.toString());
-			setCapital(dataApi2?.i[10].val_indicator.toString());
-			setLiabilities(dataApi2?.i[13].val_indicator.toString());
-			setAssets((dataApi2?.i[14].val_indicator + dataApi2?.i[18].val_indicator + dataApi2?.i[19].val_indicator).toString());
-			setAnafApiCalledStatus(true);
-
+			setCompany({ ...company, CompanyName: dataApi1?.name });
+			setCompany({ ...company, COM: dataApi1?.reg_com })
+			setCompany({ ...company, Headquarter: dataApi1?.info.address })
+			setCompany({ ...company, Region: dataApi1?.address.county })
+			setCompany({ ...company, IsActive: dataApi1?.status[0].details.description === "func?iune" ? "activa" : "inactiva" })
+			setCompany({ ...company, DataYear: dataApi2?.an })
+			setCompany({ ...company, MainActivity: dataApi2?.caen + " - " + dataApi2?.den_caen })
+			setCompany({ ...company, Employees: dataApi2?.i[0].val_indicator.toString() })
+			setCompany({ ...company, Profit: dataApi2?.i[2].val_indicator.toString() })
+			setCompany({ ...company, Loss: dataApi2?.i[1].val_indicator.toString() })
+			setCompany({ ...company, Turnover: dataApi2?.i[7].val_indicator.toString() })
+			setCompany({ ...company, Capital: dataApi2?.i[10].val_indicator.toString() })
+			setCompany({ ...company, Liabilities: dataApi2?.i[13].val_indicator.toString() })
+			setCompany({ ...company, Assets: (dataApi2?.i[14].val_indicator + dataApi2?.i[18].val_indicator + dataApi2?.i[19].val_indicator).toString() })
 		} catch (error) {
+			console.log(error);
 			LoadingPopup(false);
 			InfoPopup("ANAF API connection error. Try again.");
 		}
@@ -326,92 +431,112 @@ const ModalCompany = (props: any) => {
 
 	return (
 		<>
-			<input type="checkbox" id={props.modalId} className="modal-toggle" />
+			<input type="checkbox" id={props?.modalId} className="modal-toggle" />
 			<div className="modal" role="dialog">
 				<div className="modal-box w-[70%] max-w-3xl">
 					<div className="grid grid-cols-1 sm:grid-rows-30">
-						<label htmlFor={props.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
+						<label htmlFor={props?.modalId} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">X</label>
 						<p>Company name</p>
-						<input placeholder="Company name" value={companyName} className="flex items-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCompanyName(e.target.value)} />
-						<p>TVA <span style={{ color: "pink" }}>*</span></p>
-						<input type="number" placeholder="TVA" value={TVA} className="flex items-center justify-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setTVA(e.target.value)} />
-						<p>Shareholders <span style={{ color: "pink" }}>*</span></p>
-						<input placeholder="Shareholders" value={shareholders} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setShareholders(e.target.value)} />
+						<input type="text" placeholder="Company name" value={company?.CompanyName} className="flex items-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, CompanyName: e.target.value })} />
+						<p>TVA <span style={{ color: "red" }}>*</span></p>
+						<input type="text" placeholder="TVA" value={company?.TVA} className="flex items-center justify-center p-2.5 xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, TVA: e.target.value })} />
+						<p>Shareholders <span style={{ color: "red" }}>*</span></p>
+						<input type="text" placeholder="Shareholders" value={company?.Shareholders} className="flex items-center justify-center p-2.5 xl:p-5 text-meta-3 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Shareholders: e.target.value })} />
 						<p>CUI <span style={{ color: "red" }}>*</span></p>
-						<input type="number" placeholder="CUI" value={CIF} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCIF(e.target.value)} />
+						<input type="text" placeholder="CUI" value={company?.CIF} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-black focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, CIF: e.target.value })} />
 						<p>COM</p>
-						<input placeholder="COM" value={COM} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setCOM(e.target.value)} />
+						<input type="text" placeholder="COM" value={company?.COM} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, COM: e.target.value })} />
 						<p>Headquarter</p>
-						<input placeholder="Headquarter" value={headquarter} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setHeadquarter(e.target.value)} />
-						<p>Subsidiary <span style={{ color: "pink" }}>*</span></p>
-						<input placeholder="Subsidiary" value={subsidiary} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setSubsidiary(e.target.value)} />
-						<p>Main activity</p>
-						<input placeholder="Main activity" value={mainActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setMainActivity(e.target.value)} />
-						<p>Second activity <span style={{ color: "pink" }}>*</span></p>
-						<input placeholder="Second activity" value={secondaryActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setSecondaryActivity(e.target.value)} />
-						<p>Interests <span style={{ color: "pink" }}>*</span></p>
-						<input placeholder="Interests" value={interests} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setInterests(e.target.value)} />
-						<p>Email <span style={{ color: "pink" }}>*</span></p>
-						<input placeholder="Email" value={email} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" onChange={(e) => setEmail(e.target.value)} />
+						<input type="text" placeholder="Headquarter" value={company?.Headquarter} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Headquarter: e.target.value })} />
+						<p>Subsidiary <span style={{ color: "red" }}>*</span></p>
+						<input type="text" placeholder="Subsidiary" value={company?.Subsidiary} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Subsidiary: e.target.value })} />
+						<p>Main activity <span style={{ color: "red" }}>*</span></p>
+						<input type="text" placeholder="Main activity" value={company?.MainActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, MainActivity: e.target.value })} />
+						<p>Second activity</p>
+						<input type="text" placeholder="Second activity" value={company?.SecondaryActivity} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, SecondaryActivity: e.target.value })} />
+						<p>Interests</p>
+						<input type="text" placeholder="Interests" value={company?.Interests} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Interests: e.target.value })} />
+						<p>Email <span style={{ color: "red" }}>*</span></p>
+						<input type="text" placeholder="Email" value={company?.Email} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Email: e.target.value })} />
 						<p>Region</p>
-						<input placeholder="Region" value={region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Region" value={company?.Region} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Region: e.target.value })} />
 						<p>Employees</p>
-						<input placeholder="Employees" value={employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Employees" value={company?.Employees} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Employees: e.target.value })} />
 						<p>Profit</p>
-						<input placeholder="Profit" value={profit} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Profit" value={company?.Profit} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Profit: e.target.value })} />
 						<p>Loss</p>
-						<input placeholder="Loss" value={loss} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Loss" value={company?.Loss} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Loss: e.target.value })} />
 						<p>Turnover</p>
-						<input placeholder="Turnover" value={turnover} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Turnover" value={company?.Turnover} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Turnover: e.target.value })} />
 						<p>Capital</p>
-						<input placeholder="Capital" value={capital} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Capital" value={company?.Capital} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Capital: e.target.value })} />
 						<p>Liabilities</p>
-						<input placeholder="Liabilities" value={liabilities} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Liabilities" value={company?.Liabilities} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Liabilities: e.target.value })} />
 						<p>Assets</p>
-						<input placeholder="Assets" value={assets} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="Assets" value={company?.Assets} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, Assets: e.target.value })} />
 						<p>isActive</p>
-						<input placeholder="isActive" value={isActive} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						<input type="text" placeholder="isActive" value={company?.IsActive} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent"
+							onChange={(e) => setCompany({ ...company, IsActive: e.target.value })} />
 
 						<p>Data from</p>
-						<input placeholder="DataYear" value={dataYear} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
-						{props.secondButton === false ? (
+						<input type="text" placeholder="DataYear" value={company?.DataYear} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+						{props?.secondButton === false ? (
 							<>
 								<p>Date last email sent</p>
-								<input placeholder="Date last email sent" value={statusEmail.toString()[0] === "," ? "-" : statusEmail.toString().split('T')[0]} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
+								<input type="text" placeholder="Date last email sent" value={company?.StatusEmail === "" ? "-" : company?.StatusEmail?.toString().split('T')[0].split('-').reverse().join('-')} className="hidden items-center justify-center p-2.5 sm:flex xl:p-5 text-meta-5 focus:outline-none focus:ring-0 focus:border-transparent" disabled />
 							</>
 						) : (
 							<></>
 						)}
 					</div>
 					<div className="modal-action">
-						<button className="btn btn-outline btn-info" onClick={props.secondButton === false ? loadApiData : loadApiData}>Load Data</button>
-						<button className="btn btn-outline btn-success" onClick={props.secondButton === false ? saveCompanyChanges : () => addCompany(
-							companyName,
-							TVA,
-							shareholders,
-							CIF,
-							COM,
-							headquarter,
-							subsidiary,
-							mainActivity,
-							secondaryActivity,
-							interests,
-							email,
-							region,
-							employees,
-							dataYear,
-							profit,
-							loss,
-							turnover,
-							capital,
-							liabilities,
-							assets,
-							isActive,
-							props.modalId,
+						<button className="btn btn-outline btn-info" onClick={props?.secondButton === false ? loadApiData : loadApiData}>Load Data</button>
+						<button className="btn btn-outline btn-success" onClick={props?.secondButton === false ? updateCompany : () => addCompany(
+							company?.CompanyName,
+							company?.TVA,
+							company?.Shareholders,
+							company?.CIF,
+							company?.COM,
+							company?.Headquarter,
+							company?.Subsidiary,
+							company?.MainActivity,
+							company?.SecondaryActivity,
+							company?.Interests,
+							company?.Email,
+							company?.Region,
+							company?.Employees,
+							company?.DataYear,
+							company?.Profit,
+							company?.Loss,
+							company?.Turnover,
+							company?.Capital,
+							company?.Liabilities,
+							company?.Assets,
+							company?.IsActive,
+							props?.modalId,
 							anafApiCalledStatus
 						)}>Save</button>
 						{userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ?
-							<button className="btn btn-outline btn-error" onClick={deleteCompany} disabled={props.secondButton} style={{ display: props.secondButton ? "none" : "inline-block" }}>Delete</button>
+							<button className="btn btn-outline btn-error" onClick={deleteCompany} disabled={props?.secondButton} style={{ display: props?.secondButton ? "none" : "inline-block" }}>Delete</button>
 							: <></>}
 					</div>
 				</div>

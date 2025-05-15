@@ -2,43 +2,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createHash } from "crypto";
 import ModalCompany from "@/components/CompanyInfo/ModalCompany";
-import Loader from "@/components/common/Loader";
 import useStore from "@/components/common/StoreForSearch";
 import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmail from "@/components/CompanyInfo/ModalEmail";
 import ModalPDF from "@/components/common/ModalPDF";
-
-type company = {
-	CompanyId: string,
-	CompanyName: string,
-	TVA: string,
-	Shareholders: string,
-	CIF: string,
-	COM: string,
-	Headquarter: string,
-	Subsidiary: string,
-	MainActivity: string,
-	SecondaryActivity: string,
-	Interests: string,
-	Email: string,
-	Region: string,
-	Employees: string,
-	StatusEmail: string,
-	DataYear: string,
-	Profit: string,
-	Loss: string,
-	Turnover: string,
-	Capital: string,
-	Liabilities: string,
-	Assets: string,
-	IsActive: string
-}
+import LoadingPopup from "@/components/common/LoadingPopup";
+import { Company } from "@/types/Company";
 
 const TableCompanyInfo = () => {
 	const userPermissions = sessionStorage.getItem("Level");
-	const [companies, setCompanies] = useState<company[]>([]);
-	const [filteredCompany, setFilteredCompany] = useState<company[]>([]);
+	const [companies, setCompanies] = useState<Company[]>([]);
+	const [filteredCompany, setFilteredCompany] = useState<Company[]>([]);
 	const searchTerm = useStore((state: any) => state.searchTerm);
 	const setSearchTerm = useStore((state: any) => state.setSearchTerm);
 	const [offerServicesArray, setOfferServicesArray] = useState<string[]>([]);
@@ -48,6 +23,7 @@ const TableCompanyInfo = () => {
 	const getCompanies = async () => {
 		let companiesArray: { CompanyId: String, CompanyName: String }[] = [];
 		try {
+			LoadingPopup(true);
 			const timestamp = new Date().toISOString();
 			await fetch(`/api/readCompanyInfo/${timestamp}`, {
 				method: "GET",
@@ -55,22 +31,21 @@ const TableCompanyInfo = () => {
 				headers: {
 					"Content-Type": "application/json",
 				}
-			})
-				.then(response => {
-					if (!response.ok) {
-						InfoPopup("Failed to load companies info");
-					}
-					return response.json()
-				})
+			}).then(response => response.json())
 				.then(data => {
-					setCompanies(data);
-					data.forEach((element: any) => {
-						companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
-					});
-					sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
+					LoadingPopup(false);
+					if (data.status !== 200) {
+						InfoPopup(data.message);
+					} else {
+						setCompanies(data.response);
+						data.response.forEach((element: any) => {
+							companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
+						});
+						sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
+					}
 				})
 		} catch (error) {
-			InfoPopup("Connection error");
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -122,6 +97,27 @@ const TableCompanyInfo = () => {
 		setOfferDescription(offerDescription);
 	};
 
+	const updateCompanyEmailsStatus = (email: string) => {
+		const currentDate = new Date().toISOString().split('T')[0];
+		setCompanies(prevCompanies =>
+			prevCompanies.map(company =>
+				company.Email === email ? { ...company, StatusEmail: currentDate } : company
+			)
+		);
+	};
+
+	const updateCompany = (updatedCompany: Company) => {
+		setCompanies(prevCompanies =>
+			prevCompanies.map(company =>
+				company.CompanyId === updatedCompany.CompanyId ? updatedCompany : company
+			)
+		);
+	};
+
+	const deleteCompany = (companyId: string) => {
+		setCompanies(prevCompanies => prevCompanies.filter(company => company.CompanyId !== companyId));
+	};
+
 	return (
 		<div className="rounded-sm border border-stroke bg-white pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="flex w-full">
@@ -146,8 +142,9 @@ const TableCompanyInfo = () => {
 								/>
 							</svg>
 						</label>
-						<ModalEmail modalId="modalEmail" modalId2="modalPDF" filteredCompanies={filteredCompany} offerServicesArray={offerServicesArray}
-							discountPercent={discountPercent} offerDescription={offerDescription} />
+						<ModalEmail modalId="modalEmail" modalId2="modalPDF" updateCompanyEmailsStatus={updateCompanyEmailsStatus}
+							filteredCompanies={filteredCompany} offerServicesArray={offerServicesArray} discountPercent={discountPercent}
+							offerDescription={offerDescription} />
 						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
 
 
@@ -240,7 +237,8 @@ const TableCompanyInfo = () => {
 									</div>
 								</label>
 								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
-								<ModalCompany modalId={`my_modal_${key}`} company={company} secondButton={false} />
+								<ModalCompany modalId={`my_modal_${key}`} onUpdateCompany={updateCompany} onDeleteCompany={deleteCompany}
+									company={company} secondButton={false} />
 								{/* ) : (
 									<></>
 								)} */}
@@ -248,7 +246,7 @@ const TableCompanyInfo = () => {
 						))}
 					</div>
 				) : (
-					<Loader />
+					<></>
 				)}
 			</div>
 		</div>

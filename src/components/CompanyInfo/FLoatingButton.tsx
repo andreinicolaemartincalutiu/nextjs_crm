@@ -13,9 +13,7 @@ const FloatingButton = () => {
 				<label htmlFor="modalCompanyFloatingButton" className="floating-button" title="Add new item">
 					+
 				</label>
-				<ModalCompany modalId="modalCompanyFloatingButton" companyName={""} TVA={""} shareholders={""}
-					CIF={""} COM={""} headquarter={""} subsidiary={""} mainActivity={""} secondaryActivity={""}
-					interests={""} secondButton={true} />
+				<ModalCompany modalId="modalCompanyFloatingButton" secondButton={true} />
 			</>
 			{/* ) : (
 				<></>

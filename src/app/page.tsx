@@ -23,16 +23,9 @@ const SignIn: React.FC = () => {
 		}
 	};
 
-	// const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-	// 	if (event.key === "Enter") {
-	// 		event.preventDefault();
-	// 		login();
-	// 	}
-	// };
-
 	const login = async () => {
 		if (email === "" || password === "") {
-			InfoPopup("Type email and password.")
+			InfoPopup("Type email and password.");
 			return;
 		}
 		LoadingPopup(true);
@@ -45,25 +38,25 @@ const SignIn: React.FC = () => {
 				},
 				body: JSON.stringify({
 					Email: email,
-					Password: createHash("sha512").update(password, "utf8").digest("hex"),
+					Password: password,
 				}),
-			}).then(async response => {
-				const data = await response.json();
-				LoadingPopup(false);
-				if (response.status !== 200) {
-					InfoPopup(data.message);
-				} else {
-					sessionStorage.setItem("EmployeeId", data[0].EmployeeId);
-					sessionStorage.setItem("Name", data[0].Name);
-					sessionStorage.setItem("Level", createHash("sha512").update(data[0].Level, "utf8").digest("hex"));
-					sessionStorage.setItem("Level2", data[0].Level);
-					sessionStorage.setItem("Email", data[0].Email);
-					send2FAemailHandle();
-				}
-			});
+			}).then(response => response.json())
+				.then((data: any) => {
+					LoadingPopup(false);
+					if (data.status !== 200) {
+						InfoPopup(data.message);
+					} else {
+						sessionStorage.setItem("EmployeeId", data.response[0].EmployeeId);
+						sessionStorage.setItem("Name", data.response[0].Name);
+						sessionStorage.setItem("Level", createHash("sha512").update(data.response[0].Level, "utf8").digest("hex"));
+						sessionStorage.setItem("Level2", data.response[0].Level);
+						sessionStorage.setItem("Email", data.response[0].Email);
+						send2FAemailHandle();
+					}
+				});
 		} catch (error) {
 			LoadingPopup(false);
-			InfoPopup("Connection with server failed1");
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -79,13 +72,17 @@ const SignIn: React.FC = () => {
 				},
 			}).then(response => response.json())
 				.then((data: any) => {
-					data.forEach((element: any) => {
-						companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
-					});
-					sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
+					if (data.status !== 200) {
+						InfoPopup(data.message);
+					} else {
+						data.response.forEach((element: any) => {
+							companiesArray.push({ CompanyId: element.CompanyId, CompanyName: element.CompanyName })
+						});
+						sessionStorage.setItem("companiesArray", JSON.stringify(companiesArray));
+					}
 				})
 		} catch (error) {
-			InfoPopup("Connection with server failed2");
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -359,7 +356,7 @@ const SignIn: React.FC = () => {
 									<div className="mb-4 mt-8">
 										<div className="relative">
 											<input
-												type="number"
+												type="text"
 												placeholder="Code from email"
 												className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 												onChange={e => setSecurityCodeFromInput(e.target.value)}

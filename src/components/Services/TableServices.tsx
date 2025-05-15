@@ -2,27 +2,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createHash } from "crypto";
 import ModalServices from "@/components/Services/ModalServices";
-import Loader from "@/components/common/Loader";
 import useStore from "@/components/common/StoreForSearch";
 import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
-
-type service = {
-	Id: string,
-	Name: string,
-	Description: string,
-	Price: string,
-}
+import LoadingPopup from "@/components/common/LoadingPopup";
+import { Service } from "@/types/Service";
 
 const TableServices = () => {
-	const [services, setServices] = useState<service[]>([]);
-	const [filteredService, setFilteredService] = useState<service[]>([]);
+	const [services, setServices] = useState<Service[]>([]);
+	const [filteredService, setFilteredService] = useState<Service[]>([]);
 	const searchTerm = useStore((state: any) => state.searchTerm);
 	const setSearchTerm = useStore((state: any) => state.setSearchTerm);
 	const userPermissions = sessionStorage.getItem("Level");
 
 	const getServices = async () => {
 		try {
+			LoadingPopup(true);
 			const timestamp = new Date().toISOString();
 			await fetch(`api/readService/${timestamp}`, {
 				method: "GET",
@@ -30,18 +25,18 @@ const TableServices = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			})
-				.then(response => {
-					if (!response.ok) {
-						InfoPopup("Failed to load services");
-					}
-					return response.json();
-				})
+			}).then(response => response.json())
 				.then(data => {
-					setServices(data);
+					LoadingPopup(false);
+					if (data.status !== 200) {
+						InfoPopup(data.message);
+					} else {
+						setServices(data.response);
+					}
 				});
 		} catch (error) {
-			console.log(error);
+			LoadingPopup(false);
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -66,6 +61,18 @@ const TableServices = () => {
 			fileInput.value = "";
 			fileInput.click();
 		}
+	};
+
+	const updateService = (updatedService: Service) => {
+		setServices(prevServices =>
+			prevServices.map(service =>
+				service.Id === updatedService.Id ? updatedService : service
+			)
+		);
+	};
+
+	const deleteService = (id: string) => {
+		setServices(prevServices => prevServices.filter(service => service.Id !== id));
 	};
 
 	return (
@@ -150,7 +157,8 @@ const TableServices = () => {
 
 								</label>
 								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
-								<ModalServices Id={service.Id} modalId={`my_modal_${key}`} name={service.Name} description={service.Description} price={service.Price} secondButton={false} />
+								<ModalServices modalId={`my_modal_${key}`} onUpdateService={updateService} onDeleteService={deleteService}
+									service={service} secondButton={false} />
 								{/* ) : (
 									<></>
 								)} */}
@@ -158,7 +166,7 @@ const TableServices = () => {
 						))}
 					</div>
 				) : (
-					<Loader />
+					<></>
 				)}
 			</div>
 		</div >

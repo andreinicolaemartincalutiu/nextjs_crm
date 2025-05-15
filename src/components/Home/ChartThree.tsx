@@ -75,12 +75,12 @@ const ChartThree: React.FC = () => {
 				},
 			}).then(response => response.json())
 				.then(data => {
-					setClientsSMS(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.ClientSMS) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
-					setClientsEmail(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.ClientEmail) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
-					setCompaniesEmail(((data[0][0]?.Total === "0") ? 0 : Math.round((Number(data[0][0]?.CompanyEmail) || 0) * 100 / (Number(data[0][0]?.Total) || 1))).toString() + "%");
-					setTotal(data[0][0].Total);
-					setTotals(data[0]);
-					setSeries([Number(data[0][0].ClientSMS), Number(data[0][0].CompanyEmail), Number(data[0][0].ClientEmail), Number(data[0][0].Total)]);
+					setClientsSMS(((data.response[0][0]?.Total === "0") ? 0 : Math.round((Number(data.response[0][0]?.ClientSMS) || 0) * 100 / (Number(data.response[0][0]?.Total) || 1))).toString() + "%");
+					setClientsEmail(((data.response[0][0]?.Total === "0") ? 0 : Math.round((Number(data.response[0][0]?.ClientEmail) || 0) * 100 / (Number(data.response[0][0]?.Total) || 1))).toString() + "%");
+					setCompaniesEmail(((data.response[0][0]?.Total === "0") ? 0 : Math.round((Number(data.response[0][0]?.CompanyEmail) || 0) * 100 / (Number(data.response[0][0]?.Total) || 1))).toString() + "%");
+					setTotal(data.response[0][0].Total);
+					setTotals(data.response[0]);
+					setSeries([Number(data.response[0][0].ClientSMS), Number(data.response[0][0].CompanyEmail), Number(data.response[0][0].ClientEmail), Number(data.response[0][0].Total)]);
 				})
 		} catch (error) {
 			InfoPopup("Database connection error");

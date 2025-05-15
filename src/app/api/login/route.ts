@@ -1,28 +1,31 @@
+import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/db";
-import { NextResponse } from "next/server";
 import { serialize } from "cookie";
 import { SignJWT } from "jose";
+import bcrypt from "bcryptjs";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
 	try {
-		const { Email, Password } = await request.json();
-
+		const { Email, Password } = await req.json();
+		console.log(Password);
 		if (!Email || !Password) {
-			return NextResponse.json({ message: "Missing required fields", status: 400 });
+			return NextResponse.json({ message: "Missing required fields", status: 400 }, { status: 400 });
 		}
 
-		const [result]: any = await pool.execute(
-			"SELECT * FROM Employee WHERE Email = ? AND Password = ?",
-			[Email, Password]
-		);
-
-		const user = (result as any[])[0];
+		const [response]: any = await pool.execute("SELECT * FROM Employee WHERE Email = ?", [Email]);
+		const user = (response as any[])[0];
 
 		if (!user) {
-			return NextResponse.json({ message: "User not found", status: 404 });
+			return NextResponse.json({ message: "User not found", status: 404 }, { status: 404 });
+		}
+
+		const isMatch = await bcrypt.compare(Password, user.Password);
+		if (!isMatch) {
+			return NextResponse.json({ message: "Invalid password", status: 401 }, { status: 401 });
 		}
 
 		const token = new TextEncoder().encode(process.env.JWT_SECRET);
+
 		const jwt = await new SignJWT({ email: user.Email })
 			.setProtectedHeader({ alg: "HS256" })
 			.setExpirationTime("1h")
@@ -35,11 +38,11 @@ export async function POST(request: Request) {
 			path: "/",
 			sameSite: "lax",
 		});
-		const response = NextResponse.json(result, { status: 200 });
-		response.headers.set("Set-Cookie", cookie);
-		return response;
+		const resp = NextResponse.json({ response, status: 200 }, { status: 200 });
+		resp.headers.set("Set-Cookie", cookie);
+		return resp;
 
 	} catch (error) {
-		return NextResponse.json({ message: "Connection failed", status: 500 });
+		return NextResponse.json({ message: "Connection failed", status: 500 }, { status: 500 });
 	}
-};
+}

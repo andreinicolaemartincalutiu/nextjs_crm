@@ -40,7 +40,7 @@ const SettingsContent = () => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					Password: crypto.createHash("sha512").update(newPassword, "utf8").digest("hex"),
+					Password: newPassword,
 				}),
 			}).then(response => response.json())
 				.then(async data => {

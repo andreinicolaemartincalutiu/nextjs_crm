@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { serialize } from "cookie";
 
 export async function POST() {
-	const response = NextResponse.json({ message: "Logout successful" });
+	const response = NextResponse.json({ message: "Logout successful", status: 200 }, { status: 200 });
 
 	// Set the cookie to invalidate
 	try {
@@ -16,12 +16,12 @@ export async function POST() {
 			})
 		);
 	} catch {
-		return NextResponse.json({ message: "Failed to logout user", status: 500 });
+		return NextResponse.json({ message: "Failed to logout user", status: 500 }, { status: 500 });
 	}
 
 	return response;
 }
 
 export function OPTIONS() {
-	return NextResponse.json({ message: "Method not allowed", status: 405 });
+	return NextResponse.json({ message: "Method not allowed", status: 405 }, { status: 405 });
 }

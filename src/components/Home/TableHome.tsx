@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import useStore from "@/components/common/StoreForSearch";
 
-type status = {
+interface status {
 	Date: string,
 	clientSMS: string,
 	clientEmail: string,
@@ -11,7 +11,7 @@ type status = {
 	Name: string,
 }
 
-type stat = {
+interface stat {
 	Date: string,
 	clientAdded: string,
 	clientRemoved: string,

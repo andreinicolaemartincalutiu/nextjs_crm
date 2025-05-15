@@ -5,7 +5,7 @@ import InfoPopup from "@/components/common/InfoPopup";
 import { AssistantsV1ServiceCreateFeedbackRequest } from "twilio/lib/rest/assistants/v1/assistant/feedback";
 import LoadingPopup from "@/components/common/LoadingPopup";
 
-type companyModal = {
+interface companyModal {
 	FirstName: string,
 	LastName: string,
 	Email: string,
@@ -22,18 +22,20 @@ const ModalEmail = (props: any) => {
 			LastName: "$",
 			Email: email,
 		}
+
 		if (event.target.checked) {
 			setEmailAddressesToSendEmailArray(prevArray => [...prevArray, companyForEmail]);
 		} else {
 			setEmailAddressesToSendEmailArray(prevArray =>
-				prevArray.filter(company => company !== companyForEmail)
+				prevArray.filter(company => company.Email !== email)
 			);
 		}
+		console.log(emailAddressesToSendEmailArray)
 	}
 
 	const sendEmails = async () => {
 		if (emailAddressesToSendEmailArray.length === 0) {
-			InfoPopup("Select clients to send emails");
+			InfoPopup("Select companies to send emails");
 			return;
 		}
 		if (subject === "") {
@@ -45,6 +47,7 @@ const ModalEmail = (props: any) => {
 			return;
 		}
 		LoadingPopup(true);
+		let noEmailsSent: number = 0;
 		for (let i = 0; i < emailAddressesToSendEmailArray.length; ++i) {
 			try {
 				const response = await fetch(`/api/sendEmail/${emailAddressesToSendEmailArray[i].Email}`, {
@@ -63,37 +66,38 @@ const ModalEmail = (props: any) => {
 						}
 					),
 				});
-				if (!response.ok) {
-					InfoPopup(`Failed to send email to ${emailAddressesToSendEmailArray[i].Email}`);
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-
-				const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
-					method: "POST",
-					cache: "no-store",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						firstName: emailAddressesToSendEmailArray[i].FirstName,
-						lastName: emailAddressesToSendEmailArray[i].LastName,
-						clientSMS: "0",
-						clientEmail: "0",
-						companyEmail: "1",
-					}),
-				});
-
-				if (!res2.ok) {
-					InfoPopup(`Failed to add sent Email to ${emailAddressesToSendEmailArray[i].Email} in database`);
-					throw new Error(`HTTP error! Status: ${res2.status}`);
+				if (response.ok) {
+					const res2 = await fetch("/api/insertUpdateStatus_EmailSMS", {
+						method: "POST",
+						cache: "no-store",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							firstName: emailAddressesToSendEmailArray[i].FirstName,
+							lastName: emailAddressesToSendEmailArray[i].LastName,
+							clientSMS: "0",
+							clientEmail: "0",
+							companyEmail: "1",
+						}),
+					});
+					if (res2.ok) {
+						++noEmailsSent;
+						props?.updateCompanyEmailsStatus(emailAddressesToSendEmailArray[i].Email);
+					}
 				}
 			} catch (error) {
-				InfoPopup(`Failed to send email to ${emailAddressesToSendEmailArray[i].Email}`);
 			}
 		}
 		LoadingPopup(false);
-		InfoPopup("Emails sent");
-	}
+		if (noEmailsSent === emailAddressesToSendEmailArray.length) {
+			InfoPopup("Emails sent");
+		} else if (noEmailsSent === 0) {
+			InfoPopup("Connection error. Failed to send emails");
+		} else {
+			InfoPopup("Some emails failed to be sent");
+		}
+	};
 
 	return (
 		<>

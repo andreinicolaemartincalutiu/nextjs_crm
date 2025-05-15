@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import InfoPopup from "@/components/common/InfoPopup";
 
-type service = {
+interface service {
 	Id: any,
 	Name: any,
 	Description: any,
@@ -27,19 +27,18 @@ const ModalPDF = (props: any) => {
 			})
 				.then(response => response.json())
 				.then(data => {
-					setServices(data);
+					setServices(data.response);
 				})
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 
 	useEffect(() => {
 		getServices();
 	}, [])
 
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, service: string) => {
-
 		if (event.target.checked) {
 			setOfferServicesArray(prevArray => [...prevArray, service]);
 		} else {
@@ -47,7 +46,7 @@ const ModalPDF = (props: any) => {
 				prevArray.filter(services => services !== service)
 			);
 		}
-	}
+	};
 
 	const createPDF = () => {
 		if (offerServicesArray.length === 0 || discountPercent === "" || offerDescription === "") {
@@ -58,7 +57,7 @@ const ModalPDF = (props: any) => {
 		modalInput.checked = false;
 
 		props.handleDataFromChild(offerServicesArray, discountPercent, offerDescription);
-	}
+	};
 
 	return (
 		<>

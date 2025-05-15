@@ -2,36 +2,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createHash } from "crypto";
 import ModalClients from "@/components/Clients/ModalClients";
-import Loader from "@/components/common/Loader";
 import useStore from "@/components/common/StoreForSearch";
 import InfoPopup from "@/components/common/InfoPopup";
 import HandleFileImport from "@/components/common/HandleFileImport";
 import ModalEmailSMS from "@/components/Clients/ModalEmailSMS";
 import ModalPDF from "@/components/common/ModalPDF";
+import LoadingPopup from "@/components/common/LoadingPopup";
+import { Client } from "@/types/Client";
 import "@/components/Clients/style.css";
-
-type client = {
-	ClientId: string,
-	FirstName: string,
-	LastName: string,
-	CI: string,
-	CNP: string,
-	CompanyId: string,
-	CompanyRole: string,
-	Address: string,
-	Email: string,
-	Phone: string,
-	Interests: string,
-	BirthDate: string,
-	Details: string,
-	StatusEmail: string,
-	StatusSMS: string
-}
 
 const TableClients = () => {
 	const userPermissions = sessionStorage.getItem("Level");
-	const [clients, setClients] = useState<client[]>([]);
-	const [filteredClients, setFilteredClients] = useState<client[]>([]);
+	const [clients, setClients] = useState<Client[]>([]);
+	const [filteredClients, setFilteredClients] = useState<Client[]>([]);
 	const searchTerm = useStore((state: any) => state.searchTerm);
 	const setSearchTerm = useStore((state: any) => state.setSearchTerm);
 	const [companiesArray, setCompaniesArray] = useState<{ CompanyId: string, CompanyName: string }[]>(JSON.parse(sessionStorage.getItem("companiesArray") || "[]"));
@@ -42,6 +25,7 @@ const TableClients = () => {
 
 	const getClients = async () => {
 		try {
+			LoadingPopup(true);
 			const timestamp = new Date().toISOString();
 			await fetch(`/api/readClient/${timestamp}`, {
 				method: "GET",
@@ -49,18 +33,18 @@ const TableClients = () => {
 				headers: {
 					"Content-Type": "application/json",
 				}
-			}).then(response => {
-				if (!response.ok) {
-					InfoPopup("Failed to load clients");
-				}
-				return response.json()
-			})
+			}).then(response => response.json())
 				.then(data => {
-					setClients(data);
-					// setFilteredClients(data);
+					LoadingPopup(false);
+					if (data.status !== 200) {
+						InfoPopup(data.message);
+					} else {
+						setClients(data.response);
+					}
 				})
 		} catch (error) {
-			console.log(error);
+			LoadingPopup(false);
+			InfoPopup("Connection with server failed");
 		}
 	};
 
@@ -68,7 +52,6 @@ const TableClients = () => {
 		setSearchTerm("");
 		getClients();
 	}, [setSearchTerm]);
-
 
 	useEffect(() => {
 		const filtered = clients.filter((client) =>
@@ -100,10 +83,39 @@ const TableClients = () => {
 	};
 
 	const handleDataFromChild = (offerServicesArray: string[], discountPercent: string, offerDescription: string) => {
-
 		setOfferServicesArray(offerServicesArray);
 		setDiscountPercent(discountPercent);
 		setOfferDescription(offerDescription);
+	};
+
+	const updateClientEmailsStatus = (email: string) => {
+		const currentDate = new Date().toISOString().split('T')[0];
+		setClients(prevClients =>
+			prevClients.map(client =>
+				client.Email === email ? { ...client, StatusEmail: currentDate } : client
+			)
+		);
+	};
+
+	const updateClientSMSsStatus = (phoneNo: string) => {
+		const currentDate = new Date().toISOString().split('T')[0];
+		setClients(prevClients =>
+			prevClients.map(client =>
+				client.Phone === phoneNo ? { ...client, StatusSMS: currentDate } : client
+			)
+		);
+	};
+
+	const updateClient = (updatedClient: Client) => {
+		setClients(prevClients =>
+			prevClients.map(client =>
+				client.ClientId === updatedClient.ClientId ? updatedClient : client
+			)
+		);
+	};
+
+	const deleteClient = (clientId: string) => {
+		setClients(prevClients => prevClients.filter(client => client.ClientId !== clientId));
 	};
 
 	return (
@@ -130,7 +142,8 @@ const TableClients = () => {
 								/>
 							</svg>
 						</label>
-						<ModalEmailSMS modalId="modalEmailSMS" modalId2="modalPDF" filteredClients={filteredClients} offerServicesArray={offerServicesArray}
+						<ModalEmailSMS modalId="modalEmailSMS" modalId2="modalPDF" updateClientEmailsStatus={updateClientEmailsStatus}
+							updateClientSMSsStatus={updateClientSMSsStatus} filteredClients={filteredClients} offerServicesArray={offerServicesArray}
 							discountPercent={discountPercent} offerDescription={offerDescription} />
 						<ModalPDF modalId="modalPDF" handleDataFromChild={handleDataFromChild} />
 
@@ -232,8 +245,8 @@ const TableClients = () => {
 									</div>
 								</label>
 								{/* {userPermissions === createHash("sha512").update("admin", "utf8").digest("hex") ? ( */}
-								<ModalClients modalCheckboxRef={modalCheckboxRef} modalId={`my_modal_${key}`}
-									client={client} secondButton={false} />
+								<ModalClients modalId={`my_modal_${key}`} modalCheckboxRef={modalCheckboxRef} onUpdateClient={updateClient}
+									onDeleteClient={deleteClient} client={client} secondButton={false} />
 								{/* ) : (
 									<></>
 								)} */}
@@ -241,9 +254,8 @@ const TableClients = () => {
 						))}
 					</div>
 				) : (
-					<Loader />
+					<></>
 				)}
-
 			</div>
 		</div>
 	);

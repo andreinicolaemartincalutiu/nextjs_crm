@@ -97,18 +97,6 @@ const ChartTwo: React.FC = () => {
 	useEffect(() => {
 		const getDailyTotals = async () => {
 			try {
-				// await fetch(`/api/readDailyTotals`, {
-				// 	next: { revalidate: 1 },
-				// 	method: "GET",
-				// 	cache: "no-store",
-				// 	headers: {
-				// 		"Content-Type": "application/json",
-				// 	},
-				// }).then(response => response.json())
-				// 	.then(data => {
-				// 		setDailyTotals(data[0]);
-				// 	})
-
 				const timestamp = new Date().toISOString();
 				const res = await fetch(`/api/readDailyTotals/${timestamp}`, {
 					method: "GET",
@@ -118,7 +106,7 @@ const ChartTwo: React.FC = () => {
 					},
 				});
 				const data = await res.json();
-				setDailyTotals(data[0]);
+				setDailyTotals(data.response[0]);
 			} catch (error) {
 				InfoPopup("Database connection error");
 			}
@@ -145,7 +133,7 @@ const ChartTwo: React.FC = () => {
 				<div id="chartTwo" className="-mb-9 -ml-5">
 
 					{dailyTotals?.TotalClientSMS === undefined ?
-						<Loader />
+						<></>
 						:
 						<ReactApexChart
 							options={options}

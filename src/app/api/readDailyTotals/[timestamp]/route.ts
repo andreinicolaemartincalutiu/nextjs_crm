@@ -1,5 +1,5 @@
-import db from "@/lib/db";
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import pool from "@/lib/db";
 
 interface QueryResult {
 	TotalClientSMS: number;
@@ -7,19 +7,17 @@ interface QueryResult {
 	TotalCompanyEmail: number;
 }
 
-export async function GET(req: Request, { params }: { params: { timestamp: string } }) {
-
-	const timestamp = new Date(params.timestamp);
-	if (isNaN(timestamp.getTime())) {
-		return NextResponse.json({ message: "Invalid timestamp", status: 400 });
-	}
-
+export async function GET(req: NextRequest, { params }: { params: { timestamp: string } }) {
 	try {
-		const [rows] = await db.execute("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
+		const timestamp = new Date(params.timestamp);
+		if (isNaN(timestamp.getTime())) {
+			return NextResponse.json({ message: "Invalid timestamp", status: 400 }, { status: 400 });
+		}
 
-		const result: QueryResult[] = rows as QueryResult[];
+		const [rows] = await pool.execute("SELECT SQL_NO_CACHE COALESCE(SUM(clientSMS), 0) AS TotalClientSMS, COALESCE(SUM(clientEmail), 0) AS TotalClientEmail, COALESCE(SUM(companyEmail), 0) AS TotalCompanyEmail FROM Status WHERE Date = CURDATE();");
+		const response: QueryResult[] = rows as QueryResult[];
 
-		const response = NextResponse.json(result, {
+		const resp = NextResponse.json({ response, status: 200 }, {
 			status: 200,
 			headers: {
 				"Cache-Control": "no-store, max-age=0, no-cache, must-revalidate, proxy-revalidate",
@@ -27,14 +25,14 @@ export async function GET(req: Request, { params }: { params: { timestamp: strin
 				"Expires": "0"
 			},
 		});
-		response.headers.set("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate, proxy-revalidate");
-		response.headers.set("Pragma", "no-cache");
-		response.headers.set("Expires", "0");
-		return response;
+		resp.headers.set("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate, proxy-revalidate");
+		resp.headers.set("Pragma", "no-cache");
+		resp.headers.set("Expires", "0");
+		return resp;
 	} catch (error: unknown) {
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-		const errorResponse = NextResponse.json({ 
-			error: errorMessage,
+		const errorResponse = NextResponse.json({
+			message: errorMessage,
 			status: 500,
 			headers: {
 				"Cache-Control": "no-store, max-age=0, no-cache, must-revalidate, proxy-revalidate",
@@ -47,4 +45,4 @@ export async function GET(req: Request, { params }: { params: { timestamp: strin
 		errorResponse.headers.set("Expires", "0");
 		return errorResponse;
 	}
-};
+}

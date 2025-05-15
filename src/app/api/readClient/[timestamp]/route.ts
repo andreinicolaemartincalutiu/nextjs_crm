@@ -1,16 +1,19 @@
+import { NextRequest, NextResponse } from 'next/server';
 import pool from "@/lib/db";
-import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { timestamp: string } }) {
-	const timestamp = new Date(params.timestamp);
-	if (isNaN(timestamp.getTime())) {
-		return NextResponse.json({ message: "Invalid timestamp", status: 400 });
-	}
-
+export async function GET(req: NextRequest, { params }: { params: { timestamp: string } }) {
 	try {
-		const [rows] = await pool.execute("SELECT * FROM Client");
-		return NextResponse.json(rows, { status: 200 });
+		const timestamp = new Date(params.timestamp);
+		if (isNaN(timestamp.getTime())) {
+			return NextResponse.json({ message: "Invalid timestamp", status: 400 }, { status: 400 });
+		}
+		const [response] = await pool.execute("SELECT * FROM Client");
+
+		if (!Array.isArray(response)) {
+			return NextResponse.json({ message: "Error fetching users", status: 404 }, { status: 404 });
+		}
+		return NextResponse.json({ response, status: 200 }, { status: 200 });
 	} catch (error) {
-		return NextResponse.json({ message: "Error fetching users", status: 500 });
+		return NextResponse.json({ message: "Error fetching users", status: 500 }, { status: 500 });
 	}
-};
+}

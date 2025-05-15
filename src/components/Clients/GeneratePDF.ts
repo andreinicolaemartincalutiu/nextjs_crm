@@ -1,16 +1,20 @@
-import { jsPDF } from "jspdf";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import "jspdf-autotable";
+
+declare module "jspdf" {
+	interface jsPDF {
+		autoTable: (options: any) => jsPDF;
+	}
+}
 
 function GeneratePDF(): Blob {
 	const doc = new jsPDF();
-
 	// Add logo (replace this with your logo's base64 data if available)
 	doc.text("LOGO", 20, 20);
-
 	// Add the title
 	doc.setFontSize(14);
 	doc.text("Offer", 105, 40, { align: "center" });
-
 	// Add company and client details
 	doc.setFontSize(10);
 	doc.text("[Company name]", 20, 50);
@@ -19,19 +23,16 @@ function GeneratePDF(): Blob {
 	doc.text("CIF: [CIF]", 20, 65);
 	doc.text("Phone: [phone]", 20, 70);
 	doc.text("Capital social: [Capital social]", 20, 75);
-
 	doc.text("CLIENT", 150, 50);
 	doc.text("[Numele clientului]", 150, 55);
 	doc.text("[Adresa clientului]", 150, 60);
 	doc.text("Reg. com.: [Nr.Reg.Comertului]", 150, 65);
 	doc.text("CIF: [CIF al clientului]", 150, 70);
-
 	// Add offer dates
 	doc.text("Offer start: 27.03.2021", 20, 85);
 	doc.text("Offer expire: 01.05.2021", 150, 85);
-
 	// Add table with autoTable
-	(doc as any).autoTable({
+	doc.autoTable({
 		startY: 95,
 		head: [["Service", "CANT.", "PRET UNITAR", "TOTAL", "TVA"]],
 		body: [
@@ -45,14 +46,11 @@ function GeneratePDF(): Blob {
 
 	// Add totals
 	doc.setFontSize(10);
-
 	const autoTableDoc = doc as any;
 	doc.text("TOTAL", 140, autoTableDoc.lastAutoTable.finalY + 10);
 	doc.text("3 722,00 Lei", 190, autoTableDoc.lastAutoTable.finalY + 10, { align: "right" });
-
 	doc.text("TVA", 140, autoTableDoc.lastAutoTable.finalY + 15);
 	doc.text("707,18 Lei", 190, autoTableDoc.lastAutoTable.finalY + 15, { align: "right" });
-
 	doc.text("Total", 140, autoTableDoc.lastAutoTable.finalY + 20);
 	doc.text("4 429,18 Lei", 190, autoTableDoc.lastAutoTable.finalY + 20, { align: "right" });
 
@@ -65,7 +63,6 @@ function GeneratePDF(): Blob {
 	doc.save("Offer.pdf");
 
 	const pdfBlob = doc.output("blob");
-
 	return pdfBlob;
 }
 

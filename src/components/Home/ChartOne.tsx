@@ -152,10 +152,10 @@ const ChartOne: React.FC = () => {
 					}
 				}).then(response => response.json())
 					.then(data => {
-						setStatsData(data);
-						setxAxisMetric(getNamesOfLast7Days(data[0].Date));
-						setValuesClients(data.slice(0, 7).map((obj: any) => obj.clients).reverse());
-						setValuesCompanies(data.slice(0, 7).map((obj: any) => obj.companies).reverse());
+						setStatsData(data.response);
+						setxAxisMetric(getNamesOfLast7Days(data.response[0].Date));
+						setValuesClients(data.response.slice(0, 7).map((obj: any) => obj.clients).reverse());
+						setValuesCompanies(data.response.slice(0, 7).map((obj: any) => obj.companies).reverse());
 					})
 			} catch (error) {
 				InfoPopup("Database connection error");

@@ -15,14 +15,14 @@ async function isValidToken(token: string): Promise<boolean> {
 	}
 }
 
-export async function middleware(request: NextRequest) {
-	const { pathname } = request.nextUrl;
+export async function middleware(req: NextRequest) {
+	const { pathname } = req.nextUrl;
 
 	if (protectedRoutes.some(route => pathname.startsWith(route))) {
-		const token = request.cookies.get("auth-token")?.value;
+		const token = req.cookies.get("auth-token")?.value;
 
 		if (!token || !(await isValidToken(token))) {
-			const loginUrl = new URL("/", request.url);
+			const loginUrl = new URL("/", req.url);
 			return NextResponse.redirect(loginUrl);
 		}
 	}
